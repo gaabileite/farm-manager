@@ -18,28 +18,18 @@ class DataType {
         string type;
     public:
         // Constructor
-        DataType(string currentname, string currenttype) {
-            name = currentname;
-            type = currenttype;
-        }
+        DataType(string currentname, string currenttype);
+
         // Destructor
         virtual ~DataType();
 
         // Getters
-        string getName() const {
-            return name;
-        }
-        string getType() const {
-            return type;
-        }
+        string getName() const;
+        string getType() const;
 
         // Setters
-        void setName(string newname) {
-            name = newname;
-        }
-        void setType(string newtype) {
-            type = newtype;
-        }
+        void setName(string newname);
+        void setType(string newtype);
 };
 
 #endif
