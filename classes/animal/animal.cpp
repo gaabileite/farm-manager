@@ -1,7 +1,9 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include <utility>
 
-#include "classes/animal.h"
+#include "animal.h"
 
 //Constructor
 // DataType's constructor initializes the inherited part of the Animal object.

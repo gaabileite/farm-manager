@@ -8,7 +8,7 @@ using namespace std;
 #ifndef ANIMAL
 #define ANIMAL
 
-#include "classes/datatype.h"
+#include "../datatype.h"
 
 
 class Animal : public DataType // Animal is a derived class from DataType and inherits its public members.
