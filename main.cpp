@@ -6,6 +6,8 @@
 #include "classes/datatype.h"
 #include "classes/animal.h"
 #include "classes/building.h"
+#include "classes/crop.h"
+#include "classes/villager.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -145,4 +147,68 @@
         animalAmount = newanimalAmount;
     }
 
+// Declaration of Crop's methods.
+    // Constructor
+    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentsellValue, vector<int> currentseedPrice, vector<int> currentprofit, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop): DataType(currentname, currenttype) {
+        season = currentseason;
+        daysToHarvest = currentdaysToHarvest;
+        regrow = currentregrow;
+        sellValue = currentsellValue;
+        seedPrice = currentseedPrice;
+        profit = currentprofit;
+        artisanItems = currentartisanItems;
+        seedShop = currentseedShop;
+    }
 
+    // Destructor
+    Crop::~Crop() {};
+
+    // Getters
+    string Crop::getSeason() const { return season; }
+    int Crop::getDaysToHarvest() const { return daysToHarvest; }
+    bool Crop::getRegrow() const { return regrow; }
+    vector<int> Crop::getSellValue() const { return sellValue; }
+    vector<int> Crop::getSeedPrice() const { return seedPrice; }
+    vector<int> Crop::getProfit() const { return profit; }
+    vector<pair<string, string>> Crop::getArtisanItems() const { return artisanItems; }
+    vector<string> Crop::getSeedShop() const { return seedShop; }
+
+    // Setters
+    void Crop::setSeason(string newseason) { season = newseason; }
+    void Crop::setDaysToHarvest(int newdaysToHarvest) { daysToHarvest = newdaysToHarvest; }
+    void Crop::setRegrow(bool newregrow) { regrow = newregrow; }
+    void Crop::setSellValue(vector<int> newsellValue) { sellValue = newsellValue; }
+    void Crop::setSeedPrice(vector<int> newseedPrice) { seedPrice = newseedPrice; }
+    void Crop::setProfit(vector<int> newprofit) { profit = newprofit; }
+    void Crop::setArtisanItems(vector<pair<string, string>> newartisanItems) { artisanItems = newartisanItems; }
+    void Crop::setSeedShop(vector<string> newseedShop) { seedShop = newseedShop; }
+
+// Declaration of Villager's methods.
+    // Constructor
+    Villager::Villager(string currentname, string currenttype, bool currentsingle, vector<pair<string, string>> currentroutine, vector<string> currentgiftsLike, vector<string> currentgiftsLove, vector<string> currentgiftsHate, vector<string> currentgiftsNeutral): DataType(currentname, currenttype) {
+        single = currentsingle;
+        routine = currentroutine;
+        giftsLike = currentgiftsLike;
+        giftsLove = currentgiftsLove;
+        giftsHate = currentgiftsHate;
+        giftsNeutral = currentgiftsNeutral;
+    }
+
+    // Destructor
+    Villager::~Villager() {};
+
+    // Getters
+    bool Villager::getSingle() const { return single; }
+    vector<pair<string, string>> Villager::getRoutine() const { return routine; }
+    vector<string> Villager::getGiftsLike() const { return giftsLike; }
+    vector<string> Villager::getGiftsLove() const { return giftsLove; }
+    vector<string> Villager::getGiftsHate() const { return giftsHate; }
+    vector<string> Villager::getGiftsNeutral() const { return giftsNeutral; }
+
+    // Setters
+    void Villager::setSingle(bool newsingle) { single = newsingle; }
+    void Villager::setRoutine(vector<pair<string, string>> newroutine) { routine = newroutine; }
+    void Villager::setGiftsLike(vector<string> newgiftsLike) { giftsLike = newgiftsLike; }
+    void Villager::setGiftsLove(vector<string> newgiftsLove) { giftsLove = newgiftsLove; }
+    void Villager::setGiftsHate(vector<string> newgiftsHate) { giftsHate = newgiftsHate; }
+    void Villager::setGiftsNeutral(vector<string> newgiftsNeutral) { giftsNeutral = newgiftsNeutral; }
