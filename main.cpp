@@ -149,13 +149,12 @@
 
 // Declaration of Crop's methods.
     // Constructor
-    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentsellValue, vector<int> currentseedPrice, vector<int> currentprofit, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop): DataType(currentname, currenttype) {
+    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentsellValue, vector<int> currentseedPrice, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop): DataType(currentname, currenttype) {
         season = currentseason;
         daysToHarvest = currentdaysToHarvest;
         regrow = currentregrow;
         sellValue = currentsellValue;
         seedPrice = currentseedPrice;
-        profit = currentprofit;
         artisanItems = currentartisanItems;
         seedShop = currentseedShop;
     }
@@ -169,7 +168,6 @@
     bool Crop::getRegrow() const { return regrow; }
     vector<int> Crop::getSellValue() const { return sellValue; }
     vector<int> Crop::getSeedPrice() const { return seedPrice; }
-    vector<int> Crop::getProfit() const { return profit; }
     vector<pair<string, string>> Crop::getArtisanItems() const { return artisanItems; }
     vector<string> Crop::getSeedShop() const { return seedShop; }
 
@@ -179,7 +177,6 @@
     void Crop::setRegrow(bool newregrow) { regrow = newregrow; }
     void Crop::setSellValue(vector<int> newsellValue) { sellValue = newsellValue; }
     void Crop::setSeedPrice(vector<int> newseedPrice) { seedPrice = newseedPrice; }
-    void Crop::setProfit(vector<int> newprofit) { profit = newprofit; }
     void Crop::setArtisanItems(vector<pair<string, string>> newartisanItems) { artisanItems = newartisanItems; }
     void Crop::setSeedShop(vector<string> newseedShop) { seedShop = newseedShop; }
 
