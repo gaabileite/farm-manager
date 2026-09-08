@@ -20,7 +20,7 @@ class Animal : public DataType
    int daysToAdult;
    int buyPrice;
    int sellValue;
-   vector<pair<string, string>> artisanItem;
+   vector<pair<string, string, int>> artisanItem;
 
    public:
 

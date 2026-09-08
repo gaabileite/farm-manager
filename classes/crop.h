@@ -19,7 +19,7 @@ class Crop : public DataType {
     vector<int> sellValue;
     vector<int> seedPrice;
     vector<int> profit;
-    vector<pair<string, string>> artisanItems;
+    vector<pair<string, string, int>> artisanItems;
     vector<string> seedShop;
    public:
     // Constructor
