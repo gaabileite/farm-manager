@@ -2,16 +2,17 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include "../datatype.h"
 using namespace std;
-
 
 #ifndef ANIMAL
 #define ANIMAL
 
-#include "../datatype.h"
+/*
+The Animal class is a derived class from DataType and inherits its key attributes.
+ */
 
-
-class Animal : public DataType // Animal is a derived class from DataType and inherits its public members.
+class Animal : public DataType
 
 {
    private:

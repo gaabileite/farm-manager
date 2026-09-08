@@ -1,13 +1,16 @@
 #include <string>
 #include <vector>
 #include <utility>
-
+#include "../datatype.h"
 using namespace std;
 
 #ifndef BUILDING 
 #define BUILDING
 
-#include "../datatype.h"
+/*
+The class Building inherits key attributes from the DataType class.
+It houses buildings that support animals AND buildings that don't.
+*/
 
 class Building: public DataType {
     private:
@@ -19,20 +22,20 @@ class Building: public DataType {
     int animalAmount;
 
     public:
-    // Two overloaded constructors: the compiler picks one automatically based on how many arguments are passed at object creation.
+    // Two overloaded constructors.
 
     // Constructor for buildings that do NOT house animals.
-    // housesAnimals is set internally to false, animalTypes/animalAmount stay empty/0.
+    // housesAnimals is set internally to false, animalTypes and animalAmount stay empty.
     Building(string currentname, string currenttype, vector<pair<string, string>> constructionMaterials, vector<int> size, string whereToGet);
 
     // Constructor for buildings that DO house animals.
-    // housesAnimals is set internally to true.
+    // housesAnimals is set internally to true, animalTypes and animalAmount are filled.
     Building(string currentname, string currenttype, vector<pair<string, string>> constructionMaterials, vector<int> size, string whereToGet, vector<string> animalTypes, int animalAmount);
 
     // Destructor
     virtual ~Building();
 
-    //Getters
+    // Getters
     vector<pair<string, string>> getConstructionMaterials() const;
     vector<int> getSize() const;
     string getWhereToGet() const;
@@ -47,8 +50,6 @@ class Building: public DataType {
     void setHousesAnimals(bool newhousesAnimals);
     void setAnimalTypes(vector<string> newanimalTypes);
     void setAnimalAmount(int newanimalAmount);
-
-
 };
 
 #endif
