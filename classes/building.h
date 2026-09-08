@@ -15,7 +15,7 @@ It houses buildings that support animals AND buildings that don't.
 class Building: public DataType {
     private:
     vector<pair<string, string>> constructionMaterials;
-    vector<int> size;
+    pair<int, int> size;
     string whereToGet;
     bool housesAnimals;
     vector<string> animalTypes;
