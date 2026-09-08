@@ -217,7 +217,7 @@
 
 // Declaration of Villager's methods.
     // Constructor
-    Villager::Villager(string currentname, string currenttype, bool currentsingle, vector<pair<string, string>> currentroutine, vector<string> currentgiftsLike, vector<string> currentgiftsLove, vector<string> currentgiftsHate, vector<string> currentgiftsNeutral): DataType(currentname, currenttype) {
+    Villager::Villager(string currentname, string currenttype, bool currentsingle, vector<string> currentgiftsLike, vector<string> currentgiftsLove, vector<string> currentgiftsHate, vector<string> currentgiftsNeutral): DataType(currentname, currenttype) {
         single = currentsingle;
         routine = currentroutine;
         giftsLike = currentgiftsLike;
@@ -232,9 +232,6 @@
     // Getters
     bool Villager::getSingle() const { 
         return single; 
-    }
-    vector<pair<string, string>> Villager::getRoutine() const { 
-        return routine; 
     }
     vector<string> Villager::getGiftsLike() const { 
         return giftsLike; 
@@ -252,9 +249,6 @@
     // Setters
     void Villager::setSingle(bool newsingle) { 
         single = newsingle; 
-    }
-    void Villager::setRoutine(vector<pair<string, string>> newroutine) { 
-        routine = newroutine; 
     }
     void Villager::setGiftsLike(vector<string> newgiftsLike) { 
         giftsLike = newgiftsLike; 
