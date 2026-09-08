@@ -1,13 +1,15 @@
 #include <string>
 #include <vector>
 #include <utility>
-
+#include "../datatype.h"
 using namespace std;
 
 #ifndef VILLAGER
 #define VILLAGER
 
-#include "../datatype.h"
+/*
+The Villager class adds villagers from the game, specifying attributes for only the important information about each character.
+*/
 
 class Villager : public DataType {
    private:

@@ -1,13 +1,15 @@
 #include <string>
 #include <vector>
 #include <utility>
-
+#include "../datatype.h"
 using namespace std;
 
 #ifndef CROP
 #define CROP
 
-#include "../datatype.h"
+/*
+The Crop class adds crops from the game, with many attributes that specify information about each crop.
+*/
 
 class Crop : public DataType {
    private:
