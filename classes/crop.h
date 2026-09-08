@@ -15,12 +15,12 @@ class Crop : public DataType {
    private:
     string season;
     int daysToHarvest;
-    bool regrow;
+    int regrow;
     vector<pair<string, int>> sellValue;
     vector<pair<string, int>> seedPrice;
     vector<pair<string, int>> profit;
     vector<pair<string, string, int>> artisanItems;
-    
+
    public:
     // Constructor
     Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentsellValue, vector<int> currentseedPrice, vector<int> currentprofit, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop);
