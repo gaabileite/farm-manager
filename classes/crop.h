@@ -16,13 +16,14 @@ class Crop : public DataType {
     string season;
     int daysToHarvest;
     int regrow;
+    int daysToRegrowth
     vector<pair<string, int>> sellValue;
     vector<pair<string, int>> seedPrice;
     vector<pair<string, string, int>> artisanItems;
 
    public:
     // Constructor
-    Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentsellValue, vector<int> currentseedPrice, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop);
+    Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int daysToRegrowth, vector<int> currentsellValue, vector<int> currentseedPrice, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop);
 
     // Destructor
     virtual ~Crop();
@@ -30,7 +31,8 @@ class Crop : public DataType {
     // Getters
     string getSeason() const;
     int getDaysToHarvest() const;
-    bool getRegrow() const;
+    int getRegrow() const;
+    int getDaysToRegrowth() const;
     vector<int> getSellValue() const;
     vector<int> getSeedPrice() const;
     vector<pair<string, string>> getArtisanItems() const;
@@ -40,6 +42,7 @@ class Crop : public DataType {
     void setSeason(string newseason);
     void setDaysToHarvest(int newdaysToHarvest);
     void setRegrow(bool newregrow);
+    void setDaysToRegrowth(int newdaysToRegrowth);
     void setSellValue(vector<int> newsellValue);
     void setSeedPrice(vector<int> newseedPrice);
     void setArtisanItems(vector<pair<string, string>> newartisanItems);
