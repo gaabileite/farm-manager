@@ -8,6 +8,7 @@
 #include "classes/building.h"
 #include "classes/crop.h"
 #include "classes/villager.h"
+#include "classes/database.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -233,3 +234,17 @@
     void Villager::setGiftLove(string newgiftLove) { 
         giftLove = newgiftLove; 
     }
+
+int main() {
+    Database db("database/gameData.db");
+
+    vector<Crop> crops = db.getAllCrops();
+    vector<Animal> animals = db.getAllAnimals();
+    vector<Building> buildings = db.getAllBuildings();
+
+    for (const auto& c : crops) {
+        cout << c.getName() << " - " << c.getSeason() << endl;
+    }
+
+    return 0;
+}
