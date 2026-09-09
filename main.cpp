@@ -149,11 +149,10 @@
 
 // Declaration of Crop's methods.
     // Constructor
-    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentsellValue, vector<int> currentseedPrice, vector<int> currentprofit, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop): DataType(currentname, currenttype) {
+    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, bool currentregrow, vector<int> currentseedPrice, vector<int> currentprofit, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop): DataType(currentname, currenttype) {
         season = currentseason;
         daysToHarvest = currentdaysToHarvest;
         regrow = currentregrow;
-        sellValue = currentsellValue;
         seedPrice = currentseedPrice;
         profit = currentprofit;
         artisanItems = currentartisanItems;
@@ -172,9 +171,6 @@
     }
     bool Crop::getRegrow() const { 
         return regrow; 
-    }
-    vector<int> Crop::getSellValue() const { 
-        return sellValue; 
     }
     vector<int> Crop::getSeedPrice() const { 
         return seedPrice; 
@@ -198,9 +194,6 @@
     }
     void Crop::setRegrow(bool newregrow) { 
         regrow = newregrow; 
-    }
-    void Crop::setSellValue(vector<int> newsellValue) { 
-        sellValue = newsellValue; 
     }
     void Crop::setSeedPrice(vector<int> newseedPrice) { 
         seedPrice = newseedPrice; 
