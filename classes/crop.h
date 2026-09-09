@@ -23,7 +23,7 @@ class Crop : public DataType {
 
    public:
     // Constructor
-    Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int daysToRegrowth, vector<int> currentsellValue, vector<int> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems);
+    Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int daysToRegrowth, vector<tuple<string,int>> currentsellValue, vector<tuple<string, int>> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems);
 
     // Destructor
     virtual ~Crop();
@@ -33,8 +33,8 @@ class Crop : public DataType {
     int getDaysToHarvest() const;
     int getRegrow() const;
     int getDaysToRegrowth() const;
-    vector<int> getSellValue() const;
-    vector<int> getSeedPrice() const;
+    vector<tuple<string,int>> getSellValue() const;
+    vector<tuple<string,int>> getSeedPrice() const;
     vector<tuple<string, string, int>> getArtisanItems() const;
 
     // Setters
@@ -42,8 +42,8 @@ class Crop : public DataType {
     void setDaysToHarvest(int newdaysToHarvest);
     void setRegrow(bool newregrow);
     void setDaysToRegrowth(int newdaysToRegrowth);
-    void setSellValue(vector<int> newsellValue);
-    void setSeedPrice(vector<int> newseedPrice);
+    void setSellValue(vector<tuple<string,int>> newsellValue);
+    void setSeedPrice(vector<tuple<string,int>> newseedPrice);
     void setArtisanItems(vector<tuple<string, string, int>> newartisanItems);
 };
 

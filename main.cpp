@@ -142,7 +142,7 @@
 
 // Declaration of Crop's methods.
     // Constructor
-    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int currentdaysToRegrowth, vector<int> currentsellValue, vector<int> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems): DataType(currentname, currenttype) {
+    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int currentdaysToRegrowth, vector<tuple<string,int>> currentsellValue, vector<tuple<string,int>> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems): DataType(currentname, currenttype) {
         season = currentseason;
         daysToHarvest = currentdaysToHarvest;
         regrow = currentregrow;
@@ -168,10 +168,10 @@
     int Crop::getDaysToRegrowth() const { 
       return daysToRegrowth; 
     }
-    vector<int> Crop::getSellValue() const { 
+    vector<tuple<string,int>> Crop::getSellValue() const { 
       return sellValue; 
     }
-    vector<int> Crop::getSeedPrice() const { 
+    vector<tuple<string,int>> Crop::getSeedPrice() const { 
       return seedPrice; 
     }
     vector<tuple<string, string, int>> Crop::getArtisanItems() const { 
@@ -191,10 +191,10 @@
     void Crop::setDaysToRegrowth(int newdaysToRegrowth) { 
       daysToRegrowth = newdaysToRegrowth; 
     }
-    void Crop::setSellValue(vector<int> newsellValue) { 
+    void Crop::setSellValue(vector<tuple<string,int>> newsellValue) { 
       sellValue = newsellValue; 
     }
-    void Crop::setSeedPrice(vector<int> newseedPrice) { 
+    void Crop::setSeedPrice(vector<tuple<string,int>> newseedPrice) { 
       seedPrice = newseedPrice; 
     }
     void Crop::setArtisanItems(vector<tuple<string, string, int>> newartisanItems) { 
