@@ -217,13 +217,10 @@
 
 // Declaration of Villager's methods.
     // Constructor
-    Villager::Villager(string currentname, string currenttype, bool currentsingle, vector<pair<string, string>> currentroutine, vector<string> currentgiftsLike, vector<string> currentgiftsLove, vector<string> currentgiftsHate, vector<string> currentgiftsNeutral): DataType(currentname, currenttype) {
+    Villager::Villager(string currentname, string currenttype, bool currentsingle, string currentgiftLike, string currentgiftLove): DataType(currentname, currenttype) {
         single = currentsingle;
-        routine = currentroutine;
-        giftsLike = currentgiftsLike;
-        giftsLove = currentgiftsLove;
-        giftsHate = currentgiftsHate;
-        giftsNeutral = currentgiftsNeutral;
+        giftLike = currentgiftLike;
+        giftLove = currentgiftLove;
     }
 
     // Destructor
@@ -233,38 +230,20 @@
     bool Villager::getSingle() const { 
         return single; 
     }
-    vector<pair<string, string>> Villager::getRoutine() const { 
-        return routine; 
+    string Villager::getGiftLike() const { 
+        return giftLike; 
     }
-    vector<string> Villager::getGiftsLike() const { 
-        return giftsLike; 
-    }
-    vector<string> Villager::getGiftsLove() const { 
-        return giftsLove; 
-    }
-    vector<string> Villager::getGiftsHate() const { 
-        return giftsHate; 
-    }
-    vector<string> Villager::getGiftsNeutral() const { 
-        return giftsNeutral; 
+    string Villager::getGiftLove() const { 
+        return giftLove; 
     }
 
     // Setters
     void Villager::setSingle(bool newsingle) { 
         single = newsingle; 
     }
-    void Villager::setRoutine(vector<pair<string, string>> newroutine) { 
-        routine = newroutine; 
+    void Villager::setGiftLike(string newgiftLike) { 
+        giftLike = newgiftLike; 
     }
-    void Villager::setGiftsLike(vector<string> newgiftsLike) { 
-        giftsLike = newgiftsLike; 
-    }
-    void Villager::setGiftsLove(vector<string> newgiftsLove) { 
-        giftsLove = newgiftsLove; 
-    }
-    void Villager::setGiftsHate(vector<string> newgiftsHate) { 
-        giftsHate = newgiftsHate; 
-    }
-    void Villager::setGiftsNeutral(vector<string> newgiftsNeutral) { 
-        giftsNeutral = newgiftsNeutral; 
+    void Villager::setGiftLove(string newgiftLove) { 
+        giftLove = newgiftLove; 
     }
