@@ -14,25 +14,25 @@ The Villager class adds villagers from the game, specifying attributes for only 
 class Villager : public DataType {
    private:
     bool single;
-    vector<string> giftsLike;
-    vector<string> giftsLove;
+    string giftLike;
+    string giftLove;
 
    public:
     // Constructor
-    Villager(string currentname, string currenttype, bool currentsingle, vector<string> currentgiftsLike, vector<string> currentgiftsLove);
+    Villager(string currentname, string currenttype, bool currentsingle, string currentgiftLike, string currentgiftLove);
 
     // Destructor
     virtual ~Villager();
 
     // Getters
     bool getSingle() const;
-    vector<string> getGiftsLike() const;
-    vector<string> getGiftsLove() const;
+    string getGiftLike() const;
+    string getGiftLove() const;
 
     // Setters
     void setSingle(bool newsingle);
-    void setGiftsLike(vector<string> newgiftsLike);
-    void setGiftsLove(vector<string> newgiftsLove);
+    void setGiftLike(string newgiftLike);
+    void setGiftLove(string newgiftLove);
 };
 
 #endif
