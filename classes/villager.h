@@ -1,7 +1,7 @@
 #include <string>
 #include <vector>
 #include <utility>
-#include "../datatype.h"
+#include "datatype.h"
 using namespace std;
 
 #ifndef VILLAGER
