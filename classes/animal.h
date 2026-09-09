@@ -19,12 +19,12 @@ class Animal : public DataType
    string produces;
    int daysToAdult;
    int buyPrice;
-   vector<pair<string, string, int>> artisanItem;
+   vector<tuple<string, string, int>> artisanItem;
 
    public:
 
    // Constructor
-   Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<pair<string, string>> currentartisanItem);
+   Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<tuple<string, string, int>> currentartisanItem);
 
    // Destructor
    virtual ~Animal(); 
@@ -33,14 +33,14 @@ class Animal : public DataType
    string getProduces() const;
    int getDaysToAdult() const;
    int getBuyPrice() const;
-   vector<pair<string, string>> getArtisanItem() const;
+   vector<tuple<string, string, int>> getArtisanItem() const;
 
 
    // Setters
    void setProduces(string newproduces);
    void setDaysToAdult(int newdaysToAdult);
    void setBuyPrice(int newbuyPrice);
-   void setArtisanItem(vector<pair<string, string>> newartisanItem);
+   void setArtisanItem(vector<tuple<string, string, int>> newartisanItem);
 };
 
 #endif

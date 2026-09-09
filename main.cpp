@@ -37,11 +37,10 @@
 // Declaration of Animal's methods.
    // Constructor
    // DataType's constructor initializes the inherited part of the Animal object.
-    Animal::Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<pair<string, string>> currentartisanItem): DataType(currentname, currenttype) {
+    Animal::Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<tuple<string, string, int>> currentartisanItem) : DataType(currentname, currenttype) {
         produces = currentproduces;
         daysToAdult = currentdaysToAdult;
         buyPrice = currentbuyPrice;
-        sellValue = currentsellValue;
         artisanItem = currentartisanItem;
     }
 
@@ -58,7 +57,7 @@
     int Animal::getBuyPrice() const {
         return buyPrice;
     }
-    vector<pair<string, string>> Animal::getArtisanItem() const {
+    vector<tuple<string, string, int>> Animal::getArtisanItem() const {
         return artisanItem;
     }
 
@@ -72,14 +71,14 @@
     void Animal::setBuyPrice(int newbuyPrice) {
         buyPrice = newbuyPrice;
     }
-    void Animal::setArtisanItem(vector<pair<string, string>> newartisanItem) {
+    void Animal::setArtisanItem(vector<tuple<string, string, int>> newartisanItem) {
         artisanItem = newartisanItem;
     }
 
 // Declaration of Building's methods.
     // Constructor: no animals housed
     // housesAnimals defaults to false.
-    Building::Building(string currentname, string currenttype, vector<pair<string, string>> currentconstructionMaterials, vector<int> currentsize, string currentwhereToGet): DataType(currentname, currenttype) {
+    Building::Building(string currentname, string currenttype, vector<tuple<string, int>> currentconstructionMaterials, tuple<int, int> currentsize, string currentwhereToGet): DataType(currentname, currenttype) {
         constructionMaterials = currentconstructionMaterials;
         size = currentsize;
         whereToGet = currentwhereToGet;
@@ -89,7 +88,7 @@
     }
 
     // Constructor: houses animals
-    Building::Building(string currentname, string currenttype, vector<pair<string, string>> currentconstructionMaterials, vector<int> currentsize, string currentwhereToGet, vector<string> currentanimalTypes, int currentanimalAmount): DataType(currentname, currenttype) {
+    Building::Building(string currentname, string currenttype, vector<tuple<string, int>> currentconstructionMaterials, tuple<int, int> currentsize, string currentwhereToGet, vector<string> currentanimalTypes, int currentanimalAmount): DataType(currentname, currenttype) {
         constructionMaterials = currentconstructionMaterials;
         size = currentsize;
         whereToGet = currentwhereToGet;
@@ -102,10 +101,10 @@
     Building::~Building() {};
 
     // Getters
-    vector<pair<string, string>> Building::getConstructionMaterials() const {
+    vector<tuple<string, int>> Building::getConstructionMaterials() const {
         return constructionMaterials;
     }
-    vector<int> Building::getSize() const {
+    tuple<int, int> Building::getSize() const {
         return size;
     }
     string Building::getWhereToGet() const {
@@ -122,10 +121,10 @@
     }
 
     // Setters
-    void Building::setConstructionMaterials(vector<pair<string, string>> newconstructionMaterials) {
+    void Building::setConstructionMaterials(vector<tuple<string, int>> newconstructionMaterials) {
         constructionMaterials = newconstructionMaterials;
     }
-    void Building::setSize(vector<int> newsize) {
+    void Building::setSize(tuple<int, int> newsize) {
         size = newsize;
     }
     void Building::setWhereToGet(string newwhereToGet) {
@@ -143,14 +142,14 @@
 
 // Declaration of Crop's methods.
     // Constructor
-    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int currentdaysToRegrowth, vector<int> currentsellValue, vector<int> currentseedPrice, vector<pair<string, string>> currentartisanItems, vector<string> currentseedShop): DataType(currentname, currenttype) {
+    Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int currentdaysToRegrowth, vector<int> currentsellValue, vector<int> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems): DataType(currentname, currenttype) {
         season = currentseason;
         daysToHarvest = currentdaysToHarvest;
         regrow = currentregrow;
         daysToRegrowth = currentdaysToRegrowth;
+        sellValue = currentsellValue;
         seedPrice = currentseedPrice;
         artisanItems = currentartisanItems;
-        seedShop = currentseedShop;
     }
 
     // Destructor
@@ -175,11 +174,8 @@
     vector<int> Crop::getSeedPrice() const { 
       return seedPrice; 
     }
-    vector<pair<string, string>> Crop::getArtisanItems() const { 
+    vector<tuple<string, string, int>> Crop::getArtisanItems() const { 
       return artisanItems; 
-    }
-    vector<string> Crop::getSeedShop() const { 
-      return seedShop; 
     }
 
     // Setters
@@ -201,11 +197,8 @@
     void Crop::setSeedPrice(vector<int> newseedPrice) { 
       seedPrice = newseedPrice; 
     }
-    void Crop::setArtisanItems(vector<pair<string, string>> newartisanItems) { 
+    void Crop::setArtisanItems(vector<tuple<string, string, int>> newartisanItems) { 
       artisanItems = newartisanItems; 
-    }
-    void Crop::setSeedShop(vector<string> newseedShop) { 
-      seedShop = newseedShop; 
     }
 
 // Declaration of Villager's methods.
