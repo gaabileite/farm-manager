@@ -16,7 +16,7 @@ class Crop : public DataType {
     string season;
     int daysToHarvest;
     int regrow;
-    int daysToRegrowth
+    int daysToRegrowth;
     vector<pair<string, int>> sellValue;
     vector<pair<string, int>> seedPrice;
     vector<pair<string, string, int>> artisanItems;

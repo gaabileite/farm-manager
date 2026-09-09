@@ -37,7 +37,7 @@
 // Declaration of Animal's methods.
    // Constructor
    // DataType's constructor initializes the inherited part of the Animal object.
-    Animal::Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, int currentsellValue, vector<pair<string, string>> currentartisanItem): DataType(currentname, currenttype) {
+    Animal::Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<pair<string, string>> currentartisanItem): DataType(currentname, currenttype) {
         produces = currentproduces;
         daysToAdult = currentdaysToAdult;
         buyPrice = currentbuyPrice;
@@ -58,9 +58,6 @@
     int Animal::getBuyPrice() const {
         return buyPrice;
     }
-    int Animal::getSellValue() const {
-        return sellValue;
-    }
     vector<pair<string, string>> Animal::getArtisanItem() const {
         return artisanItem;
     }
@@ -74,9 +71,6 @@
     }
     void Animal::setBuyPrice(int newbuyPrice) {
         buyPrice = newbuyPrice;
-    }
-    void Animal::setSellValue(int newsellValue) {
-        sellValue = newsellValue;
     }
     void Animal::setArtisanItem(vector<pair<string, string>> newartisanItem) {
         artisanItem = newartisanItem;
@@ -154,7 +148,6 @@
         daysToHarvest = currentdaysToHarvest;
         regrow = currentregrow;
         daysToRegrowth = currentdaysToRegrowth;
-        sellValue = currentsellValue;
         seedPrice = currentseedPrice;
         artisanItems = currentartisanItems;
         seedShop = currentseedShop;
