@@ -9,6 +9,7 @@
 #include "classes/crop.h"
 #include "classes/villager.h"
 #include "classes/database.h"
+#include "classes/myfarm.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -234,6 +235,32 @@
     void Villager::setGiftLove(string newgiftLove) { 
         giftLove = newgiftLove; 
     }
+
+// Declaration of MyFarm's methods.
+    // Constructor
+    MyFarm::MyFarm(string currentfarmName, string currentfarmLayout) {
+        farmName = currentfarmName;
+        farmLayout = currentfarmLayout;
+    }
+
+    // Destructor
+    MyFarm::~MyFarm() {};
+
+    // Getters
+    string MyFarm::getFarmName() const {
+        return farmName;
+    }
+    string MyFarm::getFarmLayout() const {
+        return farmLayout;
+    }
+
+    // Setters
+    void MyFarm::setFarmName(string newfarmName) {
+        farmName = newfarmName;
+    }
+    void MyFarm::setFarmLayout(string newfarmLayout) {
+        farmLayout = newfarmLayout;
+    }   
 
 int main() {
     Database db("database/gameData.db");
