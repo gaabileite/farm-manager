@@ -10,6 +10,7 @@
 #include "classes/villager.h"
 #include "classes/database.h"
 #include "classes/myfarm.h"
+#include "classes/myanimal.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -261,6 +262,42 @@
     void MyFarm::setFarmLayout(string newfarmLayout) {
         farmLayout = newfarmLayout;
     }   
+
+// Declaring MyAnimal's methods
+    // Constructor
+    MyAnimal::MyAnimal(string currentanimalName, string currentanimalType, int currentanimalRelationship) {
+        animalName = currentanimalName;
+        animalType = currentanimalType;
+        animalRelationship = currentanimalRelationship;
+    }
+
+    // Destructor
+    MyAnimal::~MyAnimal() {}
+
+    // Getters
+    string MyAnimal::getAnimalName() const {
+        return animalName;
+    }
+    string MyAnimal::getAnimalType() const {
+        return animalType;
+    }
+    int MyAnimal::getAnimalRelaionship() const {
+        return animalRelationship;
+    }
+
+    // Setters
+    void MyAnimal::setAnimalName(string newanimalName) {
+        animalName = newanimalName;
+    }
+    void MyAnimal::setAnimalType(string newanimalType) {
+        animalType = newanimalType;
+    }
+    void MyAnimal::setAnimalRelationship(int newanimalRelationship) {
+        animalRelationship = newanimalRelationship;
+    }
+    void MyAnimal::addHeart(int addedRelationship) {
+        animalRelationship += addedRelationship;
+    }
 
 int main() {
     Database db("database/gameData.db");
