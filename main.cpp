@@ -10,6 +10,8 @@
 #include "classes/villager.h"
 #include "classes/database.h"
 #include "classes/myfarm.h"
+#include "database/filters.h"
+#include "database/menu.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -269,9 +271,15 @@ int main() {
     vector<Animal> animals = db.getAllAnimals();
     vector<Building> buildings = db.getAllBuildings();
 
-    for (const auto& c : crops) {
-        cout << c.getName() << " - " << c.getSeason() << endl;
-    }
+    while (true) {
+        cout << "\n=== Farm Manager ===\n1. Crops\n2. Animals\n3. Buildings\n0. Sair\n> ";
+        int choice;
+        cin >> choice;
+        if (choice == 0) break;
 
+        if (choice == 1) showCropMenu(crops);
+        else if (choice == 2) showAnimalMenu(animals);
+        else if (choice == 3) showBuildingMenu(buildings);
+    }
     return 0;
 }
