@@ -11,6 +11,7 @@
 #include "classes/database.h"
 #include "classes/myfarm.h"
 #include "classes/myanimal.h"
+#include "classes/myrelationship.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -298,6 +299,39 @@
     void MyAnimal::addHeart(int addedRelationship) {
         animalRelationship += addedRelationship;
     }
+
+// Declaring MyRelationship's methods
+    // Constructor
+    MyRelationship::MyRelationship(string currentvillagerName, int currentfriendship) {
+        villagerName = currentvillagerName;
+        friendship = currentfriendship;
+    }
+
+    // Destructor
+    MyRelationship::~MyRelationship() {}
+
+    //Getters
+    string MyRelationship::getVillagerName() const {
+        return villagerName;
+    }
+    int MyRelationship::getFriendship() const {
+        return friendship;
+    }
+
+    //Setters
+    void MyRelationship::setVillagerName(string newVillagerName) {
+        villagerName = newVillagerName;
+    }
+    void MyRelationship::setFriendship(int newFriendship) {
+        friendship = newFriendship;
+    }
+    void MyRelationship::increaseFriendship(int addedFriendship) {
+        friendship += addedFriendship;
+    }
+    void MyRelationship::decreaseFriendship(int reducedFriendship) {
+        friendship -= reducedFriendship;
+    }
+
 
 int main() {
     Database db("database/gameData.db");
