@@ -12,6 +12,7 @@
 #include "classes/myfarm.h"
 #include "classes/myanimal.h"
 #include "classes/myrelationship.h"
+#include "classes/mybuilding.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -330,6 +331,44 @@
     }
     void MyRelationship::decreaseFriendship(int reducedFriendship) {
         friendship -= reducedFriendship;
+    }
+
+    // Declaration of MyBuilding's methods.
+    // Constructor
+    MyBuilding::MyBuilding(string currentbuildingName, string currentbuildingType, int currentbuildingLevel) {
+        buildingName = currentbuildingName;
+        buildingType = currentbuildingType;
+        buildingLevel = currentbuildingLevel;
+    }
+
+    // Destructor
+    MyBuilding::~MyBuilding() {};
+
+    // Getters
+    string MyBuilding::getBuildingName() const {
+        return buildingName;
+    }
+    string MyBuilding::getBuildingType() const {
+        return buildingType;
+    }
+    int MyBuilding::getBuildingLevel() const {
+        return buildingLevel;
+    }
+
+    // Setters
+    void MyBuilding::setBuildingName(string newbuildingName) {
+        buildingName = newbuildingName;
+    }
+    void MyBuilding::setBuildingType(string newbuildingType) {
+        buildingType = newbuildingType;
+    }
+    void MyBuilding::setBuildingLevel(int newbuildingLevel) {
+        buildingLevel = newbuildingLevel;
+    }
+
+    // Auxiliar
+    void MyBuilding::upgradeBuilding() {
+        buildingLevel++;
     }
 
 
