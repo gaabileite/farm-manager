@@ -1,6 +1,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <tuple>
 #include "datatype.h"
 using namespace std;
 
@@ -40,7 +41,7 @@ class Crop : public DataType {
     // Setters
     void setSeason(string newseason);
     void setDaysToHarvest(int newdaysToHarvest);
-    void setRegrow(bool newregrow);
+    void setRegrow(int newregrow);
     void setDaysToRegrowth(int newdaysToRegrowth);
     void setSellValue(vector<tuple<string,int>> newsellValue);
     void setSeedPrice(vector<tuple<string,int>> newseedPrice);
