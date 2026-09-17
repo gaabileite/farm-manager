@@ -1,5 +1,6 @@
 #include "database/menu.h"
 #include "database/filters.h"
+#include "classes/database.h"
 #include <iostream>
 
 void showCropMenu(const vector<Crop>& crops) {
@@ -89,6 +90,64 @@ void showBuildingMenu(const vector<Building>& buildings) {
                 cout << " - abriga " << b.getAnimalAmount() << " animais";
             }
             cout << "\n";
+        }
+    }
+}
+
+// User Menu:
+
+void showMyFarmMenu(Database& db, int farmId) {
+    while (true) {
+        cout << "\n--- Minha Fazenda ---\n";
+        cout << "1. Adicionar animal\n";
+        cout << "2. Atualizar amizade de um animal\n";
+        cout << "3. Remover animal\n";
+        cout << "4. Listar animais\n";
+        cout << "0. Voltar\n> ";
+
+        int choice;
+        cin >> choice;
+        if (choice == 0) break;
+
+        if (choice == 1) {
+            cin.ignore();
+            string name, type;
+            cout << "Nome do animal: ";
+            getline(cin, name);
+            cout << "Tipo (ex: Cow, Chicken): ";
+            getline(cin, type);
+            db.addAnimal(farmId, name, type, 0);
+            cout << "Animal adicionado!\n";
+        }
+        else if (choice == 2) {
+            int id, newRel;
+            cout << "ID do animal: ";
+            cin >> id;
+            cout << "Novo nivel de amizade: ";
+            cin >> newRel;
+            db.updateAnimalRelationship(id, newRel);
+            cout << "Atualizado!\n";
+        }
+        else if (choice == 3) {
+            int id;
+            cout << "ID do animal a remover: ";
+            cin >> id;
+            db.removeAnimal(id);
+            cout << "Removido!\n";
+        }
+
+        else if (choice == 4) {
+        string sql = "SELECT id, animal_name, animal_type, animal_relationship FROM my_animals WHERE farm_id = ?;";
+        sqlite3_stmt* stmt;
+        sqlite3_prepare_v2(db.getHandle(), sql.c_str(), -1, &stmt, nullptr);
+        sqlite3_bind_int(stmt, 1, farmId);
+        while (sqlite3_step(stmt) == SQLITE_ROW) {
+            int id = sqlite3_column_int(stmt, 0);
+            cout << id << ". " << sqlite3_column_text(stmt, 1)
+                << " (" << sqlite3_column_text(stmt, 2) << ") - amizade "
+                << sqlite3_column_int(stmt, 3) << "\n";
+        }
+        sqlite3_finalize(stmt);
         }
     }
 }

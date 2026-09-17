@@ -1,6 +1,5 @@
 #include <iostream> 
 #include <string> 
-#include "myfarm.h" 
 using namespace std; 
 
 #ifndef MYRELATIONSHIP 

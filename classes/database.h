@@ -2,7 +2,6 @@
 #include <string>
 #include <vector>
 #include <tuple>
-#include "external/sqlite3.h"
 #include "datatype.h"
 #include "crop.h"
 #include "animal.h"
@@ -28,11 +27,14 @@ class Database {
         Database(string path);
         ~Database();
 
+        sqlite3* getHandle() const;
+
         vector<Crop> getAllCrops();
         vector<Animal> getAllAnimals();
         vector<Building> getAllBuildings();
 
-        int createFarm(string farmName, string farmLayout);   // retorna o id criado
+        int createFarm(string farmName, string farmLayout); 
+        int getOrCreateFarm(string farmName, string farmLayout);
         void addAnimal(int farmId, string animalName, string animalType, int relationship);
         void updateAnimalRelationship(int animalId, int newRelationship);
         void removeAnimal(int animalId);

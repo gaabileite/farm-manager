@@ -1,5 +1,9 @@
 #include <iostream>
 #include <string>
+#include <vector>
+#include "myanimal.h"
+#include "mybuilding.h"
+#include "myrelationship.h"
 using namespace std;
 
 #ifndef MYFARM
