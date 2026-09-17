@@ -1,3 +1,9 @@
+**instrucoes de compilacao**
+
+gcc -c external/sqlite3.c -o sqlite3.o
+g++ -std=c++17 main.cpp database.cpp filters.cpp menu.cpp sqlite3.o -o farm_manager.exe
+.\farm_manager.exe
+
 # [Nome do programa]
 ## Aplicação dos conhecimentos
 [Nome do programa] é um databank interativo, utilizando a linguagem C++ como base, através da técnica de Programação Orientada a Objetos. O projeto é uma materialização dos conhecimentos adquiridos na cadeira de Estrutura de Dados Orientados a Objetos (CIN0135), do curso de Sistemas de Informação, na Universidade Federal de Pernambuco.
