@@ -6,7 +6,7 @@ using namespace std;
 #ifndef MYRELATIONSHIP 
 #define MYRELATIONSHIP 
 
-class MyRelationship: public MyFarm { 
+class MyRelationship { 
     private: 
     string villagerName; 
     int friendship; 
