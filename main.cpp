@@ -375,17 +375,38 @@
 
 
 int main() {
-    Database db("database/gameData.db");
+    // Banco estático (somente leitura)
+    Database gameDb("database/gameData.db");
 
-    vector<Crop> crops = db.getAllCrops();
-    vector<Animal> animals = db.getAllAnimals();
-    vector<Building> buildings = db.getAllBuildings();
+    vector<Crop> crops = gameDb.getAllCrops();
+    vector<Animal> animals = gameDb.getAllAnimals();
+    vector<Building> buildings = gameDb.getAllBuildings();
 
+    // Banco pessoal (progresso do jogador)
+    Database playerDb("database/player_data.db");
+    int farmId = playerDb.getOrCreateFarm("Minha Fazenda", "Padrao");
+
+    // Menu principal
+    while (true) {
+        cout << "\n=== Farm Manager ===\n";
+        cout << "1. Crops\n2. Animals\n3. Buildings\n4. Minha Fazenda\n0. Sair\n> ";
+
+        int choice;
+        cin >> choice;
+        if (choice == 0) break;
+
+        if (choice == 1) showCropMenu(crops);
+        else if (choice == 2) showAnimalMenu(animals);
+        else if (choice == 3) showBuildingMenu(buildings);
+        else if (choice == 4) showMyFarmMenu(playerDb, farmId);
+    }
+=========
     while (true) {
         cout << "\n=== Farm Manager ===\n1. Crops\n2. Animals\n3. Buildings\n0. Sair\n> ";
         int choice;
         cin >> choice;
         if (choice == 0) break;
+>>>>>>>>> Temporary merge branch 2
 
         if (choice == 1) showCropMenu(crops);
         else if (choice == 2) showAnimalMenu(animals);

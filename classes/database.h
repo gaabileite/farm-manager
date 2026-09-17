@@ -31,6 +31,18 @@ class Database {
         vector<Crop> getAllCrops();
         vector<Animal> getAllAnimals();
         vector<Building> getAllBuildings();
+
+        int createFarm(string farmName, string farmLayout);   // retorna o id criado
+        void addAnimal(int farmId, string animalName, string animalType, int relationship);
+        void updateAnimalRelationship(int animalId, int newRelationship);
+        void removeAnimal(int animalId);
+
+        void addBuilding(int farmId, string buildingName, string buildingType, int level);
+        void upgradeBuilding(int buildingId);
+        void removeBuilding(int buildingId);
+
+        void addRelationship(int farmId, string villagerName, int friendship);
+        void updateFriendship(int relationshipId, int newFriendship);
 };
 
 #endif

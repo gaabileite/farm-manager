@@ -195,3 +195,101 @@ vector<Building> Database::getAllBuildings() {
     sqlite3_finalize(stmt);
     return buildings;
 }
+
+// ---------- MYFARM ----------
+// Create:
+int Database::createFarm(string farmName, string farmLayout) {
+    string sql = "INSERT INTO my_farms (farm_name, farm_layout) VALUES (?, ?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_text(stmt, 1, farmName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 2, farmLayout.c_str(), -1, SQLITE_TRANSIENT);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+
+    return sqlite3_last_insert_rowid(db);   // devolve o id criado, pra usar em seguida
+}
+
+void Database::addAnimal(int farmId, string animalName, string animalType, int relationship) {
+    string sql = "INSERT INTO my_animals (farm_id, animal_name, animal_type, animal_relationship) VALUES (?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, farmId);
+    sqlite3_bind_text(stmt, 2, animalName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, animalType.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 4, relationship);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+// Update:
+void Database::updateAnimalRelationship(int animalId, int newRelationship) {
+    string sql = "UPDATE my_animals SET animal_relationship = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, newRelationship);
+    sqlite3_bind_int(stmt, 2, animalId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+// Delete:
+void Database::removeAnimal(int animalId) {
+    string sql = "DELETE FROM my_animals WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, animalId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+// User Menu:
+
+void showMyFarmMenu(Database& db, int farmId) {
+    while (true) {
+        cout << "\n--- Minha Fazenda ---\n";
+        cout << "1. Adicionar animal\n";
+        cout << "2. Atualizar amizade de um animal\n";
+        cout << "3. Remover animal\n";
+        cout << "0. Voltar\n> ";
+
+        int choice;
+        cin >> choice;
+        if (choice == 0) break;
+
+        if (choice == 1) {
+            cin.ignore();
+            string name, type;
+            cout << "Nome do animal: ";
+            getline(cin, name);
+            cout << "Tipo (ex: Cow, Chicken): ";
+            getline(cin, type);
+            db.addAnimal(farmId, name, type, 0);
+            cout << "Animal adicionado!\n";
+        }
+        else if (choice == 2) {
+            int id, newRel;
+            cout << "ID do animal: ";
+            cin >> id;
+            cout << "Novo nivel de amizade: ";
+            cin >> newRel;
+            db.updateAnimalRelationship(id, newRel);
+            cout << "Atualizado!\n";
+        }
+        else if (choice == 3) {
+            int id;
+            cout << "ID do animal a remover: ";
+            cin >> id;
+            db.removeAnimal(id);
+            cout << "Removido!\n";
+        }
+    }
+}
