@@ -2,6 +2,7 @@
 #include "../classes/crop.h"
 #include "../classes/animal.h"
 #include "../classes/building.h"
+#include "../classes/database.h"
 using namespace std;
 
 #ifndef MENU
