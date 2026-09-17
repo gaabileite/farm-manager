@@ -400,5 +400,17 @@ int main() {
         else if (choice == 3) showBuildingMenu(buildings);
         else if (choice == 4) showMyFarmMenu(playerDb, farmId);
     }
+=========
+    while (true) {
+        cout << "\n=== Farm Manager ===\n1. Crops\n2. Animals\n3. Buildings\n0. Sair\n> ";
+        int choice;
+        cin >> choice;
+        if (choice == 0) break;
+>>>>>>>>> Temporary merge branch 2
+
+        if (choice == 1) showCropMenu(crops);
+        else if (choice == 2) showAnimalMenu(animals);
+        else if (choice == 3) showBuildingMenu(buildings);
+    }
     return 0;
 }
