@@ -12,6 +12,9 @@
 #include "classes/myfarm.h"
 #include "database/filters.h"
 #include "database/menu.h"
+#include "classes/myanimal.h"
+#include "classes/myrelationship.h"
+#include "classes/mybuilding.h"
 
 // Declaration of DataType's methods.
     // Constructor
@@ -263,6 +266,113 @@
     void MyFarm::setFarmLayout(string newfarmLayout) {
         farmLayout = newfarmLayout;
     }   
+
+// Declaring MyAnimal's methods
+    // Constructor
+    MyAnimal::MyAnimal(string currentanimalName, string currentanimalType, int currentanimalRelationship) {
+        animalName = currentanimalName;
+        animalType = currentanimalType;
+        animalRelationship = currentanimalRelationship;
+    }
+
+    // Destructor
+    MyAnimal::~MyAnimal() {}
+
+    // Getters
+    string MyAnimal::getAnimalName() const {
+        return animalName;
+    }
+    string MyAnimal::getAnimalType() const {
+        return animalType;
+    }
+    int MyAnimal::getAnimalRelaionship() const {
+        return animalRelationship;
+    }
+
+    // Setters
+    void MyAnimal::setAnimalName(string newanimalName) {
+        animalName = newanimalName;
+    }
+    void MyAnimal::setAnimalType(string newanimalType) {
+        animalType = newanimalType;
+    }
+    void MyAnimal::setAnimalRelationship(int newanimalRelationship) {
+        animalRelationship = newanimalRelationship;
+    }
+    void MyAnimal::addHeart(int addedRelationship) {
+        animalRelationship += addedRelationship;
+    }
+
+// Declaring MyRelationship's methods
+    // Constructor
+    MyRelationship::MyRelationship(string currentvillagerName, int currentfriendship) {
+        villagerName = currentvillagerName;
+        friendship = currentfriendship;
+    }
+
+    // Destructor
+    MyRelationship::~MyRelationship() {}
+
+    //Getters
+    string MyRelationship::getVillagerName() const {
+        return villagerName;
+    }
+    int MyRelationship::getFriendship() const {
+        return friendship;
+    }
+
+    //Setters
+    void MyRelationship::setVillagerName(string newVillagerName) {
+        villagerName = newVillagerName;
+    }
+    void MyRelationship::setFriendship(int newFriendship) {
+        friendship = newFriendship;
+    }
+    void MyRelationship::increaseFriendship(int addedFriendship) {
+        friendship += addedFriendship;
+    }
+    void MyRelationship::decreaseFriendship(int reducedFriendship) {
+        friendship -= reducedFriendship;
+    }
+
+    // Declaration of MyBuilding's methods.
+    // Constructor
+    MyBuilding::MyBuilding(string currentbuildingName, string currentbuildingType, int currentbuildingLevel) {
+        buildingName = currentbuildingName;
+        buildingType = currentbuildingType;
+        buildingLevel = currentbuildingLevel;
+    }
+
+    // Destructor
+    MyBuilding::~MyBuilding() {};
+
+    // Getters
+    string MyBuilding::getBuildingName() const {
+        return buildingName;
+    }
+    string MyBuilding::getBuildingType() const {
+        return buildingType;
+    }
+    int MyBuilding::getBuildingLevel() const {
+        return buildingLevel;
+    }
+
+    // Setters
+    void MyBuilding::setBuildingName(string newbuildingName) {
+        buildingName = newbuildingName;
+    }
+    void MyBuilding::setBuildingType(string newbuildingType) {
+        buildingType = newbuildingType;
+    }
+    void MyBuilding::setBuildingLevel(int newbuildingLevel) {
+        buildingLevel = newbuildingLevel;
+    }
+
+    // Auxiliar
+    void MyBuilding::upgradeBuilding() {
+        buildingLevel++;
+    }
+
 
 int main() {
     Database db("database/gameData.db");
