@@ -1,3 +1,4 @@
+#include "../external/sqlite3.h"
 #include <string>
 #include <vector>
 #include <tuple>
