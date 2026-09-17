@@ -1,7 +1,7 @@
 #include <vector>
-#include "crop.h"
-#include "animal.h"
-#include "building.h"
+#include "../classes/crop.h"
+#include "../classes/animal.h"
+#include "../classes/building.h"
 using namespace std;
 
 #ifndef MENU

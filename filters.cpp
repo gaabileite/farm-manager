@@ -19,8 +19,13 @@ vector<Crop> filterCropsByName(const vector<Crop>& crops, string searchTerm) {
 
 vector<Crop> filterCropsBySeason(const vector<Crop>& crops, string season) {
     vector<Crop> results;
+    transform(season.begin(), season.end(), season.begin(), ::tolower);
+
     for (const auto& c : crops) {
-        if (c.getSeason() == season) {
+        string cropSeason = c.getSeason();
+        transform(cropSeason.begin(), cropSeason.end(), cropSeason.begin(), ::tolower);
+
+        if (cropSeason == season) {
             results.push_back(c);
         }
     }

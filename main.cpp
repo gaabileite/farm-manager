@@ -189,7 +189,7 @@
     void Crop::setDaysToHarvest(int newdaysToHarvest) { 
       daysToHarvest = newdaysToHarvest; 
     }
-    void Crop::setRegrow(bool newregrow) { 
+    void Crop::setRegrow(int newregrow) { 
       regrow = newregrow; 
     }
     void Crop::setDaysToRegrowth(int newdaysToRegrowth) { 

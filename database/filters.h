@@ -1,8 +1,8 @@
 #include <string>
 #include <vector>
-#include "classes/crop.h"
-#include "classes/animal.h"
-#include "classes/building.h"
+#include "../classes/crop.h"
+#include "../classes/animal.h"
+#include "../classes/building.h"
 using namespace std;
 
 #ifndef FILTERS
