@@ -10,6 +10,8 @@
 #include "classes/villager.h"
 #include "classes/database.h"
 #include "classes/myfarm.h"
+#include "database/filters.h"
+#include "database/menu.h"
 #include "classes/myanimal.h"
 #include "classes/myrelationship.h"
 #include "classes/mybuilding.h"
@@ -190,7 +192,7 @@
     void Crop::setDaysToHarvest(int newdaysToHarvest) { 
       daysToHarvest = newdaysToHarvest; 
     }
-    void Crop::setRegrow(bool newregrow) { 
+    void Crop::setRegrow(int newregrow) { 
       regrow = newregrow; 
     }
     void Crop::setDaysToRegrowth(int newdaysToRegrowth) { 
@@ -398,6 +400,5 @@ int main() {
         else if (choice == 3) showBuildingMenu(buildings);
         else if (choice == 4) showMyFarmMenu(playerDb, farmId);
     }
-
     return 0;
 }

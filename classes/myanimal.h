@@ -5,7 +5,7 @@
 #ifndef MYANIMAL
 #define MYANIMAL
 
-class MyAnimal : public MyFarm {
+class MyAnimal {
     private:
         string animalName;
         string animalType;

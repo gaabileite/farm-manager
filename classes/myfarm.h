@@ -14,6 +14,9 @@ class MyFarm {
     private:
         string farmName;
         string farmLayout;
+        vector<MyAnimal> myAnimals;
+        vector<MyBuilding> myBuildings;
+        vector<MyRelationship> myRelationships;
 
     public:
         // Constructor

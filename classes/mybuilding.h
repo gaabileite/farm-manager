@@ -7,7 +7,7 @@ using namespace std;
 #ifndef MYBUILDING
 #define MYBUILDING
 
-class MyBuilding : public MyFarm {
+class MyBuilding {
     private:
         string buildingName;
         string buildingType;
