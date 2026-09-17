@@ -1,6 +1,12 @@
 #include "classes/database.h"
 #include <iostream>
 
+// sqlite3_column_text returns NULL for NULL cells; building a std::string from NULL crashes.
+static string columnText(sqlite3_stmt* stmt, int col) {
+    const unsigned char* text = sqlite3_column_text(stmt, col);
+    return text ? string(reinterpret_cast<const char*>(text)) : string();
+}
+
 Database::Database(string path) {
     int rc = sqlite3_open(path.c_str(), &db);
     if (rc) {
@@ -21,7 +27,7 @@ vector<tuple<string,int>> Database::getCropSellValues(int cropId) {
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, cropId);
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        string quality = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        string quality = columnText(stmt, 0);
         int value = sqlite3_column_int(stmt, 1);
         result.push_back(make_tuple(quality, value));
     }
@@ -36,7 +42,7 @@ vector<tuple<string,int>> Database::getCropSeedSources(int cropId) {
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, cropId);
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        string shop = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        string shop = columnText(stmt, 0);
         int price = sqlite3_column_int(stmt, 1);
         result.push_back(make_tuple(shop, price));
     }
@@ -51,8 +57,8 @@ vector<tuple<string,string,int>> Database::getCropArtisanItems(int cropId) {
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, cropId);
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        string item = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-        string machine = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        string item = columnText(stmt, 0);
+        string machine = columnText(stmt, 1);
         int value = sqlite3_column_int(stmt, 2);
         result.push_back(make_tuple(item, machine, value));
     }
@@ -71,9 +77,9 @@ vector<Crop> Database::getAllCrops() {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
-        string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-        string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        string season = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        string name = columnText(stmt, 1);
+        string type = columnText(stmt, 2);
+        string season = columnText(stmt, 3);
         int daysToHarvest = sqlite3_column_int(stmt, 4);
         int regrow = sqlite3_column_int(stmt, 5);
         int regrowDays = sqlite3_column_int(stmt, 6);
@@ -98,8 +104,8 @@ vector<tuple<string,string,int>> Database::getAnimalArtisanItems(int animalId) {
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, animalId);
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        string item = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
-        string machine = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        string item = columnText(stmt, 0);
+        string machine = columnText(stmt, 1);
         int value = sqlite3_column_int(stmt, 2);
         result.push_back(make_tuple(item, machine, value));
     }
@@ -118,9 +124,9 @@ vector<Animal> Database::getAllAnimals() {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
-        string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-        string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
-        string produces = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 3));
+        string name = columnText(stmt, 1);
+        string type = columnText(stmt, 2);
+        string produces = columnText(stmt, 3);
         int daysToAdult = sqlite3_column_int(stmt, 4);
         int buyPrice = sqlite3_column_int(stmt, 5);
 
@@ -141,7 +147,7 @@ vector<tuple<string,int>> Database::getBuildingConstructionMaterials(int buildin
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, buildingId);
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        string material = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        string material = columnText(stmt, 0);
         int amount = sqlite3_column_int(stmt, 1);
         result.push_back(make_tuple(material, amount));
     }
@@ -156,7 +162,7 @@ vector<string> Database::getBuildingAnimalTypes(int buildingId) {
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
     sqlite3_bind_int(stmt, 1, buildingId);
     while (sqlite3_step(stmt) == SQLITE_ROW) {
-        result.push_back(reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0)));
+        result.push_back(columnText(stmt, 0));
     }
     sqlite3_finalize(stmt);
     return result;
@@ -174,11 +180,11 @@ vector<Building> Database::getAllBuildings() {
 
     while (sqlite3_step(stmt) == SQLITE_ROW) {
         int id = sqlite3_column_int(stmt, 0);
-        string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
-        string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        string name = columnText(stmt, 1);
+        string type = columnText(stmt, 2);
         int width = sqlite3_column_int(stmt, 3);
         int height = sqlite3_column_int(stmt, 4);
-        string whereToGet = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 5));
+        string whereToGet = columnText(stmt, 5);
         bool housesAnimals = sqlite3_column_int(stmt, 6) != 0;
         int animalAmount = sqlite3_column_int(stmt, 7);
 
