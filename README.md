@@ -1,8 +1,8 @@
 **instrucoes de compilacao**
 
-gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 main.cpp database.cpp filters.cpp menu.cpp sqlite3.o -o farm_manager.exe
-.\farm_manager.exe
+```gcc -c external/sqlite3.c -o sqlite3.o``` <br>
+```g++ -std=c++17 main.cpp database.cpp filters.cpp menu.cpp sqlite3.o -o farm_manager.exe``` <br>
+```.\farm_manager.exe```
 
 # [Nome do programa]
 ## Aplicação dos conhecimentos
