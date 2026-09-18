@@ -45,6 +45,13 @@ class Database {
 
         void addRelationship(int farmId, string villagerName, int friendship);
         void updateFriendship(int relationshipId, int newFriendship);
+        vector<tuple<int,string,int>> getMyRelationships(int farmId);
+
+        tuple<string,string> getFarmInfo(int farmId);
+        void updateFarmName(int farmId, string newName);
+        void updateFarmLayout(int farmId, string newLayout);
+
+        vector<tuple<int,string,string,int>> getMyBuildings(int farmId);
 };
 
 #endif

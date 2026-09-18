@@ -278,3 +278,142 @@ void Database::removeAnimal(int animalId) {
 sqlite3* Database::getHandle() const {
     return db;
 }
+
+// ---------- MY BUILDINGS ----------
+void Database::addBuilding(int farmId, string buildingName, string buildingType, int level) {
+    string sql = "INSERT INTO my_buildings (farm_id, building_name, building_type, building_level) VALUES (?, ?, ?, ?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, farmId);
+    sqlite3_bind_text(stmt, 2, buildingName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 3, buildingType.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 4, level);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+void Database::upgradeBuilding(int buildingId) {
+    string sql = "UPDATE my_buildings SET building_level = building_level + 1 WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, buildingId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+void Database::removeBuilding(int buildingId) {
+    string sql = "DELETE FROM my_buildings WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, buildingId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+vector<tuple<int,string,string,int>> Database::getMyBuildings(int farmId) {
+    vector<tuple<int,string,string,int>> result;
+    string sql = "SELECT id, building_name, building_type, building_level FROM my_buildings WHERE farm_id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, farmId);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        int level = sqlite3_column_int(stmt, 3);
+        result.push_back(make_tuple(id, name, type, level));
+    }
+    sqlite3_finalize(stmt);
+    return result;
+}
+
+// ---------- MY RELATIONSHIPS ----------
+void Database::addRelationship(int farmId, string villagerName, int friendship) {
+    string sql = "INSERT INTO my_relationships (farm_id, villager_name, friendship) VALUES (?, ?, ?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, farmId);
+    sqlite3_bind_text(stmt, 2, villagerName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 3, friendship);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+void Database::updateFriendship(int relationshipId, int newFriendship) {
+    string sql = "UPDATE my_relationships SET friendship = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_int(stmt, 1, newFriendship);
+    sqlite3_bind_int(stmt, 2, relationshipId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+vector<tuple<int,string,int>> Database::getMyRelationships(int farmId) {
+    vector<tuple<int,string,int>> result;
+    string sql = "SELECT id, villager_name, friendship FROM my_relationships WHERE farm_id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, farmId);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        string name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        int friendship = sqlite3_column_int(stmt, 2);
+        result.push_back(make_tuple(id, name, friendship));
+    }
+    sqlite3_finalize(stmt);
+    return result;
+}
+
+// ---------- MYFARM INFO ----------
+tuple<string,string> Database::getFarmInfo(int farmId) {
+    string sql = "SELECT farm_name, farm_layout FROM my_farms WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, farmId);
+
+    string name, layout;
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        name = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 0));
+        const unsigned char* layoutText = sqlite3_column_text(stmt, 1);
+        layout = layoutText ? reinterpret_cast<const char*>(layoutText) : "";
+    }
+    sqlite3_finalize(stmt);
+    return make_tuple(name, layout);
+}
+
+void Database::updateFarmName(int farmId, string newName) {
+    string sql = "UPDATE my_farms SET farm_name = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_text(stmt, 1, newName.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, farmId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}
+
+void Database::updateFarmLayout(int farmId, string newLayout) {
+    string sql = "UPDATE my_farms SET farm_layout = ? WHERE id = ?;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    sqlite3_bind_text(stmt, 1, newLayout.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_int(stmt, 2, farmId);
+
+    sqlite3_step(stmt);
+    sqlite3_finalize(stmt);
+}

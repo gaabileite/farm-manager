@@ -398,7 +398,7 @@ int main() {
         if (choice == 1) showCropMenu(crops);
         else if (choice == 2) showAnimalMenu(animals);
         else if (choice == 3) showBuildingMenu(buildings);
-        else if (choice == 4) showMyFarmMenu(playerDb, farmId);
+        else if (choice == 4) showMyFarmMenu(playerDb, farmId, buildings);
     }
     return 0;
 }
