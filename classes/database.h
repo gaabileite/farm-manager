@@ -52,6 +52,9 @@ class Database {
         void updateFarmLayout(int farmId, string newLayout);
 
         vector<tuple<int,string,string,int>> getMyBuildings(int farmId);
+
+        vector<tuple<int,string,string,int>> findMyAnimalsByName(int farmId, string name);
+        vector<tuple<int,string,string,int>> findMyBuildingsByName(int farmId, string name);
 };
 
 #endif

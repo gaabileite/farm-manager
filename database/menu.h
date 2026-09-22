@@ -18,4 +18,7 @@ void showMyAnimalsMenu(Database& db, int farmId);
 void showMyRelationshipsMenu(Database& db, int farmId);
 void showMyBuildingsMenu(Database& db, int farmId, const vector<Building>& possibleBuildings);
 
+int resolveAnimalId(Database& db, int farmId);
+int resolveBuildingId(Database& db, int farmId);
+
 #endif

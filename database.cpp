@@ -417,3 +417,43 @@ void Database::updateFarmLayout(int farmId, string newLayout) {
     sqlite3_step(stmt);
     sqlite3_finalize(stmt);
 }
+
+vector<tuple<int,string,string,int>> Database::findMyAnimalsByName(int farmId, string name) {
+    vector<tuple<int,string,string,int>> result;
+    string sql = "SELECT id, animal_name, animal_type, animal_relationship "
+                 "FROM my_animals WHERE farm_id = ? AND LOWER(animal_name) = LOWER(?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, farmId);
+    sqlite3_bind_text(stmt, 2, name.c_str(), -1, SQLITE_TRANSIENT);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        string n = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        int rel = sqlite3_column_int(stmt, 3);
+        result.push_back(make_tuple(id, n, type, rel));
+    }
+    sqlite3_finalize(stmt);
+    return result;
+}
+
+vector<tuple<int,string,string,int>> Database::findMyBuildingsByName(int farmId, string name) {
+    vector<tuple<int,string,string,int>> result;
+    string sql = "SELECT id, building_name, building_type, building_level "
+                 "FROM my_buildings WHERE farm_id = ? AND LOWER(building_name) = LOWER(?);";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+    sqlite3_bind_int(stmt, 1, farmId);
+    sqlite3_bind_text(stmt, 2, name.c_str(), -1, SQLITE_TRANSIENT);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        int id = sqlite3_column_int(stmt, 0);
+        string n = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 1));
+        string type = reinterpret_cast<const char*>(sqlite3_column_text(stmt, 2));
+        int level = sqlite3_column_int(stmt, 3);
+        result.push_back(make_tuple(id, n, type, level));
+    }
+    sqlite3_finalize(stmt);
+    return result;
+}
