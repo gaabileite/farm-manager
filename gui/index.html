@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>[Nome do programa]</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <div class="game-frame">
+
+    <!-- ===== Top bar ===== -->
+    <header class="top-bar pixel-frame">
+      <div class="title-block">
+        <span class="title-icon" aria-hidden="true">📖</span>
+        <div class="title-text">
+          <h1>[Nome do programa]</h1>
+          <p>um acervo de Farm Manager</p>
+        </div>
+      </div>
+
+      <div class="search-block">
+        <input id="searchInput" type="text" placeholder="Buscar no acervo..." autocomplete="off">
+      </div>
+    </header>
+
+    <div class="library">
+
+      <!-- ===== Sidebar: bookshelf ===== -->
+      <aside class="bookshelf pixel-frame">
+        <nav aria-label="Secoes do acervo">
+          <ul id="bookList" class="book-list"></ul>
+        </nav>
+      </aside>
+
+      <!-- ===== Main reading room ===== -->
+      <main class="reading-room">
+        <div class="section-header">
+          <h2 id="sectionTitle">Hortalicas</h2>
+          <div id="filterChips" class="filter-chips"></div>
+        </div>
+
+        <div id="cardGrid" class="card-grid" role="list"></div>
+
+        <p id="emptyState" class="empty-state" hidden>Nenhum item encontrado neste acervo com esses termos.</p>
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== Modal: "quest log" style detail dialog ===== -->
+  <div class="modal-overlay" id="modalOverlay" hidden>
+    <div class="modal pixel-frame" id="modalContent" role="dialog" aria-modal="true">
+      <button class="modal-close pixel-button small" id="modalClose" aria-label="Fechar">✕</button>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="js/sprites.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

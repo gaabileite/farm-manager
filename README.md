@@ -85,5 +85,8 @@ Além de apresentar informações gerais sobre o jogo, [Nome do programa] també
     	├─ myAnimals (array:obj)
     	└─ myBuildings (array:obj)
     	
+## Interface Gráfica
+Um protótipo de interface gráfica em pixel art, inspirado em Stardew Valley, está disponível em [`gui/`](gui/). Veja [`gui/README.md`](gui/README.md) para a lista de features e o detalhamento do uso de IA na construção dessa interface.
+
 ## Implementação
 [Informações sobre a divisão de tarefas do projeto e ferramentas usadas]
