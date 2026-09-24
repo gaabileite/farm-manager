@@ -40,19 +40,10 @@ function buildingIcon(name) {
   return 'buildingSilo'; // generic "other structure" fallback icon
 }
 
-// deterministic pixel-portrait colors for villagers (the DB has no
-// portrait data — hair/shirt colors are picked from a small palette
-// via a stable string hash, so the same villager always looks the same)
-const HAIR = ['#4a3222', '#2a2a2a', '#8a3b2a', '#5c3a28', '#6b4226', '#7a5230', '#3a3a3a'];
-const SHIRT = ['#6b8f3f', '#4a6b8a', '#b5482a', '#d9a441', '#7a5a8f', '#3f6b2b', '#8a5a45'];
-function hashIndex(str, mod) {
-  let h = 0;
-  for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
-  return h % mod;
-}
-function portraitFor(name) {
-  return { k: HAIR[hashIndex(name, HAIR.length)], c: SHIRT[hashIndex(name + '#', SHIRT.length)] };
-}
+// villager portraits are picked client-side, in gui/js/sprites.js,
+// from a small set of pre-generated PNG variants (villagerBust-0.png
+// .. villagerBust-7.png) by hashing the villager's name — no portrait
+// data needs to be exported here.
 
 // which base (smallest) building actually houses each animal type,
 // derived from building_animal_types — used as the animal card's tag
@@ -114,7 +105,6 @@ function exportVillagers(db) {
       single: !!r.single,
       giftLove: love ? love.item_name : 'Nao catalogado',
       giftLike: like ? like.item_name : 'Nao catalogado',
-      portrait: portraitFor(r.name),
     };
   });
 }

@@ -1,342 +1,78 @@
 /*
  * sprites.js
  * ---------------------------------------------------------------
- * Pixel-art renderer + sprite matrices for the Farm Manager GUI.
+ * Icon resolver for the Farm Manager GUI.
  *
- * Every sprite is 100% original: hand-authored as a small grid of
- * palette letters and drawn onto a <canvas> with image-rendering
- * disabled smoothing (crisp pixels). No game assets are used or
- * referenced — this keeps the interface original artwork while
- * still evoking the Stardew Valley / cozy-library mood requested.
+ * Every icon is a real, standalone PNG file under gui/public/icons/.
+ * To change how something looks, just overwrite the matching .png
+ * file in an image editor — nothing here needs to change. This
+ * module only knows each icon's native pixel size (so it can be
+ * scaled up crisply via width/height + CSS `image-rendering:
+ * pixelated`) and a couple of small name-picking helpers.
+ *
+ * The default files were generated from scratch (no game assets)
+ * by gui/tools/generate-icons.js — see that script if you ever want
+ * to regenerate the original placeholder set.
  * ---------------------------------------------------------------
  */
 
 const Sprites = (() => {
-    const TRANSPARENT = '.';
+    const BASE_PATH = 'public/icons/';
 
-    /**
-     * Draws a sprite matrix onto a canvas.
-     * @param {HTMLCanvasElement} canvas
-     * @param {string[]} rows - each row is a string of palette keys
-     * @param {Object} palette - maps a single character to a CSS color
-     * @param {number} width - logical pixel width of the sprite grid
-     * @param {number} height - logical pixel height of the sprite grid
-     * @param {number} scale - how many screen pixels per sprite pixel
-     */
-    function draw(canvas, rows, palette, width, height, scale = 6) {
-        canvas.width = width * scale;
-        canvas.height = height * scale;
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
+    // native pixel-grid size of each icon file, used to size the
+    // <img> so it upscales crisply instead of blurry/smoothed
+    const SIZES = {
+        cropSpring: [10, 10], cropSummer: [10, 10], cropFall: [10, 10], cropWinter: [10, 10],
+        animalChicken: [10, 10], animalCow: [10, 10], animalPig: [10, 10], animalSheep: [10, 10], animalGeneric: [10, 10],
+        buildingCoop: [10, 10], buildingBarn: [10, 10], buildingSilo: [10, 10],
+        bookCrop: [12, 14], bookVillager: [12, 14], bookAnimal: [12, 14], bookBuilding: [12, 14], bookFarm: [12, 14],
+        farmhouse: [12, 10],
+        heartFull: [8, 8], heartEmpty: [8, 8],
+    };
+    const DEFAULT_SIZE = [10, 10];
+    const VILLAGER_BUST_VARIANTS = 8;
 
-        for (let y = 0; y < height; y++) {
-            const row = rows[y] || '';
-            for (let x = 0; x < width; x++) {
-                const key = row[x] || TRANSPARENT;
-                if (key === TRANSPARENT) continue;
-                const color = palette[key];
-                if (!color) continue;
-                ctx.fillStyle = color;
-                ctx.fillRect(x * scale, y * scale, scale, scale);
-            }
-        }
-    }
-
-    // Renders a sprite by name into a freshly created <canvas>,
-    // optionally overriding palette entries (used for villager
-    // recoloring so one bust matrix can produce many characters).
-    function makeCanvas(name, { scale = 6, paletteOverride = {} } = {}) {
-        const def = DEFS[name];
-        if (!def) throw new Error(`Unknown sprite "${name}"`);
-        const canvas = document.createElement('canvas');
-        canvas.className = 'pixel-sprite';
-        canvas.setAttribute('aria-hidden', 'true');
-        const palette = { ...def.palette, ...paletteOverride };
-        draw(canvas, def.rows, palette, def.w, def.h, scale);
-        return canvas;
-    }
-
-    // ---- Palettes ---------------------------------------------------
-    const wood = { c: '#a9743b', C: '#c98f4f', d: '#5b3a21', y: '#f3d16b' };
-    const soil = { S: '#7a5230', s: '#5b3a21' };
-
-    // ---- Sprite matrices (grid of palette-letter strings) -----------
-    const DEFS = {
-        cropSpring: {
-            w: 10, h: 10,
-            palette: { G: '#6fae3e', g: '#3f6b2b', ...soil },
-            rows: [
-                '.....G....',
-                '....GgG...',
-                '.....g....',
-                '....GgG...',
-                '.....g....',
-                '.....g....',
-                '..SSSSSS..',
-                '.SSssssSS.',
-                '.SssssssS.',
-                '..SSSSSS..',
-            ],
-        },
-        cropSummer: {
-            w: 10, h: 10,
-            palette: { G: '#6fae3e', g: '#3f6b2b', b: '#3a5fb0', B: '#6f8fd6', ...soil },
-            rows: [
-                '..GGGGGG..',
-                '.GGgBGgGG.',
-                'GGgbGGbgGG',
-                '.GgGGGGgG.',
-                'GgbGGGGbgG',
-                '.GGGGGGGG.',
-                '..SSSSSS..',
-                '.SSssssSS.',
-                '.SssssssS.',
-                '..SSSSSS..',
-            ],
-        },
-        cropFall: {
-            w: 10, h: 10,
-            palette: { g: '#3f6b2b', o: '#c9711f', O: '#e8934a', ...soil },
-            rows: [
-                '...gg.....',
-                '...gg.....',
-                '..OOOOOO..',
-                '.OooooooO.',
-                'OooOOooooO',
-                'OoooooooOO',
-                '.OooooooO.',
-                '..SSSSSS..',
-                '.SssssssS.',
-                '..SSSSSS..',
-            ],
-        },
-        cropWinter: {
-            w: 10, h: 10,
-            palette: { c: '#bfe3ec', C: '#eaf9fc', g: '#5c8a8f', ...soil },
-            rows: [
-                '.....c....',
-                '....cCc...',
-                '.....g....',
-                '....cCc...',
-                '.....g....',
-                '.....g....',
-                '..SSSSSS..',
-                '.SScccSS..',
-                '.ScccccS..',
-                '..SSSSSS..',
-            ],
-        },
-        animalChicken: {
-            w: 10, h: 10,
-            palette: { w: '#f2ead9', W: '#ffffff', r: '#c23b3b', y: '#e0a83a', k: '#2a1f14' },
-            rows: [
-                '...rr.....',
-                '..wwwy....',
-                '.wwWWww...',
-                '.wkWWww...',
-                '.wwwwww...',
-                '..wwwwyw..',
-                '..wwwwww..',
-                '...wwww...',
-                '...y..y...',
-                '..........',
-            ],
-        },
-        animalCow: {
-            w: 10, h: 10,
-            palette: { w: '#f2ead9', k: '#2a2a2a', p: '#d98a8a' },
-            rows: [
-                '..kk..kk..',
-                '.wwwwwwww.',
-                'wwkwwwwkww',
-                'wwwwwwwwww',
-                'wwwwkkwwww',
-                '.wwwwwwww.',
-                '..wppppw..',
-                '..wwwwww..',
-                '..w....w..',
-                '..........',
-            ],
-        },
-        animalPig: {
-            w: 10, h: 10,
-            palette: { p: '#e8a3a3', P: '#f3c6c6', n: '#7a4a4a' },
-            rows: [
-                '..........',
-                '..PPPPPP..',
-                '.pppppppp.',
-                'ppppppppp.',
-                'ppnppnpp..',
-                'ppppppppp.',
-                '.pppppppp.',
-                '..pp..pp..',
-                '..........',
-                '..........',
-            ],
-        },
-        animalSheep: {
-            w: 10, h: 10,
-            palette: { c: '#f5f0e0', C: '#ffffff', k: '#2a2a2a' },
-            rows: [
-                '.CCCCCCCC.',
-                'CccccccccC',
-                'ccckkccccc',
-                'cccccccccc',
-                'cccccccccc',
-                '.cccccccc.',
-                '..k....k..',
-                '..k....k..',
-                '..........',
-                '..........',
-            ],
-        },
-        // Generic fallback for catalog animals without a dedicated
-        // sprite (e.g. Ostrich, Goat, Duck, Dinosaur, Rabbit) — a
-        // paw print, deliberately not shaped like any specific
-        // creature so it never misrepresents the real animal.
-        animalGeneric: {
-            w: 10, h: 10,
-            palette: { p: '#a9743b', P: '#c98f4f' },
-            rows: [
-                '..........',
-                '.Pp....Pp.',
-                '.pp....pp.',
-                '..........',
-                '...PppP...',
-                '..ppppppp.',
-                '..ppppppp.',
-                '...ppppp..',
-                '..........',
-                '..........',
-            ],
-        },
-        buildingCoop: {
-            w: 10, h: 10,
-            palette: { r: '#8a3b2a', y: '#f3d16b', ...wood },
-            rows: [
-                '..rrrrrr..',
-                '.rrrrrrrr.',
-                'cccccccccc',
-                'ccyyccyycc',
-                'ccyyccyycc',
-                'cccccccccc',
-                'cccddccccc',
-                'cccddccccc',
-                'cccccccccc',
-                '..........',
-            ],
-        },
-        buildingBarn: {
-            w: 10, h: 10,
-            palette: { r: '#5c2418', w: '#9c3b2a', l: '#c96b52', d: '#4a2f1c', y: '#f3d16b' },
-            rows: [
-                '...rrrr...',
-                '..rrrrrr..',
-                '.rrrrrrrr.',
-                'wwwwwwwwww',
-                'wwyllllyww',
-                'wwlwwwwlww',
-                'wwlwddwlww',
-                'wwlwddwlww',
-                'wwwwwwwwww',
-                '..........',
-            ],
-        },
-        buildingSilo: {
-            w: 10, h: 10,
-            palette: { g: '#b0aca0', G: '#d8d4c8', r: '#8a3b2a' },
-            rows: [
-                '...rrrr...',
-                '..rrrrrr..',
-                '..GgggG...',
-                '..gggggg..',
-                '..GgggG...',
-                '..gggggg..',
-                '..GgggG...',
-                '..gggggg..',
-                '..gggggg..',
-                '..gggggg..',
-            ],
-        },
-        book: {
-            w: 12, h: 14,
-            palette: { h: '#f3d16b', c: '#7a5a3a', p: '#f4e4bc', b: '#2a1a10' },
-            rows: [
-                '.hhhhhhhhh..',
-                'bcccccccccc.',
-                'bcppppppppc.',
-                'bcpppppppc..',
-                'bcppppppppc.',
-                'bcpppppppc..',
-                'bcppppppppc.',
-                'bcpppppppc..',
-                'bcppppppppc.',
-                'bcccccccccc.',
-                'bbbbbbbbbbb.',
-            ],
-        },
-        farmhouse: {
-            w: 12, h: 10,
-            palette: { w: '#e8d9b5', r: '#8a3b2a', d: '#5b3a21', y: '#f3d16b' },
-            rows: [
-                '....rrrr....',
-                '...rrrrrr...',
-                '..rrrrrrrr..',
-                '.rrrrrrrrrr.',
-                'wwwwwwwwwwww',
-                'wwyy.ww.yyww',
-                'wwwwwwwwwwww',
-                'wwwwddwwwwww',
-                'wwwwddwwwwww',
-                'wwwwwwwwwwww',
-            ],
-        },
-        heartFull: {
-            w: 8, h: 8,
-            palette: { r: '#d9435c', R: '#ef7a8e' },
-            rows: [
-                '.RR.RR..',
-                'rrrrrrr.',
-                'rrrrrrr.',
-                '.rrrrr..',
-                '..rrr...',
-                '...r....',
-                '........',
-                '........',
-            ],
-        },
-        heartEmpty: {
-            w: 8, h: 8,
-            palette: { o: '#8a6a5a' },
-            rows: [
-                '.oo.oo..',
-                'o..o..o.',
-                'o......o',
-                '.o....o.',
-                '..o..o..',
-                '...oo...',
-                '........',
-                '........',
-            ],
-        },
-        villagerBust: {
-            w: 10, h: 10,
-            // default palette can be overridden per-villager (hair/shirt)
-            palette: { k: '#4a3222', s: '#e0ab7a', e: '#2a1f14', m: '#8a5a45', c: '#4a6b8a' },
-            rows: [
-                '..kkkkkk..',
-                '.kkkkkkkk.',
-                '.ksssssk..',
-                '.sseesss..',
-                '.ssssssss.',
-                '..smssss..',
-                '..ssssss..',
-                '.cccccccc.',
-                'cccccccccc',
-                'cccccccccc',
-            ],
-        },
+    const BOOK_BY_SECTION = {
+        crops: 'bookCrop',
+        villagers: 'bookVillager',
+        animals: 'bookAnimal',
+        buildings: 'bookBuilding',
+        myfarm: 'bookFarm',
     };
 
-    return { makeCanvas, DEFS };
+    function hashIndex(str, mod) {
+        let h = 0;
+        for (let i = 0; i < str.length; i++) h = (h * 31 + str.charCodeAt(i)) >>> 0;
+        return h % mod;
+    }
+
+    // Creates an <img> pointing at public/icons/<name>.png, sized to
+    // its native pixel grid times `scale` (default 6x).
+    function makeImage(name, { scale = 6 } = {}) {
+        const [w, h] = SIZES[name] || DEFAULT_SIZE;
+        const img = document.createElement('img');
+        img.className = 'pixel-sprite';
+        img.src = `${BASE_PATH}${name}.png`;
+        img.width = w * scale;
+        img.height = h * scale;
+        img.alt = '';
+        img.setAttribute('aria-hidden', 'true');
+        return img;
+    }
+
+    // Villager portraits are pre-recolored PNG variants
+    // (villagerBust-0.png .. villagerBust-7.png). The same villager
+    // name always maps to the same variant, so nobody's portrait
+    // changes color between renders.
+    function villagerBust(name, opts) {
+        const idx = hashIndex(name, VILLAGER_BUST_VARIANTS);
+        return makeImage(`villagerBust-${idx}`, opts);
+    }
+
+    // Each shelf section has its own pre-colored book cover PNG.
+    function bookIcon(sectionKey, opts) {
+        return makeImage(BOOK_BY_SECTION[sectionKey] || 'bookCrop', opts);
+    }
+
+    return { makeImage, villagerBust, bookIcon, SIZES };
 })();

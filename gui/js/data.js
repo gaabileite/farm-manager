@@ -9,7 +9,7 @@
  * Para atualizar apos jogar/alterar os bancos:
  *   node gui/tools/export-data.js
  *
- * Gerado em: 2026-09-22T19:49:18.012Z
+ * Gerado em: 2026-09-24T16:56:25.908Z
  * ---------------------------------------------------------------
  */
 
@@ -769,211 +769,127 @@ const GameData = {
       "name": "Abigail",
       "single": true,
       "giftLove": "Amethyst",
-      "giftLike": "Frozen Tear",
-      "portrait": {
-        "k": "#7a5230",
-        "c": "#d9a441"
-      }
+      "giftLike": "Frozen Tear"
     },
     {
       "name": "Alex",
       "single": true,
       "giftLove": "Complete Breakfast",
-      "giftLike": "Egg",
-      "portrait": {
-        "k": "#4a3222",
-        "c": "#6b8f3f"
-      }
+      "giftLike": "Egg"
     },
     {
       "name": "Caroline",
       "single": false,
       "giftLove": "Green Tea",
-      "giftLike": "Tea Leaves",
-      "portrait": {
-        "k": "#5c3a28",
-        "c": "#b5482a"
-      }
+      "giftLike": "Tea Leaves"
     },
     {
       "name": "Elliot",
       "single": true,
       "giftLove": "Pomegranate",
-      "giftLike": "Frozen Tear",
-      "portrait": {
-        "k": "#7a5230",
-        "c": "#7a5a8f"
-      }
+      "giftLike": "Frozen Tear"
     },
     {
       "name": "Emily",
       "single": true,
       "giftLove": "Cloth",
-      "giftLike": "Frozen Tear",
-      "portrait": {
-        "k": "#5c3a28",
-        "c": "#b5482a"
-      }
+      "giftLike": "Frozen Tear"
     },
     {
       "name": "Evelyn",
       "single": false,
       "giftLove": "Diamond",
-      "giftLike": "Milk",
-      "portrait": {
-        "k": "#7a5230",
-        "c": "#7a5a8f"
-      }
+      "giftLike": "Milk"
     },
     {
       "name": "George",
       "single": false,
       "giftLove": "Leek",
-      "giftLike": "Daffodil",
-      "portrait": {
-        "k": "#7a5230",
-        "c": "#7a5a8f"
-      }
+      "giftLike": "Daffodil"
     },
     {
       "name": "Haley",
       "single": true,
       "giftLove": "Coconut",
-      "giftLike": "Daffodil",
-      "portrait": {
-        "k": "#7a5230",
-        "c": "#4a6b8a"
-      }
+      "giftLike": "Daffodil"
     },
     {
       "name": "Harvey",
       "single": true,
       "giftLove": "Wine",
-      "giftLike": "Green Tea",
-      "portrait": {
-        "k": "#3a3a3a",
-        "c": "#6b8f3f"
-      }
+      "giftLike": "Green Tea"
     },
     {
       "name": "Jodi",
       "single": false,
       "giftLove": "Diamond",
-      "giftLike": "Egg",
-      "portrait": {
-        "k": "#4a3222",
-        "c": "#6b8f3f"
-      }
+      "giftLike": "Egg"
     },
     {
       "name": "Leah",
       "single": true,
       "giftLove": "Wine",
-      "giftLike": "Egg",
-      "portrait": {
-        "k": "#5c3a28",
-        "c": "#b5482a"
-      }
+      "giftLike": "Egg"
     },
     {
       "name": "Lewis",
       "single": false,
       "giftLove": "Green Tea",
-      "giftLike": "Diamond",
-      "portrait": {
-        "k": "#5c3a28",
-        "c": "#b5482a"
-      }
+      "giftLike": "Diamond"
     },
     {
       "name": "Marnie",
       "single": false,
       "giftLove": "Diamond",
-      "giftLike": "Egg",
-      "portrait": {
-        "k": "#4a3222",
-        "c": "#8a5a45"
-      }
+      "giftLike": "Egg"
     },
     {
       "name": "Pam",
       "single": false,
       "giftLove": "Beer",
-      "giftLike": "Milk",
-      "portrait": {
-        "k": "#4a3222",
-        "c": "#6b8f3f"
-      }
+      "giftLike": "Milk"
     },
     {
       "name": "Penny",
       "single": true,
       "giftLove": "Diamond",
-      "giftLike": "Milk",
-      "portrait": {
-        "k": "#2a2a2a",
-        "c": "#d9a441"
-      }
+      "giftLike": "Milk"
     },
     {
       "name": "Robin",
       "single": false,
       "giftLove": "Goat Cheese",
-      "giftLike": "Milk",
-      "portrait": {
-        "k": "#7a5230",
-        "c": "#4a6b8a"
-      }
+      "giftLike": "Milk"
     },
     {
       "name": "Sam",
       "single": true,
       "giftLove": "Pizza",
-      "giftLike": "Joja Cola",
-      "portrait": {
-        "k": "#3a3a3a",
-        "c": "#7a5a8f"
-      }
+      "giftLike": "Joja Cola"
     },
     {
       "name": "Sebastian",
       "single": true,
       "giftLove": "Frozen Tear",
-      "giftLike": "Green Tea",
-      "portrait": {
-        "k": "#8a3b2a",
-        "c": "#3f6b2b"
-      }
+      "giftLike": "Green Tea"
     },
     {
       "name": "Shane",
       "single": true,
       "giftLove": "Beer",
-      "giftLike": "Egg",
-      "portrait": {
-        "k": "#3a3a3a",
-        "c": "#7a5a8f"
-      }
+      "giftLike": "Egg"
     },
     {
       "name": "Willy",
       "single": false,
       "giftLove": "Diamond",
-      "giftLike": "Amethyst",
-      "portrait": {
-        "k": "#2a2a2a",
-        "c": "#d9a441"
-      }
+      "giftLike": "Amethyst"
     },
     {
       "name": "Wizard",
       "single": false,
       "giftLove": "Solar Essence",
-      "giftLike": "Frozen Tear",
-      "portrait": {
-        "k": "#6b4226",
-        "c": "#d9a441"
-      }
+      "giftLike": "Frozen Tear"
     }
   ],
   "animals": [

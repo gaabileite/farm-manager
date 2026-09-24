@@ -13,11 +13,11 @@
   // ---- Section catalog --------------------------------------------
   // Each "book" on the shelf maps 1:1 to a C++ class in /classes.
   const SECTIONS = [
-    { key: 'crops',      label: 'Hortalicas',    accentVar: '--accent-crop',      accentDarkVar: '--accent-crop-dark',      defaultIcon: 'cropSpring' },
-    { key: 'villagers',  label: 'Habitantes',    accentVar: '--accent-villager',  accentDarkVar: '--accent-villager-dark',  defaultIcon: 'villagerBust' },
-    { key: 'animals',    label: 'Animais',       accentVar: '--accent-animal',    accentDarkVar: '--accent-animal-dark',    defaultIcon: 'animalChicken' },
-    { key: 'buildings',  label: 'Construcoes',   accentVar: '--accent-building',  accentDarkVar: '--accent-building-dark',  defaultIcon: 'buildingBarn' },
-    { key: 'myfarm',     label: 'Minha Fazenda', accentVar: '--accent-farm',      accentDarkVar: '--accent-farm-dark',      defaultIcon: 'farmhouse' },
+    { key: 'crops',      label: 'Hortalicas',    accentDarkVar: '--accent-crop-dark',      defaultIcon: 'cropSpring' },
+    { key: 'villagers',  label: 'Habitantes',    accentDarkVar: '--accent-villager-dark',  defaultIcon: 'villagerBust-0' },
+    { key: 'animals',    label: 'Animais',       accentDarkVar: '--accent-animal-dark',    defaultIcon: 'animalChicken' },
+    { key: 'buildings',  label: 'Construcoes',   accentDarkVar: '--accent-building-dark',  defaultIcon: 'buildingBarn' },
+    { key: 'myfarm',     label: 'Minha Fazenda', accentDarkVar: '--accent-farm-dark',      defaultIcon: 'farmhouse' },
   ];
 
   // ---- State ---------------------------------------------------
@@ -63,7 +63,7 @@
     wrap.className = 'card-hearts';
     for (let i = 0; i < max; i++) {
       const name = i < value ? 'heartFull' : 'heartEmpty';
-      wrap.appendChild(Sprites.makeCanvas(name, { scale }));
+      wrap.appendChild(Sprites.makeImage(name, { scale }));
     }
     return wrap;
   }
@@ -76,10 +76,7 @@
       li.className = 'book-item' + (sec.key === state.section ? ' active' : '');
       li.dataset.key = sec.key;
 
-      const icon = Sprites.makeCanvas('book', {
-        scale: 3,
-        paletteOverride: { c: cssVar(sec.accentVar) },
-      });
+      const icon = Sprites.bookIcon(sec.key, { scale: 3 });
 
       const label = document.createElement('span');
       label.className = 'book-label';
@@ -215,9 +212,9 @@
 
   function makeIcon(section, item) {
     if (section === 'villagers') {
-      return Sprites.makeCanvas('villagerBust', { scale: 5, paletteOverride: item.portrait || {} });
+      return Sprites.villagerBust(item.name, { scale: 5 });
     }
-    return Sprites.makeCanvas(item.icon || sectionDef(section).defaultIcon, { scale: 5 });
+    return Sprites.makeImage(item.icon || sectionDef(section).defaultIcon, { scale: 5 });
   }
 
   function tagLabel(section, item) {
@@ -257,7 +254,7 @@
 
     const banner = document.createElement('div');
     banner.className = 'farm-banner';
-    banner.appendChild(Sprites.makeCanvas('farmhouse', { scale: 6 }));
+    banner.appendChild(Sprites.makeImage('farmhouse', { scale: 6 }));
     const bannerText = document.createElement('div');
     bannerText.innerHTML = `<h3>${farm.farmName}</h3><p>Layout: ${farm.farmLayout}</p>`;
     banner.appendChild(bannerText);
@@ -269,7 +266,7 @@
     columns.appendChild(farmBlock('Meus Animais (MyAnimal)', farm.myAnimals.map((a) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
-      row.appendChild(Sprites.makeCanvas(a.icon, { scale: 3 }));
+      row.appendChild(Sprites.makeImage(a.icon, { scale: 3 }));
       const grow = document.createElement('span');
       grow.className = 'grow';
       grow.textContent = `${a.animalName} — ${a.animalType}`;
@@ -281,7 +278,7 @@
     columns.appendChild(farmBlock('Minhas Construcoes (MyBuilding)', farm.myBuildings.map((b) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
-      row.appendChild(Sprites.makeCanvas(b.icon, { scale: 3 }));
+      row.appendChild(Sprites.makeImage(b.icon, { scale: 3 }));
       const grow = document.createElement('span');
       grow.className = 'grow';
       grow.textContent = `${b.buildingName}`;

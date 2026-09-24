@@ -10,8 +10,10 @@ materializa essa metáfora como uma pequena biblioteca pixelada, com "livros" pa
 classe (Hortaliças, Habitantes, Animais, Construções e Minha Fazenda).
 
 > **Nenhum asset original do jogo foi usado.** Todo o pixel art (ícones de cultura,
-> animais, construções, livros, corações) é desenhado do zero via `<canvas>`, a partir
-> de matrizes de pixels escritas à mão — ver `js/sprites.js`.
+> animais, construções, livros, corações) é arte original, feita do zero — e vive como
+> arquivos **PNG editáveis** em `public/icons/`. Para trocar qualquer ícone, basta abrir
+> o `.png` correspondente num editor de imagem (Aseprite, GIMP, Paint, ...) e
+> sobrescrever o arquivo — nenhum código precisa mudar.
 
 Os dados exibidos são **reais**: `js/data.js` é gerado a partir dos bancos SQLite do
 projeto (`database/gameData.db` e `database/myFarmData.db`) por um script Node — veja
@@ -26,14 +28,42 @@ servidor obrigatório (embora funcione igual se servido por um `http-server` loc
 
 ```
 gui/
-├── index.html          # esqueleto da página (topo, estante, sala de leitura, modal)
-├── css/style.css        # tema pixel art (molduras recortadas, grid de cartões)
-├── js/sprites.js         # renderizador de pixel art + todas as matrizes de sprites originais
-├── js/data.js              # dados REAIS, gerados por tools/export-data.js (nao editar a mao)
-├── js/app.js                 # navegação, busca, filtros, modais e o painel "Minha Fazenda"
-├── tools/export-data.js        # le gameData.db + myFarmData.db (node:sqlite) e regenera js/data.js
-└── README.md                     # este arquivo
+├── index.html                   # esqueleto da página (topo, estante, sala de leitura, modal)
+├── css/style.css                 # tema pixel art (molduras recortadas, grid de cartões)
+├── js/sprites.js                  # resolve nomes de icone -> <img src="public/icons/*.png">
+├── js/data.js                      # dados REAIS, gerados por tools/export-data.js (nao editar a mao)
+├── js/app.js                        # navegação, busca, filtros, modais e o painel "Minha Fazenda"
+├── public/icons/*.png                # AS IMAGENS EM SI — edite estes arquivos para trocar o visual
+├── tools/export-data.js                # le gameData.db + myFarmData.db (node:sqlite) e regenera js/data.js
+├── tools/generate-icons.js               # (re)gera o conjunto padrao de public/icons/*.png do zero
+└── README.md                                # este arquivo
 ```
+
+## Editando os ícones
+
+Cada ícone é um arquivo PNG independente em `gui/public/icons/`, referenciado por
+`<img src="public/icons/<nome>.png">` em `js/sprites.js`. Para trocar qualquer imagem
+da interface, basta **abrir o `.png` correspondente num editor e salvar por cima** —
+não é preciso mexer em nenhum código. Os arquivos são pequenos de propósito (10×10 a
+12×14 pixels) para casar com o estilo pixel art; a tela amplia cada um de forma nítida
+via CSS (`image-rendering: pixelated`), então uma imagem maior ou mais detalhada
+também funciona, só muda a nitidez do resultado ampliado.
+
+Nomes de arquivo esperados por `sprites.js` (renomear quebra a referência):
+
+| Categoria | Arquivos |
+|---|---|
+| Hortaliças (por estação) | `cropSpring.png`, `cropSummer.png`, `cropFall.png`, `cropWinter.png` |
+| Animais | `animalChicken.png`, `animalCow.png`, `animalPig.png`, `animalSheep.png`, `animalGeneric.png` (usado para Ostrich/Goat/Duck/Dinosaur/Rabbit, que não têm ícone dedicado) |
+| Construções | `buildingCoop.png`, `buildingBarn.png`, `buildingSilo.png` (usado como estrutura "genérica" também) |
+| Livros da estante | `bookCrop.png`, `bookVillager.png`, `bookAnimal.png`, `bookBuilding.png`, `bookFarm.png` (um por seção) |
+| Retratos de habitantes | `villagerBust-0.png` … `villagerBust-7.png` (8 variantes; cada habitante sempre cai na mesma variante, calculada por hash do nome em `js/sprites.js`) |
+| Minha Fazenda / corações | `farmhouse.png`, `heartFull.png`, `heartEmpty.png` |
+
+Se quiser voltar ao conjunto original gerado por este projeto (por exemplo, depois de
+bagunçar um arquivo), rode `node gui/tools/generate-icons.js` — ele recria todos os 28
+PNGs a partir das matrizes de pixel originais (nenhuma dependência de `npm`, usa só
+`fs`/`zlib` do Node para escrever PNG de verdade).
 
 ## Features
 
@@ -90,10 +120,11 @@ script.
   `Database` não tem nenhum método `getAllVillagers()`. Esta GUI é, portanto, o
   primeiro lugar no projeto onde esses dados de habitantes aparecem.
 - Poucos campos não existem no banco e foram preenchidos de forma assumidamente
-  sintética, documentada em código (`tools/export-data.js`): a cor do retrato de cada
-  habitante (não há dado de aparência na tabela `villager`, então é gerada por hash
-  determinístico do nome) e o ícone de alguns animais sem sprite dedicado (Ostrich,
-  Goat, Duck, Dinosaur, Rabbit caem num ícone genérico de "pata", em vez de fingir ser
+  sintética, documentada em código (`js/sprites.js`): qual das 8 variantes de retrato
+  em `public/icons/villagerBust-*.png` cada habitante usa (não há dado de aparência na
+  tabela `villager`, então é escolhida por hash determinístico do nome) e o ícone de
+  alguns animais sem sprite dedicado (Ostrich, Goat, Duck, Dinosaur, Rabbit caem no
+  `public/icons/animalGeneric.png`, um ícone genérico de "pata", em vez de fingir ser
   outro bicho).
 - O painel "Minha Fazenda" mostra o estado **real e atualmente vazio** de
   `myFarmData.db` (nenhum animal/construção/relação foi salvo ainda pelo programa
@@ -141,10 +172,13 @@ definitivo — especialmente relevante em um contexto acadêmico.
 
 ### O que a IA gerou
 - **Toda a identidade visual pixel art**, do zero: paleta de cores, a técnica de
-  moldura recortada em CSS puro, e as matrizes de sprites (ícones de cultura por
-  estação, animais, construções, livros, corações) desenhadas como grades de
-  caracteres e renderizadas em `<canvas>` — nenhuma imagem foi baixada ou copiada do
-  jogo.
+  moldura recortada em CSS puro, e cada ícone (cultura por estação, animais,
+  construções, livros, corações, retratos de habitantes) desenhado como grade de
+  caracteres e convertido em PNG real por `tools/generate-icons.js` (encoder PNG
+  escrito à mão sobre `fs`/`zlib` do Node, sem biblioteca externa) — nenhuma imagem foi
+  baixada ou copiada do jogo. Os 28 PNGs resultantes, em `public/icons/`, são o que a
+  interface carrega hoje; a IA passou a tratá-los como arte editável, e não mais como
+  algo redesenhado em código a cada carregamento.
 - **Todo o HTML/CSS/JS** (vanilla, sem frameworks): navegação entre seções, busca,
   filtros, cartões, modal de detalhes e o painel "Minha Fazenda".
 - **A ponte com os dados reais** (`tools/export-data.js`): antes de escrever qualquer
@@ -172,10 +206,10 @@ definitivo — especialmente relevante em um contexto acadêmico.
   (`node --check`) e inspeção manual do JSON gerado, não por execução visual
   assistida por humano.
 - Alguns campos que **não existem no banco** foram preenchidos de forma sintética e
-  isso está sinalizado tanto no código (`tools/export-data.js`) quanto na seção
-  [Dados](#dados) acima: a cor do retrato de cada habitante (gerada por hash do nome,
-  já que a tabela `villager` não guarda aparência) e o ícone de fallback para animais
-  sem sprite dedicado.
+  isso está sinalizado tanto no código (`js/sprites.js`, `tools/generate-icons.js`)
+  quanto na seção [Dados](#dados) acima: qual variante de retrato cada habitante usa
+  (escolhida por hash do nome entre 8 PNGs pré-gerados, já que a tabela `villager` não
+  guarda aparência) e o ícone de fallback para animais sem sprite dedicado.
 
 ## Créditos
 
