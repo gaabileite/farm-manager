@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>[Nome do programa]</title>
+<title>[Program Name]</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
@@ -19,13 +19,13 @@
       <div class="title-block">
         <span class="title-icon" aria-hidden="true">📖</span>
         <div class="title-text">
-          <h1>[Nome do programa]</h1>
-          <p>um acervo de Farm Manager</p>
+          <h1>[Program Name]</h1>
+          <p>A Stardew Valley farm manager.</p>
         </div>
       </div>
 
       <div class="search-block">
-        <input id="searchInput" type="text" placeholder="Buscar no acervo..." autocomplete="off">
+        <input id="searchInput" type="text" placeholder="Search the collection..." autocomplete="off">
       </div>
     </header>
 
@@ -33,7 +33,7 @@
 
       <!-- ===== Sidebar: bookshelf ===== -->
       <aside class="bookshelf pixel-frame">
-        <nav aria-label="Secoes do acervo">
+        <nav aria-label="Collection sections">
           <ul id="bookList" class="book-list"></ul>
         </nav>
       </aside>
@@ -41,13 +41,13 @@
       <!-- ===== Main reading room ===== -->
       <main class="reading-room">
         <div class="section-header">
-          <h2 id="sectionTitle">Hortalicas</h2>
+          <h2 id="sectionTitle">Crops</h2>
           <div id="filterChips" class="filter-chips"></div>
         </div>
 
         <div id="cardGrid" class="card-grid" role="list"></div>
 
-        <p id="emptyState" class="empty-state" hidden>Nenhum item encontrado neste acervo com esses termos.</p>
+        <p id="emptyState" class="empty-state" hidden>No items match your search.</p>
       </main>
     </div>
   </div>
@@ -55,7 +55,7 @@
   <!-- ===== Modal: "quest log" style detail dialog ===== -->
   <div class="modal-overlay" id="modalOverlay" hidden>
     <div class="modal pixel-frame" id="modalContent" role="dialog" aria-modal="true">
-      <button class="modal-close pixel-button small" id="modalClose" aria-label="Fechar">✕</button>
+      <button class="modal-close pixel-button small" id="modalClose" aria-label="Close">✕</button>
       <div id="modalBody"></div>
     </div>
   </div>

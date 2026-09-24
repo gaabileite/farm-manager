@@ -13,11 +13,11 @@
   // ---- Section catalog --------------------------------------------
   // Each "book" on the shelf maps 1:1 to a C++ class in /classes.
   const SECTIONS = [
-    { key: 'crops',      label: 'Hortalicas',    accentDarkVar: '--accent-crop-dark',      defaultIcon: 'cropSpring' },
-    { key: 'villagers',  label: 'Habitantes',    accentDarkVar: '--accent-villager-dark',  defaultIcon: 'villagerBust-0' },
-    { key: 'animals',    label: 'Animais',       accentDarkVar: '--accent-animal-dark',    defaultIcon: 'animalChicken' },
-    { key: 'buildings',  label: 'Construcoes',   accentDarkVar: '--accent-building-dark',  defaultIcon: 'buildingBarn' },
-    { key: 'myfarm',     label: 'Minha Fazenda', accentDarkVar: '--accent-farm-dark',      defaultIcon: 'farmhouse' },
+    { key: 'crops',      label: 'Crops',      accentDarkVar: '--accent-crop-dark',      defaultIcon: 'cropSpring' },
+    { key: 'villagers',  label: 'Villagers',  accentDarkVar: '--accent-villager-dark',  defaultIcon: 'villagerBust-0' },
+    { key: 'animals',    label: 'Animals',    accentDarkVar: '--accent-animal-dark',    defaultIcon: 'animalChicken' },
+    { key: 'buildings',  label: 'Buildings',  accentDarkVar: '--accent-building-dark',  defaultIcon: 'buildingBarn' },
+    { key: 'myfarm',     label: 'My Farm',    accentDarkVar: '--accent-farm-dark',      defaultIcon: 'farmhouse' },
   ];
 
   // ---- State ---------------------------------------------------
@@ -25,8 +25,8 @@
     section: 'crops',
     search: '',
     filters: {
-      crops: 'Todas',
-      villagers: 'Todos',
+      crops: 'All',
+      villagers: 'All',
     },
   };
 
@@ -105,14 +105,14 @@
     filterChipsEl.innerHTML = '';
 
     if (state.section === 'crops') {
-      const seasons = ['Todas', 'Primavera', 'Verao', 'Outono', 'Inverno'];
+      const seasons = ['All', 'Spring', 'Summer', 'Fall', 'Winter'];
       seasons.forEach((s) => filterChipsEl.appendChild(makeChip(s, state.filters.crops === s, () => {
         state.filters.crops = s;
         renderFilters();
         renderContent();
       })));
     } else if (state.section === 'villagers') {
-      const opts = ['Todos', 'Solteiro(a)', 'Comprometido(a)'];
+      const opts = ['All', 'Single', 'Taken'];
       opts.forEach((s) => filterChipsEl.appendChild(makeChip(s, state.filters.villagers === s, () => {
         state.filters.villagers = s;
         renderFilters();
@@ -158,11 +158,11 @@
     const key = state.section;
     let items = [...(GameData[key] || [])];
 
-    if (key === 'crops' && state.filters.crops !== 'Todas') {
+    if (key === 'crops' && state.filters.crops !== 'All') {
       items = items.filter((c) => c.season === state.filters.crops);
     }
-    if (key === 'villagers' && state.filters.villagers !== 'Todos') {
-      const wantSingle = state.filters.villagers === 'Solteiro(a)';
+    if (key === 'villagers' && state.filters.villagers !== 'All') {
+      const wantSingle = state.filters.villagers === 'Single';
       items = items.filter((v) => v.single === wantSingle);
     }
 
@@ -220,9 +220,9 @@
   function tagLabel(section, item) {
     switch (section) {
       case 'crops': return item.season;
-      case 'villagers': return item.single ? 'Solteiro(a)' : 'Comprometido(a)';
+      case 'villagers': return item.single ? 'Single' : 'Taken';
       case 'animals': return item.type;
-      case 'buildings': return item.housesAnimals ? 'Abriga animais' : 'Estrutura';
+      case 'buildings': return item.housesAnimals ? 'Houses animals' : 'Structure';
       default: return '';
     }
   }
@@ -230,15 +230,15 @@
   function metaLabel(section, item) {
     switch (section) {
       case 'crops': {
-        const regrow = item.regrow ? ` • rebrota a cada ${item.daysToRegrowth}d` : '';
-        return `${item.daysToHarvest} dias para colher${regrow}`;
+        const regrow = item.regrow ? ` • regrows every ${item.daysToRegrowth}d` : '';
+        return `${item.daysToHarvest} days to harvest${regrow}`;
       }
       case 'villagers':
-        return `Presente favorito: ${item.giftLove}`;
+        return `Favorite gift: ${item.giftLove}`;
       case 'animals':
-        return `Produz: ${item.produces} • ${item.daysToAdult}d ate adulto`;
+        return `Produces: ${item.produces} • ${item.daysToAdult}d to grow up`;
       case 'buildings':
-        return `Tamanho: ${item.size[0]}x${item.size[1]} tiles`;
+        return `Size: ${item.size[0]}x${item.size[1]} tiles`;
       default:
         return '';
     }
@@ -263,7 +263,7 @@
     const columns = document.createElement('div');
     columns.className = 'farm-columns';
 
-    columns.appendChild(farmBlock('Meus Animais (MyAnimal)', farm.myAnimals.map((a) => {
+    columns.appendChild(farmBlock('My Animals (MyAnimal)', farm.myAnimals.map((a) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
       row.appendChild(Sprites.makeImage(a.icon, { scale: 3 }));
@@ -273,9 +273,9 @@
       row.appendChild(grow);
       row.appendChild(heartsRow(a.animalRelationship));
       return row;
-    }), 'Nenhum animal registrado ainda. Use o menu "Minha Fazenda" do farm_manager.exe para adicionar um.'));
+    }), 'No animal saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 
-    columns.appendChild(farmBlock('Minhas Construcoes (MyBuilding)', farm.myBuildings.map((b) => {
+    columns.appendChild(farmBlock('My Buildings (MyBuilding)', farm.myBuildings.map((b) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
       row.appendChild(Sprites.makeImage(b.icon, { scale: 3 }));
@@ -284,12 +284,12 @@
       grow.textContent = `${b.buildingName}`;
       row.appendChild(grow);
       const lvl = document.createElement('span');
-      lvl.textContent = `Nivel ${b.buildingLevel}`;
+      lvl.textContent = `Level ${b.buildingLevel}`;
       row.appendChild(lvl);
       return row;
-    }), 'Nenhuma construcao registrada ainda. Use o menu "Minha Fazenda" do farm_manager.exe para adicionar uma.'));
+    }), 'No building saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 
-    columns.appendChild(farmBlock('Minhas Relacoes (MyRelationship)', farm.myRelationships.map((r) => {
+    columns.appendChild(farmBlock('My Relationships (MyRelationship)', farm.myRelationships.map((r) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
       const grow = document.createElement('span');
@@ -298,7 +298,7 @@
       row.appendChild(grow);
       row.appendChild(heartsRow(r.friendship));
       return row;
-    }), 'Nenhuma amizade registrada ainda. Use o menu "Minha Fazenda" do farm_manager.exe para adicionar uma.'));
+    }), 'No friendship saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 
     wrap.appendChild(columns);
     cardGridEl.insertAdjacentElement('afterend', wrap);
@@ -358,7 +358,7 @@
     ul.className = 'modal-list';
     if (!lines.length) {
       const li = document.createElement('li');
-      li.textContent = 'Nenhum registro.';
+      li.textContent = 'No records.';
       ul.appendChild(li);
       return ul;
     }
@@ -374,35 +374,35 @@
     switch (section) {
       case 'crops':
         return [
-          ['Colheita', listNode([
-            `Estacao: ${item.season}`,
-            `Dias para colher: ${item.daysToHarvest}`,
-            item.regrow ? `Rebrota a cada ${item.daysToRegrowth} dia(s)` : 'Nao rebrota (plantar de novo apos colher)',
+          ['Harvest', listNode([
+            `Season: ${item.season}`,
+            `Days to harvest: ${item.daysToHarvest}`,
+            item.regrow ? `Regrows every ${item.daysToRegrowth} day(s)` : 'Does not regrow (replant after harvesting)',
           ])],
-          ['Valor de venda', listNode(item.sellValue.map(([q, v]) => `${q}: ${v}g`))],
-          ['Preco da semente', listNode(item.seedPrice.map(([loja, v]) => `${loja}: ${v}g`))],
-          ['Itens artesanais', listNode(item.artisanItems.map(([n, machine, v]) => `${n} (${machine}) — ${v}g`))],
+          ['Sell price', listNode(item.sellValue.map(([q, v]) => `${q}: ${v}g`))],
+          ['Seed price', listNode(item.seedPrice.map(([shop, v]) => `${shop}: ${v}g`))],
+          ['Artisan goods', listNode(item.artisanItems.map(([n, machine, v]) => `${n} (${machine}) — ${v}g`))],
         ];
       case 'villagers':
         return [
-          ['Presentes', listNode([
-            `Adora: ${item.giftLove}`,
-            `Gosta: ${item.giftLike}`,
+          ['Gifts', listNode([
+            `Loves: ${item.giftLove}`,
+            `Likes: ${item.giftLike}`,
           ])],
-          ['Status', listNode([`Situacao: ${item.single ? 'Solteiro(a)' : 'Comprometido(a)'}`])],
+          ['Status', listNode([`Status: ${item.single ? 'Single' : 'Taken'}`])],
         ];
       case 'animals':
         return [
-          ['Producao', listNode([
-            `Produz: ${item.produces}`,
-            `Dias ate adulto: ${item.daysToAdult}`,
-            item.buyPrice != null ? `Preco de compra: ${item.buyPrice}g` : 'Preco de compra: nao vendido na loja (obtido de outra forma)',
+          ['Production', listNode([
+            `Produces: ${item.produces}`,
+            `Days to grow up: ${item.daysToAdult}`,
+            item.buyPrice != null ? `Buy price: ${item.buyPrice}g` : 'Buy price: not sold in shops (obtained another way)',
           ])],
-          ['Itens artesanais', listNode(item.artisanItem.map(([n, machine, v]) => `${n} (${machine}) — ${v}g`))],
+          ['Artisan goods', listNode(item.artisanItem.map(([n, machine, v]) => `${n} (${machine}) — ${v}g`))],
         ];
       case 'buildings':
         return [
-          ['Construcao', withMaterials(item)],
+          ['Construction', withMaterials(item)],
         ];
       default:
         return [];
@@ -413,21 +413,21 @@
   function withMaterials(item) {
     const frag = document.createElement('div');
     frag.appendChild(listNode([
-      `Tamanho: ${item.size[0]}x${item.size[1]} tiles`,
-      `Onde conseguir: ${item.whereToGet}`,
+      `Size: ${item.size[0]}x${item.size[1]} tiles`,
+      `Where to get: ${item.whereToGet}`,
     ]));
     const matsHeading = document.createElement('h5');
-    matsHeading.textContent = 'Materiais';
+    matsHeading.textContent = 'Materials';
     matsHeading.style.marginTop = '10px';
     frag.appendChild(matsHeading);
     frag.appendChild(listNode(item.constructionMaterials.map(([m, q]) => `${m} x${q}`)));
 
     const animalsHeading = document.createElement('h5');
-    animalsHeading.textContent = 'Animais que abriga';
+    animalsHeading.textContent = 'Animals housed';
     animalsHeading.style.marginTop = '10px';
     frag.appendChild(animalsHeading);
     frag.appendChild(listNode(item.housesAnimals
-      ? [`Capacidade: ${item.animalAmount}`, ...item.animalTypes]
+      ? [`Capacity: ${item.animalAmount}`, ...item.animalTypes]
       : []));
     return frag;
   }
