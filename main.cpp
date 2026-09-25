@@ -382,14 +382,14 @@ int main() {
     vector<Animal> animals = gameDb.getAllAnimals();
     vector<Building> buildings = gameDb.getAllBuildings();
 
-    // Banco pessoal (progresso do jogador)
+    // Player's personal database (game progress)
     Database playerDb("database/myFarmData.db");
-    int farmId = playerDb.getOrCreateFarm("Minha Fazenda", "Padrao");
+    int farmId = playerDb.getOrCreateFarm("My Farm", "Default");
 
-    // Menu principal
+    // Main menu
     while (true) {
         cout << "\n=== Farm Manager ===\n";
-        cout << "1. Crops\n2. Animals\n3. Buildings\n4. Minha Fazenda\n0. Sair\n> ";
+        cout << "1. Crops\n2. Animals\n3. Buildings\n4. My Farm\n0. Exit\n> ";
 
         int choice;
         cin >> choice;

@@ -7,7 +7,7 @@
 void showCropMenu(const vector<Crop>& crops) {
     while (true) {
         cout << "\n--- Crops ---\n";
-        cout << "1. Buscar por nome\n2. Filtrar por estacao\n3. Listar todos\n0. Voltar\n> ";
+        cout << "1. Search by name\n2. Filter by season\n3. List all\n0. Back\n> ";
         int choice;
         cin >> choice;
         if (choice == 0) break;
@@ -16,19 +16,19 @@ void showCropMenu(const vector<Crop>& crops) {
         if (choice == 1) {
             cin.ignore();
             string term;
-            cout << "Nome: ";
+            cout << "Name: ";
             getline(cin, term);
             results = filterCropsByName(crops, term);
         } else if (choice == 2) {
             string season;
-            cout << "Estacao: ";
+            cout << "Season: ";
             cin >> season;
             results = filterCropsBySeason(crops, season);
         } else {
             results = crops;
         }
 
-        if (results.empty()) cout << "Nenhum resultado encontrado.\n";
+        if (results.empty()) cout << "No results found.\n";
         for (const auto& c : results) {
             cout << c.getName() << " - " << c.getSeason() << " - " << c.getDaysToHarvest() << " dias\n";
         }
@@ -38,7 +38,7 @@ void showCropMenu(const vector<Crop>& crops) {
 void showAnimalMenu(const vector<Animal>& animals) {
     while (true) {
         cout << "\n--- Animals ---\n";
-        cout << "1. Buscar por nome\n2. Listar todos\n0. Voltar\n> ";
+        cout << "1. Search by name\n2. List all\n0. Back\n> ";
         int choice;
         cin >> choice;
         if (choice == 0) break;
@@ -47,17 +47,17 @@ void showAnimalMenu(const vector<Animal>& animals) {
         if (choice == 1) {
             cin.ignore();
             string term;
-            cout << "Nome: ";
+            cout << "Name: ";
             getline(cin, term);
             results = filterAnimalsByName(animals, term);
         } else {
             results = animals;
         }
 
-        if (results.empty()) cout << "Nenhum resultado encontrado.\n";
+        if (results.empty()) cout << "No results found.\n";
         for (const auto& a : results) {
-            cout << a.getName() << " - produz " << a.getProduces()
-                 << " - " << a.getDaysToAdult() << " dias ate adulto"
+            cout << a.getName() << " - produces " << a.getProduces()
+                 << " - " << a.getDaysToAdult() << " days to adult"
                  << " - " << a.getBuyPrice() << "g\n";
         }
     }
@@ -66,7 +66,7 @@ void showAnimalMenu(const vector<Animal>& animals) {
 void showBuildingMenu(const vector<Building>& buildings) {
     while (true) {
         cout << "\n--- Buildings ---\n";
-        cout << "1. Buscar por nome\n2. Listar todos\n0. Voltar\n> ";
+        cout << "1. Search by name\n2. List all\n0. Back\n> ";
         int choice;
         cin >> choice;
         if (choice == 0) break;
@@ -75,20 +75,20 @@ void showBuildingMenu(const vector<Building>& buildings) {
         if (choice == 1) {
             cin.ignore();
             string term;
-            cout << "Nome: ";
+            cout << "Name: ";
             getline(cin, term);
             results = filterBuildingsByName(buildings, term);
         } else {
             results = buildings;
         }
 
-        if (results.empty()) cout << "Nenhum resultado encontrado.\n";
+        if (results.empty()) cout << "No results found.\n";
         for (const auto& b : results) {
             cout << b.getName()
                  << " - " << get<0>(b.getSize()) << "x" << get<1>(b.getSize())
                  << " - " << b.getWhereToGet();
             if (b.getHousesAnimals()) {
-                cout << " - abriga " << b.getAnimalAmount() << " animais";
+                cout << " - houses " << b.getAnimalAmount() << " animals";
             }
             cout << "\n";
         }
@@ -103,10 +103,10 @@ void showFarmInfoMenu(Database& db, int farmId) {
         string name = get<0>(info);
         string layout = get<1>(info);
 
-        cout << "\n--- Informacoes da Fazenda ---\n";
-        cout << "Nome: " << name << "\n";
+        cout << "\n--- Farm Info ---\n";
+        cout << "Name: " << name << "\n";
         cout << "Layout: " << layout << "\n";
-        cout << "1. Editar nome\n2. Editar layout\n0. Voltar\n> ";
+        cout << "1. Edit name\n2. Edit layout\n0. Back\n> ";
 
         int choice;
         cin >> choice;
@@ -115,13 +115,13 @@ void showFarmInfoMenu(Database& db, int farmId) {
         if (choice == 1) {
             cin.ignore();
             string newName;
-            cout << "Novo nome: ";
+            cout << "New name: ";
             getline(cin, newName);
             db.updateFarmName(farmId, newName);
         } else if (choice == 2) {
             cin.ignore();
             string newLayout;
-            cout << "Novo layout: ";
+            cout << "New layout: ";
             getline(cin, newLayout);
             db.updateFarmLayout(farmId, newLayout);
         }
@@ -130,12 +130,12 @@ void showFarmInfoMenu(Database& db, int farmId) {
 
 void showMyAnimalsMenu(Database& db, int farmId) {
     while (true) {
-        cout << "\n--- Meus Animais ---\n";
-        cout << "1. Adicionar animal\n";
-        cout << "2. Atualizar amizade de um animal\n";
-        cout << "3. Remover animal\n";
-        cout << "4. Listar animais\n";
-        cout << "0. Voltar\n> ";
+        cout << "\n--- My Animals ---\n";
+        cout << "1. Add animal\n";
+        cout << "2. Update an animal's friendship\n";
+        cout << "3. Remove animal\n";
+        cout << "4. List animals\n";
+        cout << "0. Back\n> ";
 
         int choice;
         cin >> choice;
@@ -144,27 +144,27 @@ void showMyAnimalsMenu(Database& db, int farmId) {
         if (choice == 1) {
             cin.ignore();
             string name, type;
-            cout << "Nome do animal: ";
+            cout << "Animal name: ";
             getline(cin, name);
-            cout << "Tipo (ex: Cow, Chicken): ";
+            cout << "Type (e.g. Cow, Chicken): ";
             getline(cin, type);
             db.addAnimal(farmId, name, type, 0);
-            cout << "Animal adicionado!\n";
+            cout << "Animal added!\n";
         }
         else if (choice == 2) {
             int id, newRel;
-            cout << "ID do animal: ";
+            cout << "Animal ID: ";
             cin >> id;
-            cout << "Novo nivel de amizade: ";
+            cout << "New friendship level: ";
             cin >> newRel;
             db.updateAnimalRelationship(id, newRel);
-            cout << "Atualizado!\n";
+            cout << "Updated!\n";
         }
         else if (choice == 3) {
             int id = resolveAnimalId(db, farmId);
             if (id != -1) {
                 db.removeAnimal(id);
-                cout << "Removido!\n";
+                cout << "Removed!\n";
             }
         }
         else if (choice == 4) {
@@ -175,7 +175,7 @@ void showMyAnimalsMenu(Database& db, int farmId) {
             while (sqlite3_step(stmt) == SQLITE_ROW) {
                 int id = sqlite3_column_int(stmt, 0);
                 cout << id << ". " << sqlite3_column_text(stmt, 1)
-                    << " (" << sqlite3_column_text(stmt, 2) << ") - amizade "
+                    << " (" << sqlite3_column_text(stmt, 2) << ") - friendship "
                     << sqlite3_column_int(stmt, 3) << "\n";
             }
             sqlite3_finalize(stmt);
@@ -187,12 +187,12 @@ void showMyRelationshipsMenu(Database& db, int farmId) {
     while (true) {
         auto relationships = db.getMyRelationships(farmId);
 
-        cout << "\n--- Relacionamentos ---\n";
-        if (relationships.empty()) cout << "Nenhum relacionamento cadastrado.\n";
+        cout << "\n--- Relationships ---\n";
+        if (relationships.empty()) cout << "No relationships registered.\n";
         for (const auto& r : relationships) {
-            cout << get<0>(r) << ". " << get<1>(r) << " - " << get<2>(r) << " coracoes\n";
+            cout << get<0>(r) << ". " << get<1>(r) << " - " << get<2>(r) << " hearts\n";
         }
-        cout << "Numero do villager (0 para voltar): ";
+        cout << "Villager number (0 to go back): ";
 
         int id;
         cin >> id;
@@ -201,14 +201,14 @@ void showMyRelationshipsMenu(Database& db, int farmId) {
         auto it = find_if(relationships.begin(), relationships.end(),
             [id](const tuple<int,string,int>& r) { return get<0>(r) == id; });
         if (it == relationships.end()) {
-            cout << "Villager nao encontrado.\n";
+            cout << "Villager not found.\n";
             continue;
         }
 
         while (true) {
             cout << "\n--- " << get<1>(*it) << " ---\n";
-            cout << get<2>(*it) << " coracoes\n";
-            cout << "1. Alterar relacionamento\n0. Voltar\n> ";
+            cout << get<2>(*it) << " hearts\n";
+            cout << "1. Change relationship\n0. Back\n> ";
 
             int choice;
             cin >> choice;
@@ -216,7 +216,7 @@ void showMyRelationshipsMenu(Database& db, int farmId) {
 
             if (choice == 1) {
                 int newFriendship;
-                cout << "Novo nivel de amizade: ";
+                cout << "New friendship level: ";
                 cin >> newFriendship;
                 db.updateFriendship(id, newFriendship);
                 relationships = db.getMyRelationships(farmId);
@@ -231,25 +231,25 @@ void showMyBuildingsMenu(Database& db, int farmId, const vector<Building>& possi
     while (true) {
         auto myBuildings = db.getMyBuildings(farmId);
 
-        cout << "\n--- Minhas Construcoes ---\n";
-        if (myBuildings.empty()) cout << "Nenhuma construcao ainda.\n";
+        cout << "\n--- My Buildings ---\n";
+        if (myBuildings.empty()) cout << "No buildings yet.\n";
         for (const auto& b : myBuildings) {
-            cout << get<1>(b) << " (" << get<2>(b) << ") - nivel " << get<3>(b) << "\n";
+            cout << get<1>(b) << " (" << get<2>(b) << ") - level " << get<3>(b) << "\n";
         }
-        cout << "1. Construir\n2. Remover\n0. Voltar\n> ";
+        cout << "1. Build\n2. Remove\n0. Back\n> ";
 
         int choice;
         cin >> choice;
         if (choice == 0) break;
 
         if (choice == 1) {
-            // ... (igual já estava)
+            // ... (unchanged)
         }
         else if (choice == 2) {
             int id = resolveBuildingId(db, farmId);
             if (id != -1) {
                 db.removeBuilding(id);
-                cout << "Removida!\n";
+                cout << "Removed!\n";
             }
         }
     }
@@ -257,12 +257,12 @@ void showMyBuildingsMenu(Database& db, int farmId, const vector<Building>& possi
 
 void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings) {
     while (true) {
-        cout << "\n--- Minha Fazenda ---\n";
-        cout << "1. Editar informacoes\n";
-        cout << "2. Ver animais\n";
-        cout << "3. Ver relacionamentos\n";
-        cout << "4. Ver construcoes\n";
-        cout << "0. Voltar\n> ";
+        cout << "\n--- My Farm ---\n";
+        cout << "1. Edit info\n";
+        cout << "2. View animals\n";
+        cout << "3. View relationships\n";
+        cout << "4. View buildings\n";
+        cout << "0. Back\n> ";
 
         int choice;
         cin >> choice;
@@ -275,28 +275,28 @@ void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings)
     }
 }
 
-// Pede o nome, resolve pro id interno; se ambíguo, desambigua por tipo,
-// e se ainda estiver ambíguo, deixa escolher por posição numerada (nunca pelo id bruto)
+// Asks for the name, resolves it to the internal id; if ambiguous, disambiguates by type,
+// and if still ambiguous, lets the user pick by numbered position (never by the raw id)
 int resolveAnimalId(Database& db, int farmId) {
     cin.ignore();
     string name;
-    cout << "Nome do animal: ";
+    cout << "Animal name: ";
     getline(cin, name);
 
     auto matches = db.findMyAnimalsByName(farmId, name);
     if (matches.empty()) {
-        cout << "Animal nao encontrado.\n";
+        cout << "Animal not found.\n";
         return -1;
     }
     if (matches.size() == 1) {
         return get<0>(matches[0]);
     }
 
-    cout << "Ha mais de um animal chamado \"" << name << "\":\n";
+    cout << "There is more than one animal named \"" << name << "\":\n";
     for (const auto& m : matches) {
-        cout << " - Tipo: " << get<2>(m) << "\n";
+        cout << " - Type: " << get<2>(m) << "\n";
     }
-    cout << "Qual o tipo? ";
+    cout << "Which type? ";
     string type;
     getline(cin, type);
 
@@ -309,15 +309,15 @@ int resolveAnimalId(Database& db, int farmId) {
         return get<0>(filtered[0]);
     }
     if (filtered.empty()) {
-        cout << "Nenhum animal com esse nome e tipo.\n";
+        cout << "No animal with that name and type.\n";
         return -1;
     }
 
-    cout << "Ainda ha mais de um. Escolha pelo nivel de amizade atual:\n";
+    cout << "There is still more than one. Choose by current friendship level:\n";
     for (size_t i = 0; i < filtered.size(); i++) {
-        cout << (i + 1) << ". amizade: " << get<3>(filtered[i]) << "\n";
+        cout << (i + 1) << ". friendship: " << get<3>(filtered[i]) << "\n";
     }
-    cout << "Numero: ";
+    cout << "Number: ";
     int pick;
     cin >> pick;
     if (pick < 1 || (size_t)pick > filtered.size()) return -1;
@@ -327,23 +327,23 @@ int resolveAnimalId(Database& db, int farmId) {
 int resolveBuildingId(Database& db, int farmId) {
     cin.ignore();
     string name;
-    cout << "Nome da construcao: ";
+    cout << "Building name: ";
     getline(cin, name);
 
     auto matches = db.findMyBuildingsByName(farmId, name);
     if (matches.empty()) {
-        cout << "Construcao nao encontrada.\n";
+        cout << "Building not found.\n";
         return -1;
     }
     if (matches.size() == 1) {
         return get<0>(matches[0]);
     }
 
-    cout << "Ha mais de uma construcao chamada \"" << name << "\":\n";
+    cout << "There is more than one building named \"" << name << "\":\n";
     for (const auto& m : matches) {
-        cout << " - Tipo: " << get<2>(m) << "\n";
+        cout << " - Type: " << get<2>(m) << "\n";
     }
-    cout << "Qual o tipo? ";
+    cout << "Which type? ";
     string type;
     getline(cin, type);
 
@@ -356,15 +356,15 @@ int resolveBuildingId(Database& db, int farmId) {
         return get<0>(filtered[0]);
     }
     if (filtered.empty()) {
-        cout << "Nenhuma construcao com esse nome e tipo.\n";
+        cout << "No building with that name and type.\n";
         return -1;
     }
 
-    cout << "Ainda ha mais de uma. Escolha pelo nivel atual:\n";
+    cout << "There is still more than one. Choose by current level:\n";
     for (size_t i = 0; i < filtered.size(); i++) {
-        cout << (i + 1) << ". nivel: " << get<3>(filtered[i]) << "\n";
+        cout << (i + 1) << ". level: " << get<3>(filtered[i]) << "\n";
     }
-    cout << "Numero: ";
+    cout << "Number: ";
     int pick;
     cin >> pick;
     if (pick < 1 || (size_t)pick > filtered.size()) return -1;
