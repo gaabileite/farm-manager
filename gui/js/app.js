@@ -11,10 +11,10 @@
   'use strict';
 
   // ---- Section catalog --------------------------------------------
-  // Each "book" on the shelf maps 1:1 to a C++ class in /classes.
+  // Each "book" on the shelf maps 1:1 to a C++ class in src/classes/.
   const SECTIONS = [
     { key: 'crops',      label: 'Crops',      accentDarkVar: '--accent-crop-dark',      defaultIcon: 'cropSpring' },
-    { key: 'villagers',  label: 'Villagers',  accentDarkVar: '--accent-villager-dark',  defaultIcon: 'villagerBust-0' },
+    { key: 'villagers',  label: 'Villagers',  accentDarkVar: '--accent-villager-dark',  defaultIcon: 'bookVillager' },
     { key: 'animals',    label: 'Animals',    accentDarkVar: '--accent-animal-dark',    defaultIcon: 'animalChicken' },
     { key: 'buildings',  label: 'Buildings',  accentDarkVar: '--accent-building-dark',  defaultIcon: 'buildingBarn' },
     { key: 'myfarm',     label: 'My Farm',    accentDarkVar: '--accent-farm-dark',      defaultIcon: 'farmhouse' },
@@ -211,9 +211,6 @@
   }
 
   function makeIcon(section, item) {
-    if (section === 'villagers') {
-      return Sprites.villagerBust(item.name, { scale: 5 });
-    }
     return Sprites.makeImage(item.icon || sectionDef(section).defaultIcon, { scale: 5 });
   }
 
@@ -292,6 +289,7 @@
     columns.appendChild(farmBlock('My Relationships (MyRelationship)', farm.myRelationships.map((r) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
+      row.appendChild(Sprites.makeImage(r.icon || 'bookVillager', { scale: 3 }));
       const grow = document.createElement('span');
       grow.className = 'grow';
       grow.textContent = r.villagerName;

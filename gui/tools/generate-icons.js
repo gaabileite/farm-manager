@@ -11,7 +11,11 @@
  * file to change what the GUI shows — no code edit needed. This
  * script only exists to (re)create a default set from scratch.
  *
- * Run with:  node gui/tools/generate-icons.js
+ * Existing files are left alone, so hand-drawn replacements are
+ * never clobbered; only missing icons get a placeholder. Pass
+ * --force to overwrite everything with the defaults.
+ *
+ * Run with:  node gui/tools/generate-icons.js [--force]
  * ---------------------------------------------------------------
  */
 
@@ -136,11 +140,6 @@ const DEFS = {
     palette: { c: '#f5f0e0', C: '#ffffff', k: '#2a2a2a' },
     rows: ['.CCCCCCCC.', 'CccccccccC', 'ccckkccccc', 'cccccccccc', 'cccccccccc', '.cccccccc.', '..k....k..', '..k....k..', '..........', '..........'],
   },
-  animalGeneric: {
-    w: 10, h: 10,
-    palette: { p: '#a9743b', P: '#c98f4f' },
-    rows: ['..........', '.Pp....Pp.', '.pp....pp.', '..........', '...PppP...', '..ppppppp.', '..ppppppp.', '...ppppp..', '..........', '..........'],
-  },
   buildingCoop: {
     w: 10, h: 10,
     palette: { r: '#8a3b2a', y: '#f3d16b', ...wood },
@@ -193,29 +192,17 @@ for (const [name, cover] of Object.entries(BOOK_VARIANTS)) {
   };
 }
 
-const VILLAGER_BUST_ROWS = [
-  '..kkkkkk..', '.kkkkkkkk.', '.ksssssk..', '.sseesss..', '.ssssssss.',
-  '..smssss..', '..ssssss..', '.cccccccc.', 'cccccccccc', 'cccccccccc',
-];
-// pre-recolored variants (hair, shirt) — app.js picks one per villager by
-// hashing the villager's name, so the same villager always looks the same
-const BUST_PAIRS = [
-  ['#4a3222', '#6b8f3f'], ['#2a2a2a', '#4a6b8a'], ['#8a3b2a', '#b5482a'], ['#5c3a28', '#d9a441'],
-  ['#6b4226', '#7a5a8f'], ['#7a5230', '#3f6b2b'], ['#3a3a3a', '#8a5a45'], ['#4a3222', '#4a6b8a'],
-];
-BUST_PAIRS.forEach(([hair, shirt], i) => {
-  DEFS[`villagerBust-${i}`] = {
-    w: 10, h: 10,
-    palette: { k: hair, s: '#e0ab7a', e: '#2a1f14', m: '#8a5a45', c: shirt },
-    rows: VILLAGER_BUST_ROWS,
-  };
-});
-
 // ---- main ----------------------------------------------------
+const FORCE = process.argv.includes('--force');
 fs.mkdirSync(OUT_DIR, { recursive: true });
 let count = 0;
+let skipped = 0;
 for (const [name, def] of Object.entries(DEFS)) {
+  if (!FORCE && fs.existsSync(path.join(OUT_DIR, `${name}.png`))) {
+    skipped++;
+    continue;
+  }
   writeIcon(name, def);
   count++;
 }
-console.log(`OK: wrote ${count} PNG icons to ${OUT_DIR}`);
+console.log(`OK: wrote ${count} PNG icons to ${OUT_DIR} (${skipped} existing kept; use --force to overwrite)`);

@@ -16,7 +16,7 @@ turns that metaphor into a small pixelated library, with "books" for each class
 > file — no code changes needed.
 
 The data shown is **real**: `js/data.js` is generated from the project's SQLite
-databases (`database/gameData.db` and `database/myFarmData.db`) by a Node script —
+databases (`data/gameData.db` and `data/myFarmData.db`) by a Node script —
 see the [Data](#data) section below.
 
 ## How to open it
@@ -35,7 +35,7 @@ gui/
 ├── js/app.js                        # navigation, search, filters, modals, "My Farm" panel
 ├── public/icons/*.png                # THE IMAGES THEMSELVES — edit these to change the look
 ├── tools/export-data.js                # reads gameData.db + myFarmData.db (node:sqlite), regenerates js/data.js
-├── tools/generate-icons.js               # (re)generates the default set of public/icons/*.png from scratch
+├── tools/generate-icons.js               # recreates any missing default icon (books, hearts, season crops)
 └── README.md                                # this file
 ```
 
@@ -44,26 +44,33 @@ gui/
 Each icon is a standalone PNG file in `gui/public/icons/`, referenced as
 `<img src="public/icons/<name>.png">` from `js/sprites.js`. To change any image in
 the interface, just **open the matching `.png` in an editor and save over it** — no
-code needs to change. The files are intentionally small (10×10 to 12×14 pixels) to
-match the pixel art style; the page scales each one up crisply via CSS
-(`image-rendering: pixelated`), so a bigger or more detailed replacement image works
-too — it just changes how sharp the scaled-up result looks.
+code needs to change. Images can be any size: each one is fit into a fixed box
+keeping its aspect ratio. Small pixel art is scaled up crisply
+(`image-rendering: pixelated`), while larger art is scaled down smoothly.
 
 File names expected by `sprites.js` (renaming one breaks the reference):
 
-| Category | Files |
-|---|---|
-| Crops (by season) | `cropSpring.png`, `cropSummer.png`, `cropFall.png`, `cropWinter.png` |
-| Animals | `animalChicken.png`, `animalCow.png`, `animalPig.png`, `animalSheep.png`, `animalGeneric.png` (used for Ostrich/Goat/Duck/Dinosaur/Rabbit, which have no dedicated icon) |
-| Buildings | `buildingCoop.png`, `buildingBarn.png`, `buildingSilo.png` (also used as the "generic" structure icon) |
-| Shelf books | `bookCrop.png`, `bookVillager.png`, `bookAnimal.png`, `bookBuilding.png`, `bookFarm.png` (one per section) |
-| Villager portraits | `villagerBust-0.png` … `villagerBust-7.png` (8 variants; each villager always lands on the same variant, computed by hashing their name in `js/sprites.js`) |
-| My Farm / hearts | `farmhouse.png`, `heartFull.png`, `heartEmpty.png` |
+Item icons are named after the item exactly as stored in the database, with spaces
+removed (so a name typo in the DB means the file has to follow it — e.g. the DB spells
+"Bok Choi" and "Elliot"). `tools/export-data.js` picks the icon for each item; if the
+file doesn't exist it prints a warning and uses the fallback.
 
-To go back to the original set generated for this project (for example, after
-messing up a file), run `node gui/tools/generate-icons.js` — it recreates all 28
-PNGs from the original pixel matrices (no `npm` dependency, just Node's `fs`/`zlib`
-to write real PNG files).
+| Category | Files | Fallback if missing |
+|---|---|---|
+| Crops | `crop<Name>.png` — e.g. `cropBokChoi.png`, `cropHotPepper.png` | `cropSpring.png` / `cropSummer.png` / `cropFall.png` / `cropWinter.png` (by season) |
+| Animals | `animal<Name>.png` — e.g. `animalCow.png`, `animalDinosaur.png` | `bookAnimal.png` |
+| Buildings | `building<Name>.png` — e.g. `buildingBigBarn.png`, `buildingJunimoHut.png` | `bookBuilding.png` |
+| Villager portraits | `v_<Name>.png` — e.g. `v_Abigail.png`, `v_Elliot.png` | `bookVillager.png` (currently used by Wizard) |
+| Shelf books | `bookCrop.png`, `bookVillager.png`, `bookAnimal.png`, `bookBuilding.png`, `bookFarm.png` (one per section) | — |
+| My Farm / hearts | `farmhouse.png`, `heartFull.png`, `heartEmpty.png` | — |
+
+After adding or renaming an icon, re-run `node gui/tools/export-data.js` so
+`js/data.js` picks it up.
+
+If one of the small default icons (books, hearts, season crops) gets lost, run
+`node gui/tools/generate-icons.js` — it recreates only the missing ones from the
+original pixel matrices and never overwrites existing files (pass `--force` to reset
+them all). No `npm` dependency, just Node's `fs`/`zlib`.
 
 ## Features
 
@@ -93,8 +100,8 @@ to write real PNG files).
 ## Data
 
 `js/data.js` is **auto-generated** by `tools/export-data.js` from the project's real
-databases — `database/gameData.db` (the game catalog: crops, animals, buildings,
-villagers) and `database/myFarmData.db` (the player's saved progress). The script
+databases — `data/gameData.db` (the game catalog: crops, animals, buildings,
+villagers) and `data/myFarmData.db` (the player's saved progress). The script
 uses the built-in `node:sqlite` module (available from Node 22 on, no `npm`
 dependency at all) to read the `.db` files directly — nothing is made up or typed by
 hand.
@@ -115,17 +122,13 @@ runs.
   materials, favorite gifts, etc. all come **directly** from the `crop`, `animal`,
   `building`, `villager` tables and their satellite tables (`crop_sell_values`,
   `building_construction_materials`, `villager_gifts`, ...).
-- `database/gameData.db` already had a fully populated `villager` + `villager_gifts`
+- `data/gameData.db` already had a fully populated `villager` + `villager_gifts`
   table (21 villagers, 42 gifts) that **the C++ program never reads** — `Database`
   has no `getAllVillagers()` method at all. This GUI is therefore the first place in
   the project where that villager data shows up.
-- A few fields don't exist in the database and were filled in a clearly synthetic
-  way, documented in code (`js/sprites.js`): which of the 8 portrait variants in
-  `public/icons/villagerBust-*.png` each villager uses (there's no appearance data in
-  the `villager` table, so it's picked by a deterministic hash of the name) and the
-  fallback icon for animals without a dedicated sprite (Ostrich, Goat, Duck,
-  Dinosaur, Rabbit fall back to `public/icons/animalGeneric.png`, a generic "paw"
-  icon, instead of pretending to be some other creature).
+- Icons aren't stored in the database: `tools/export-data.js` matches each item's
+  name to a file in `public/icons/` (see [Editing the icons](#editing-the-icons)),
+  falling back to the section's book icon when there's no matching file.
 - The "My Farm" panel shows the **real, currently-empty** state of `myFarmData.db`
   (no animal/building/relationship has been saved yet by the C++ program — that's
   expected, not a GUI bug), with a message explaining how to populate that data by
@@ -133,7 +136,7 @@ runs.
 - Proper nouns from the game (items, shops, materials) are kept in English, exactly
   as stored in the database. The one saved value that's still in Portuguese is the
   player's farm name itself (`"Minha Fazenda"`) — that's real save data written by
-  the C++ program (`main.cpp` hardcodes `getOrCreateFarm("Minha Fazenda", "Padrao")`
+  the C++ program (`src/main.cpp` hardcodes `getOrCreateFarm("Minha Fazenda", "Padrao")`
   on first run), not GUI text, so it was left untouched rather than mistranslated.
 
 ## Known limitations / next steps
@@ -159,14 +162,14 @@ generated automatically versus what deserves human review before being treated a
 final — especially relevant in an academic context.
 
 ### What the AI read before drawing anything
-- Every header in `classes/*.h` (`DataType`, `Crop`, `Villager`, `Animal`,
-  `Building`, `MyFarm`, `MyAnimal`, `MyBuilding`, `MyRelationship`) and `main.cpp`, to
+- Every header in `src/classes/*.h` (`DataType`, `Crop`, `Villager`, `Animal`,
+  `Building`, `MyFarm`, `MyAnimal`, `MyBuilding`, `MyRelationship`) and `src/main.cpp`, to
   extract the real data model (attributes, getters/setters) — making sure this
   interface's cards and modals show exactly the fields that exist in the code, not a
   made-up version or one based only on the README.
 - The project's `README.md`, to reuse the "each class is a book" metaphor already
   described there, instead of proposing a different concept.
-- `database/menu.h` and `database/filters.h`, to understand that the program already
+- `src/menus/menu.h` and `src/menus/filters.h`, to understand that the program already
   separates the game's static catalog (`Crop`/`Animal`/`Building`, from
   `gameData.db`) from the player's progress (`MyFarm` and friends, in
   `myFarmData.db`) — a split the GUI mirrors by keeping the first four "shelves"
@@ -178,14 +181,14 @@ final — especially relevant in an academic context.
   books, hearts, villager portraits) drawn as a character grid and turned into a real
   PNG by `tools/generate-icons.js` (a hand-written PNG encoder on top of Node's
   `fs`/`zlib`, no external library) — no image was downloaded or copied from the
-  game. The resulting 28 PNGs, in `public/icons/`, are what the interface loads
-  today; the AI now treats them as editable art, not something redrawn in code on
-  every page load.
+  game. Those original 28 PNGs were the starting set in `public/icons/`; most have
+  since been replaced or joined by per-item icons added by hand, and the generator
+  now only fills in missing defaults.
 - **All of the HTML/CSS/JS** (vanilla, no frameworks): navigation between sections,
   search, filters, cards, the detail modal, and the "My Farm" panel.
 - **The bridge to real data** (`tools/export-data.js`): before writing a single line
-  of that script, the AI fully read `classes/database.h`, `database.cpp`,
-  `database/filters.h`/`filters.cpp`, and `main.cpp` to pin down, precisely, every
+  of that script, the AI fully read `src/classes/database.h`, `src/database.cpp`,
+  `src/menus/filters.h`/`src/filters.cpp`, and `src/main.cpp` to pin down, precisely, every
   SQL method, table, and column actually in use — then ran read-only queries against
   the real `.db` files (via `node:sqlite`, built into Node, nothing installed) to
   inspect schema, row counts, and sample content before deciding how to map each
@@ -205,12 +208,9 @@ final — especially relevant in an academic context.
 - No automated UI tests or real-browser checks were run — validation was done by
   reading the code, checking JavaScript syntax (`node --check`), and manually
   inspecting the generated JSON, not by human-assisted visual testing.
-- A few fields that **don't exist in the database** were filled in synthetically,
-  and that's flagged both in the code (`js/sprites.js`, `tools/generate-icons.js`)
-  and in the [Data](#data) section above: which portrait variant each villager gets
-  (picked by hashing their name across 8 pre-generated PNGs, since the `villager`
-  table stores no appearance data) and the fallback icon for animals without a
-  dedicated sprite.
+- Icons aren't stored in the database; which file each item uses is decided by
+  name matching in `tools/export-data.js`, with a fallback icon when no file
+  matches (see the [Data](#data) section above).
 
 ## Credits
 

@@ -41,6 +41,7 @@ html, body {
 }
 
 img, canvas { image-rendering: pixelated; image-rendering: crisp-edges; }
+.pixel-sprite { object-fit: contain; }
 
 h1, h2, h3 { font-family: 'Press Start 2P', monospace; line-height: 1.6; margin: 0; }
 
