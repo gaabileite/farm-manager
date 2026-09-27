@@ -121,14 +121,14 @@ O `sqlite3.c` é C, não C++, então ele é compilado separadamente com `gcc` an
 ```bash
 # Linux/Mac
 gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 main.cpp database.cpp filters.cpp menu.cpp sqlite3.o -o farm_manager
+g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp sqlite3.o -o farm_manager
 ./farm_manager
 ```
 
 ```powershell
 # Windows (PowerShell)
 gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 main.cpp database.cpp filters.cpp menu.cpp sqlite3.o -o farm_manager.exe
+g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp sqlite3.o -o farm_manager.exe
 .\farm_manager.exe
 ```
 

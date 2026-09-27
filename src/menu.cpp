@@ -1,5 +1,5 @@
-#include "database/menu.h"
-#include "database/filters.h"
+#include "menus/menu.h"
+#include "menus/filters.h"
 #include "classes/database.h"
 #include <iostream>
 #include <algorithm>

@@ -10,8 +10,8 @@
 #include "classes/villager.h"
 #include "classes/database.h"
 #include "classes/myfarm.h"
-#include "database/filters.h"
-#include "database/menu.h"
+#include "menus/filters.h"
+#include "menus/menu.h"
 #include "classes/myanimal.h"
 #include "classes/myrelationship.h"
 #include "classes/mybuilding.h"
@@ -376,14 +376,14 @@
 
 int main() {
     // Banco estático (somente leitura)
-    Database gameDb("database/gameData.db");
+    Database gameDb("data/gameData.db");
 
     vector<Crop> crops = gameDb.getAllCrops();
     vector<Animal> animals = gameDb.getAllAnimals();
     vector<Building> buildings = gameDb.getAllBuildings();
 
     // Player's personal database (game progress)
-    Database playerDb("database/myFarmData.db");
+    Database playerDb("data/myFarmData.db");
     int farmId = playerDb.getOrCreateFarm("My Farm", "Default");
 
     // Main menu
