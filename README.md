@@ -1,5 +1,3 @@
-# README
-
 # Farmpedia - Um farm manager para Stardew Valley
 
 ## Aplicação dos conhecimentos
