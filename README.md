@@ -121,14 +121,14 @@ O `sqlite3.c` é C, não C++, então ele é compilado separadamente com `gcc` an
 ```bash
 # Linux/Mac
 gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp sqlite3.o -o farm_manager
+g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp src/definitions.cpp sqlite3.o -o farm_manager
 ./farm_manager
 ```
 
 ```powershell
 # Windows (PowerShell)
 gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp sqlite3.o -o farm_manager.exe
+g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp src/definitions.cpp sqlite3.o -o farm_manager.exe
 .\farm_manager.exe
 ```
 
@@ -137,13 +137,17 @@ Rode sempre a partir da raiz do projeto, já que os caminhos dos bancos de dados
 ## Estrutura do projeto
 
 ```
-classes/      → DataType e as subclasses de referência do jogo (Crop, Animal, Building, Villager) + MyFarm, MyAnimal, MyBuilding, MyRelationship
-database/     → filtros de busca e menus de navegação
-external/     → SQLite3
-database.cpp  → toda a lógica de acesso ao banco (SQL)
-filters.cpp   → filtros por nome, estação, etc.
-menu.cpp      → menus interativos do terminal
-main.cpp      → ponto de entrada
+src/
+├── main.cpp           → ponto de entrada
+├── database.cpp       → toda a lógica de acesso ao banco (SQL)
+├── filters.cpp        → filtros por nome, estação, etc.
+├── menu.cpp           → menus interativos do terminal
+├── classes/           → DataType e as subclasses de referência do jogo (Crop, Animal, Building, Villager) + MyFarm, MyAnimal, MyBuilding, MyRelationship
+├── definitions.cpp    → implementação de todas as classes acima
+└── menus/             → filtros de busca e menus de navegação (headers)
+data/                  → os bancos de dados (gameData.db, myFarmData.db)
+external/              → SQLite3
+gui/                   → protótipo de interface gráfica web (ver gui/README.md)
 ```
 
 ## Banco de dados

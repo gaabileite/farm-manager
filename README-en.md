@@ -96,14 +96,14 @@ Besides showing general information about the game, Farmpedia also displays info
 ```bash
 # Linux/Mac
 gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp sqlite3.o -o farm_manager
+g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp src/definitions.cpp sqlite3.o -o farm_manager
 ./farm_manager
 ```
 
 ```powershell
 # Windows (PowerShell)
 gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp sqlite3.o -o farm_manager.exe
+g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp src/definitions.cpp sqlite3.o -o farm_manager.exe
 .\farm_manager.exe
 ```
 
@@ -111,13 +111,19 @@ Always run it from the project root, since the database paths are relative.
 
 ## Project structure
 
-    classes/      → DataType and the game's reference subclasses (Crop, Animal, Building, Villager) + MyFarm, MyAnimal, MyBuilding, MyRelationship
-    database/     → search filters and navigation menus
-    external/     → SQLite3
-    database.cpp  → all database access logic (SQL)
-    filters.cpp   → filters by name, season, etc.
-    menu.cpp      → interactive terminal menus
-    main.cpp      → entry point
+```
+src/
+├── main.cpp           → entry point
+├── database.cpp       → all database access logic (SQL)
+├── filters.cpp        → filters by name, season, etc.
+├── menu.cpp           → interactive terminal menus
+├── classes/           → DataType and the game's reference subclasses (Crop, Animal, Building, Villager) + MyFarm, MyAnimal, MyBuilding, MyRelationship
+├── definitions.cpp    → implementation of every class above
+└── menus/             → search filters and navigation menus (headers)
+data/                  → the databases (gameData.db, myFarmData.db)
+external/              → SQLite3
+gui/                   → web GUI prototype (see gui/README.md)
+```
 
 ## Database
 The project uses two SQLite databases:
