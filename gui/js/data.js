@@ -9,7 +9,7 @@
  * To refresh after playing/changing the databases:
  *   node gui/tools/export-data.js
  *
- * Generated: 2026-09-27T21:09:39.442Z
+ * Generated: 2026-09-27T21:24:23.319Z
  * ---------------------------------------------------------------
  */
 
@@ -908,7 +908,7 @@ const GameData = {
     {
       "name": "Wizard",
       "single": false,
-      "icon": "bookVillager",
+      "icon": "v_Wizard",
       "giftLove": "Solar Essence",
       "giftLike": "Frozen Tear"
     }
@@ -1533,8 +1533,8 @@ const GameData = {
     }
   ],
   "myFarm": {
-    "farmName": "Minha Fazenda",
-    "farmLayout": "Padrao",
+    "farmName": "My Farm",
+    "farmLayout": "Default",
     "myAnimals": [],
     "myBuildings": [],
     "myRelationships": []

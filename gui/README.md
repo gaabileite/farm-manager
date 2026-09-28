@@ -60,7 +60,7 @@ file doesn't exist it prints a warning and uses the fallback.
 | Crops | `crop<Name>.png` — e.g. `cropBokChoi.png`, `cropHotPepper.png` | `cropSpring.png` / `cropSummer.png` / `cropFall.png` / `cropWinter.png` (by season) |
 | Animals | `animal<Name>.png` — e.g. `animalCow.png`, `animalDinosaur.png` | `bookAnimal.png` |
 | Buildings | `building<Name>.png` — e.g. `buildingBigBarn.png`, `buildingJunimoHut.png` | `bookBuilding.png` |
-| Villager portraits | `v_<Name>.png` — e.g. `v_Abigail.png`, `v_Elliot.png` | `bookVillager.png` (currently used by Wizard) |
+| Villager portraits | `v_<Name>.png` — e.g. `v_Abigail.png`, `v_Elliot.png` | `bookVillager.png` |
 | Shelf books | `bookCrop.png`, `bookVillager.png`, `bookAnimal.png`, `bookBuilding.png`, `bookFarm.png` (one per section) | — |
 | My Farm / hearts | `farmhouse.png`, `heartFull.png`, `heartEmpty.png` | — |
 
@@ -78,7 +78,7 @@ them all). No `npm` dependency, just Node's `fs`/`zlib`.
    `Animal`, `Building`, `MyFarm`), each with an item count badge.
 2. **Global search** — filters by name in any section, ignoring accents
    (`normalize('NFD')`).
-3. **Per-section filters** — season of the year for Crops; status (single or taken)
+3. **Per-section filters** — season of the year for Crops; status (single or unavailable)
    for Villagers.
 4. **Cards + "quest log" modal** — each card opens a detailed modal styled like an
    RPG dialog box, showing **every** real attribute of the matching class (e.g. for
@@ -134,10 +134,9 @@ runs.
   expected, not a GUI bug), with a message explaining how to populate that data by
   playing `farm_manager.exe`.
 - Proper nouns from the game (items, shops, materials) are kept in English, exactly
-  as stored in the database. The one saved value that's still in Portuguese is the
-  player's farm name itself (`"Minha Fazenda"`) — that's real save data written by
-  the C++ program (`src/main.cpp` hardcodes `getOrCreateFarm("Minha Fazenda", "Padrao")`
-  on first run), not GUI text, so it was left untouched rather than mistranslated.
+  as stored in the database. The farm name and layout are real save data too:
+  `src/main.cpp` creates the default farm with `getOrCreateFarm("My Farm", "Default")`
+  on first run.
 
 ## Known limitations / next steps
 

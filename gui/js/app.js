@@ -112,7 +112,7 @@
         renderContent();
       })));
     } else if (state.section === 'villagers') {
-      const opts = ['All', 'Single', 'Taken'];
+      const opts = ['All', 'Single', 'Unavailable'];
       opts.forEach((s) => filterChipsEl.appendChild(makeChip(s, state.filters.villagers === s, () => {
         state.filters.villagers = s;
         renderFilters();
@@ -217,7 +217,7 @@
   function tagLabel(section, item) {
     switch (section) {
       case 'crops': return item.season;
-      case 'villagers': return item.single ? 'Single' : 'Taken';
+      case 'villagers': return item.single ? 'Single' : 'Unavailable';
       case 'animals': return item.type;
       case 'buildings': return item.housesAnimals ? 'Houses animals' : 'Structure';
       default: return '';
@@ -260,7 +260,7 @@
     const columns = document.createElement('div');
     columns.className = 'farm-columns';
 
-    columns.appendChild(farmBlock('My Animals (MyAnimal)', farm.myAnimals.map((a) => {
+    columns.appendChild(farmBlock('My Animals', farm.myAnimals.map((a) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
       row.appendChild(Sprites.makeImage(a.icon, { scale: 3 }));
@@ -272,7 +272,7 @@
       return row;
     }), 'No animal saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 
-    columns.appendChild(farmBlock('My Buildings (MyBuilding)', farm.myBuildings.map((b) => {
+    columns.appendChild(farmBlock('My Buildings', farm.myBuildings.map((b) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
       row.appendChild(Sprites.makeImage(b.icon, { scale: 3 }));
@@ -286,7 +286,7 @@
       return row;
     }), 'No building saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 
-    columns.appendChild(farmBlock('My Relationships (MyRelationship)', farm.myRelationships.map((r) => {
+    columns.appendChild(farmBlock('My Relationships', farm.myRelationships.map((r) => {
       const row = document.createElement('div');
       row.className = 'farm-row';
       row.appendChild(Sprites.makeImage(r.icon || 'bookVillager', { scale: 3 }));
@@ -387,7 +387,7 @@
             `Loves: ${item.giftLove}`,
             `Likes: ${item.giftLike}`,
           ])],
-          ['Status', listNode([`Status: ${item.single ? 'Single' : 'Taken'}`])],
+          ['Status', listNode([`Status: ${item.single ? 'Single' : 'Unavailable'}`])],
         ];
       case 'animals':
         return [
