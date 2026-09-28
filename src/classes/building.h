@@ -1,3 +1,8 @@
+/*
+*The class Building sets the attributes and methods shared between the building elements in the read-only library.
+*Its parent class, DataType, defines the default attributes, name and type, and its getters and setters.
+*/
+
 #include <string>
 #include <vector>
 #include <utility>
@@ -7,11 +12,6 @@ using namespace std;
 
 #ifndef BUILDING 
 #define BUILDING
-
-/*
-The class Building inherits key attributes from the DataType class.
-It houses buildings that support animals AND buildings that don't.
-*/
 
 class Building: public DataType {
     private:

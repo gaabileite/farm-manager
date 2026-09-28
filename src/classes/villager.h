@@ -1,3 +1,8 @@
+/*
+*The class Villager sets the attributes and methods shared between the villager elements in the read-only library.
+*Its parent class, DataType, defines the default attributes, name and type, and its getters and setters.
+*/
+
 #include <string>
 #include <vector>
 #include <utility>
@@ -6,10 +11,6 @@ using namespace std;
 
 #ifndef VILLAGER
 #define VILLAGER
-
-/*
-The Villager class adds villagers from the game, specifying attributes for only the important information about each character.
-*/
 
 class Villager : public DataType {
    private:

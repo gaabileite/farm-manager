@@ -1,7 +1,13 @@
+/*
+*Implementação de funções de filtro e busca, definidas em menus/filters.h.
+*/
+
 #include "menus/filters.h"
 #include <algorithm>
 #include <cctype>
 
+// Busca plantações cujo nome contenha searchTerm (case-insensitive, por substring).
+// Retorna nova lista; não altera crops.
 vector<Crop> filterCropsByName(const vector<Crop>& crops, string searchTerm) {
     vector<Crop> results;
     transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::tolower);
@@ -17,6 +23,8 @@ vector<Crop> filterCropsByName(const vector<Crop>& crops, string searchTerm) {
     return results;
 }
 
+// Filtra plantações pela estação, ignorando maiúsculas/minúsculas.
+// season: "spring", "Spring" ou "SPRING" dão o mesmo resultado.
 vector<Crop> filterCropsBySeason(const vector<Crop>& crops, string season) {
     vector<Crop> results;
     transform(season.begin(), season.end(), season.begin(), ::tolower);
@@ -32,6 +40,7 @@ vector<Crop> filterCropsBySeason(const vector<Crop>& crops, string season) {
     return results;
 }
 
+// Busca animais cujo nome contenha searchTerm (case-insensitive, por substring).
 vector<Animal> filterAnimalsByName(const vector<Animal>& animals, string searchTerm) {
     vector<Animal> results;
     transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::tolower);
@@ -47,6 +56,7 @@ vector<Animal> filterAnimalsByName(const vector<Animal>& animals, string searchT
     return results;
 }
 
+// Busca construções cujo nome contenha searchTerm (case-insensitive, por substring).
 vector<Building> filterBuildingsByName(const vector<Building>& buildings, string searchTerm) {
     vector<Building> results;
     transform(searchTerm.begin(), searchTerm.end(), searchTerm.begin(), ::tolower);

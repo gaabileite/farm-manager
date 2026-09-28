@@ -1,3 +1,8 @@
+/*
+*The class Animal sets the attributes and methods shared between the animal elements in the read-only library.
+*Its parent class, DataType, defines the default attributes, name and type, and its getters and setters.
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -8,10 +13,6 @@ using namespace std;
 
 #ifndef ANIMAL
 #define ANIMAL
-
-/*
-The Animal class is a derived class from DataType and inherits its key attributes.
- */
 
 class Animal : public DataType
 

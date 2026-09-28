@@ -1,3 +1,8 @@
+/*
+*The class DataType sets a set of default attributes and methods that are shared throughout the code.
+*This specific class, as it is a parent class, houses the read-only classes, seen in animal.h, building.h, crop.h, viollager.h.
+*/
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -5,12 +10,6 @@ using namespace std;
 
 #ifndef DATATYPE
 #define DATATYPE
-
-/* 
-The class DataType is the master class for all of the other types accessed by the user. 
-Its attributes and methods are shared by all other classes in the program.
-TODO: Decide if MyFarm fits into the DataType umbrella.
-*/
 
 class DataType {
     private:

@@ -1,3 +1,8 @@
+/*
+*The class Crop sets the attributes and methods shared between the crop elements in the read-only library.
+*Its parent class, DataType, defines the default attributes, name and type, and its getters and setters.
+*/
+
 #include <string>
 #include <vector>
 #include <utility>
@@ -7,10 +12,6 @@ using namespace std;
 
 #ifndef CROP
 #define CROP
-
-/*
-The Crop class adds crops from the game, with many attributes that specify information about each crop.
-*/
 
 class Crop : public DataType {
    private:
