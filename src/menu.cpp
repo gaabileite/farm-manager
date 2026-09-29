@@ -3,6 +3,8 @@
 #include "classes/database.h"
 #include <iostream>
 #include <algorithm>
+#include <cctype>
+#include <limits>
 
 void showCropMenu(const vector<Crop>& crops) {
     while (true) {
@@ -183,46 +185,60 @@ void showMyAnimalsMenu(Database& db, int farmId) {
     }
 }
 
-void showMyRelationshipsMenu(Database& db, int farmId) {
+static string toLower(string s) {
+    transform(s.begin(), s.end(), s.begin(), ::tolower);
+    return s;
+}
+
+// Relationships are chosen by the villager's name: a new name adds the villager,
+// a name already on the list updates their friendship.
+void showMyRelationshipsMenu(Database& db, int farmId, const vector<string>& villagerNames) {
     while (true) {
         auto relationships = db.getMyRelationships(farmId);
 
         cout << "\n--- Relationships ---\n";
         if (relationships.empty()) cout << "No relationships registered.\n";
         for (const auto& r : relationships) {
-            cout << get<0>(r) << ". " << get<1>(r) << " - " << get<2>(r) << " hearts\n";
+            cout << get<1>(r) << " - " << get<2>(r) << " hearts\n";
         }
-        cout << "Villager number (0 to go back): ";
+        cout << "1. Add or update a relationship\n0. Back\n> ";
 
-        int id;
-        cin >> id;
-        if (id == 0) break;
+        int choice;
+        cin >> choice;
+        if (choice == 0) break;
+        if (choice != 1) continue;
 
-        auto it = find_if(relationships.begin(), relationships.end(),
-            [id](const tuple<int,string,int>& r) { return get<0>(r) == id; });
-        if (it == relationships.end()) {
-            cout << "Villager not found.\n";
+        cin.ignore();
+        string name;
+        cout << "Villager name: ";
+        getline(cin, name);
+
+        // Compared ignoring case against the villager catalog, so the saved name is
+        // always spelled like the catalog ("abigail" -> "Abigail").
+        auto villager = find_if(villagerNames.begin(), villagerNames.end(),
+            [&name](const string& v) { return toLower(v) == toLower(name); });
+        if (villager == villagerNames.end()) {
+            cout << "No villager named \"" << name << "\".\n";
             continue;
         }
 
-        while (true) {
-            cout << "\n--- " << get<1>(*it) << " ---\n";
-            cout << get<2>(*it) << " hearts\n";
-            cout << "1. Change relationship\n0. Back\n> ";
+        int friendship;
+        cout << "Friendship level (0-10 hearts): ";
+        if (!(cin >> friendship) || friendship < 0 || friendship > 10) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Friendship must be a number from 0 to 10.\n";
+            continue;
+        }
 
-            int choice;
-            cin >> choice;
-            if (choice == 0) break;
-
-            if (choice == 1) {
-                int newFriendship;
-                cout << "New friendship level: ";
-                cin >> newFriendship;
-                db.updateFriendship(id, newFriendship);
-                relationships = db.getMyRelationships(farmId);
-                it = find_if(relationships.begin(), relationships.end(),
-                    [id](const tuple<int,string,int>& r) { return get<0>(r) == id; });
-            }
+        auto existing = find_if(relationships.begin(), relationships.end(),
+            [&villager](const tuple<int,string,int>& r) { return toLower(get<1>(r)) == toLower(*villager); });
+        if (existing != relationships.end()) {
+            db.updateFriendship(get<0>(*existing), friendship);
+            cout << *villager << " updated!\n";
+        } else {
+            db.addRelationship(farmId, *villager, friendship);
+            cout << *villager << " added!\n";
         }
     }
 }
@@ -255,7 +271,7 @@ void showMyBuildingsMenu(Database& db, int farmId, const vector<Building>& possi
     }
 }
 
-void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings) {
+void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings, const vector<string>& villagerNames) {
     while (true) {
         cout << "\n--- My Farm ---\n";
         cout << "1. Edit info\n";
@@ -270,7 +286,7 @@ void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings)
 
         if (choice == 1) showFarmInfoMenu(db, farmId);
         else if (choice == 2) showMyAnimalsMenu(db, farmId);
-        else if (choice == 3) showMyRelationshipsMenu(db, farmId);
+        else if (choice == 3) showMyRelationshipsMenu(db, farmId, villagerNames);
         else if (choice == 4) showMyBuildingsMenu(db, farmId, buildings);
     }
 }

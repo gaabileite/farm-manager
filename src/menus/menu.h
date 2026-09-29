@@ -12,10 +12,10 @@ void showCropMenu(const vector<Crop>& crops);
 void showAnimalMenu(const vector<Animal>& animals);
 void showBuildingMenu(const vector<Building>& buildings);
 
-void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings);
+void showMyFarmMenu(Database& db, int farmId, const vector<Building>& buildings, const vector<string>& villagerNames);
 void showFarmInfoMenu(Database& db, int farmId);
 void showMyAnimalsMenu(Database& db, int farmId);
-void showMyRelationshipsMenu(Database& db, int farmId);
+void showMyRelationshipsMenu(Database& db, int farmId, const vector<string>& villagerNames);
 void showMyBuildingsMenu(Database& db, int farmId, const vector<Building>& possibleBuildings);
 
 int resolveAnimalId(Database& db, int farmId);

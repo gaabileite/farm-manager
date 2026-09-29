@@ -202,6 +202,20 @@ vector<Building> Database::getAllBuildings() {
     return buildings;
 }
 
+// Only the names: used to validate the villager typed in the relationships menu.
+vector<string> Database::getAllVillagerNames() {
+    vector<string> names;
+    string sql = "SELECT d.name FROM datatype d JOIN villager v ON v.id = d.id ORDER BY d.id;";
+    sqlite3_stmt* stmt;
+    sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
+
+    while (sqlite3_step(stmt) == SQLITE_ROW) {
+        names.push_back(columnText(stmt, 0));
+    }
+    sqlite3_finalize(stmt);
+    return names;
+}
+
 // ---------- MYFARM ----------
 // Create:
 int Database::createFarm(const string& farmName, const string& farmLayout) {

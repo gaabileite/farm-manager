@@ -32,6 +32,7 @@ class Database {
         vector<Crop> getAllCrops();
         vector<Animal> getAllAnimals();
         vector<Building> getAllBuildings();
+        vector<string> getAllVillagerNames();
 
         int createFarm(const string& farmName, const string& farmLayout);
         int getOrCreateFarm(const string& farmName, const string& farmLayout);
