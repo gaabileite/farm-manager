@@ -28,7 +28,7 @@
 
 // ---------- DATATYPE CLASS ----------
 // Constructor
-DataType::DataType(string currentname, string currenttype) {
+DataType::DataType(const string& currentname, const string& currenttype) {
     name = currentname;
     type = currenttype;
 }
@@ -41,13 +41,13 @@ string DataType::getName() const { return name; }
 string DataType::getType() const { return type; }
 
 // Setters
-void DataType::setName(string newname) { name = newname; }
-void DataType::setType(string newtype) { type = newtype; }
+void DataType::setName(const string& newname) { name = newname; }
+void DataType::setType(const string& newtype) { type = newtype; }
 
 // ---------- ANIMAL CLASS ----------
 // Constructor
 // DataType's constructor initializes the inherited part of the Animal object.
-Animal::Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<tuple<string, string, int>> currentartisanItem) : DataType(currentname, currenttype) {
+Animal::Animal(const string& currentname, const string& currenttype, const string& currentproduces, int currentdaysToAdult, int currentbuyPrice, const vector<tuple<string, string, int>>& currentartisanItem) : DataType(currentname, currenttype) {
     produces = currentproduces;
     daysToAdult = currentdaysToAdult;
     buyPrice = currentbuyPrice;
@@ -64,15 +64,15 @@ int Animal::getBuyPrice() const { return buyPrice; }
 vector<tuple<string, string, int>> Animal::getArtisanItem() const { return artisanItem; }
 
 // Setters
-void Animal::setProduces(string newproduces) { produces = newproduces; }
+void Animal::setProduces(const string& newproduces) { produces = newproduces; }
 void Animal::setDaysToAdult(int newdaysToAdult) { daysToAdult = newdaysToAdult; }
 void Animal::setBuyPrice(int newbuyPrice) { buyPrice = newbuyPrice; }
-void Animal::setArtisanItem(vector<tuple<string, string, int>> newartisanItem) { artisanItem = newartisanItem; }
+void Animal::setArtisanItem(const vector<tuple<string, string, int>>& newartisanItem) { artisanItem = newartisanItem; }
 
 // ---------- BUILDING CLASS ----------
 // Constructor: no animals housed
 // housesAnimals defaults to false.
-Building::Building(string currentname, string currenttype, vector<tuple<string, int>> currentconstructionMaterials, tuple<int, int> currentsize, string currentwhereToGet): DataType(currentname, currenttype) {
+Building::Building(const string& currentname, const string& currenttype, const vector<tuple<string, int>>& currentconstructionMaterials, tuple<int, int> currentsize, const string& currentwhereToGet): DataType(currentname, currenttype) {
     constructionMaterials = currentconstructionMaterials;
     size = currentsize;
     whereToGet = currentwhereToGet;
@@ -83,7 +83,7 @@ Building::Building(string currentname, string currenttype, vector<tuple<string, 
 
 // Constructor: houses animals
 // housesAnimals defaults to true.
-Building::Building(string currentname, string currenttype, vector<tuple<string, int>> currentconstructionMaterials, tuple<int, int> currentsize, string currentwhereToGet, vector<string> currentanimalTypes, int currentanimalAmount): DataType(currentname, currenttype) {
+Building::Building(const string& currentname, const string& currenttype, const vector<tuple<string, int>>& currentconstructionMaterials, tuple<int, int> currentsize, const string& currentwhereToGet, const vector<string>& currentanimalTypes, int currentanimalAmount): DataType(currentname, currenttype) {
     constructionMaterials = currentconstructionMaterials;
     size = currentsize;
     whereToGet = currentwhereToGet;
@@ -104,16 +104,16 @@ vector<string> Building::getAnimalTypes() const { return animalTypes; }
 int Building::getAnimalAmount() const { return animalAmount; }
 
 // Setters
-void Building::setConstructionMaterials(vector<tuple<string, int>> newconstructionMaterials) { constructionMaterials = newconstructionMaterials; }
+void Building::setConstructionMaterials(const vector<tuple<string, int>>& newconstructionMaterials) { constructionMaterials = newconstructionMaterials; }
 void Building::setSize(tuple<int, int> newsize) { size = newsize; }
-void Building::setWhereToGet(string newwhereToGet) { whereToGet = newwhereToGet; }
+void Building::setWhereToGet(const string& newwhereToGet) { whereToGet = newwhereToGet; }
 void Building::setHousesAnimals(bool newhousesAnimals) { housesAnimals = newhousesAnimals; }
-void Building::setAnimalTypes(vector<string> newanimalTypes) { animalTypes = newanimalTypes; }
+void Building::setAnimalTypes(const vector<string>& newanimalTypes) { animalTypes = newanimalTypes; }
 void Building::setAnimalAmount(int newanimalAmount) { animalAmount = newanimalAmount; }
 
 // ---------- CROP CLASS ----------
 // Constructor
-Crop::Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int currentdaysToRegrowth, vector<tuple<string,int>> currentsellValue, vector<tuple<string,int>> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems): DataType(currentname, currenttype) {
+Crop::Crop(const string& currentname, const string& currenttype, const string& currentseason, int currentdaysToHarvest, int currentregrow, int currentdaysToRegrowth, const vector<tuple<string,int>>& currentsellValue, const vector<tuple<string,int>>& currentseedPrice, const vector<tuple<string, string, int>>& currentartisanItems): DataType(currentname, currenttype) {
     season = currentseason;
     daysToHarvest = currentdaysToHarvest;
     regrow = currentregrow;
@@ -136,17 +136,17 @@ vector<tuple<string,int>> Crop::getSeedPrice() const { return seedPrice; }
 vector<tuple<string, string, int>> Crop::getArtisanItems() const { return artisanItems; }
 
 // Setters
-void Crop::setSeason(string newseason) { season = newseason; }
+void Crop::setSeason(const string& newseason) { season = newseason; }
 void Crop::setDaysToHarvest(int newdaysToHarvest) { daysToHarvest = newdaysToHarvest; }
 void Crop::setRegrow(int newregrow) { regrow = newregrow; }
 void Crop::setDaysToRegrowth(int newdaysToRegrowth) { daysToRegrowth = newdaysToRegrowth; }
-void Crop::setSellValue(vector<tuple<string,int>> newsellValue) { sellValue = newsellValue; }
-void Crop::setSeedPrice(vector<tuple<string,int>> newseedPrice) { seedPrice = newseedPrice; }
-void Crop::setArtisanItems(vector<tuple<string, string, int>> newartisanItems) { artisanItems = newartisanItems; }
+void Crop::setSellValue(const vector<tuple<string,int>>& newsellValue) { sellValue = newsellValue; }
+void Crop::setSeedPrice(const vector<tuple<string,int>>& newseedPrice) { seedPrice = newseedPrice; }
+void Crop::setArtisanItems(const vector<tuple<string, string, int>>& newartisanItems) { artisanItems = newartisanItems; }
 
 // ---------- VILLAGER CLASS ----------
 // Constructor
-Villager::Villager(string currentname, string currenttype, bool currentsingle, string currentgiftLike, string currentgiftLove): DataType(currentname, currenttype) {
+Villager::Villager(const string& currentname, const string& currenttype, bool currentsingle, const string& currentgiftLike, const string& currentgiftLove): DataType(currentname, currenttype) {
     single = currentsingle;
     giftLike = currentgiftLike;
     giftLove = currentgiftLove;
@@ -161,9 +161,8 @@ string Villager::getGiftLike() const { return giftLike; }
 string Villager::getGiftLove() const { return giftLove; }
 
 // Setters
-void Villager::setSingle(bool newsingle) { single = newsingle; }
-void Villager::setGiftLike(string newgiftLike) { giftLike = newgiftLike; }
-void Villager::setGiftLove(string newgiftLove) { giftLove = newgiftLove; }
+void Villager::setGiftLike(const string& newgiftLike) { giftLike = newgiftLike; }
+void Villager::setGiftLove(const string& newgiftLove) { giftLove = newgiftLove; }
 
 /*
 ----------------------------------------------- CRUD MENU - MYFARM ------------------------------------------------
@@ -171,7 +170,7 @@ void Villager::setGiftLove(string newgiftLove) { giftLove = newgiftLove; }
 
 // Declaration of MyFarm's methods.
 // Constructor
-MyFarm::MyFarm(string currentfarmName, string currentfarmLayout) {
+MyFarm::MyFarm(const string& currentfarmName, const string& currentfarmLayout) {
     farmName = currentfarmName;
     farmLayout = currentfarmLayout;
 }
@@ -188,16 +187,16 @@ string MyFarm::getFarmLayout() const {
 }
 
 // Setters
-void MyFarm::setFarmName(string newfarmName) {
+void MyFarm::setFarmName(const string& newfarmName) {
     farmName = newfarmName;
 }
-void MyFarm::setFarmLayout(string newfarmLayout) {
+void MyFarm::setFarmLayout(const string& newfarmLayout) {
     farmLayout = newfarmLayout;
-}   
+}
 
 // Declaring MyAnimal's methods
 // Constructor
-MyAnimal::MyAnimal(string currentanimalName, string currentanimalType, int currentanimalRelationship) {
+MyAnimal::MyAnimal(const string& currentanimalName, const string& currentanimalType, int currentanimalRelationship) {
     animalName = currentanimalName;
     animalType = currentanimalType;
     animalRelationship = currentanimalRelationship;
@@ -218,10 +217,10 @@ int MyAnimal::getAnimalRelaionship() const {
 }
 
 // Setters
-void MyAnimal::setAnimalName(string newanimalName) {
+void MyAnimal::setAnimalName(const string& newanimalName) {
     animalName = newanimalName;
 }
-void MyAnimal::setAnimalType(string newanimalType) {
+void MyAnimal::setAnimalType(const string& newanimalType) {
     animalType = newanimalType;
 }
 void MyAnimal::setAnimalRelationship(int newanimalRelationship) {
@@ -233,7 +232,7 @@ void MyAnimal::addHeart(int addedRelationship) {
 
 // Declaring MyRelationship's methods
 // Constructor
-MyRelationship::MyRelationship(string currentvillagerName, int currentfriendship) {
+MyRelationship::MyRelationship(const string& currentvillagerName, int currentfriendship) {
     villagerName = currentvillagerName;
     friendship = currentfriendship;
 }
@@ -250,7 +249,7 @@ int MyRelationship::getFriendship() const {
 }
 
 //Setters
-void MyRelationship::setVillagerName(string newVillagerName) {
+void MyRelationship::setVillagerName(const string& newVillagerName) {
     villagerName = newVillagerName;
 }
 void MyRelationship::setFriendship(int newFriendship) {
@@ -265,7 +264,7 @@ void MyRelationship::decreaseFriendship(int reducedFriendship) {
 
 // Declaration of MyBuilding's methods.
 // Constructor
-MyBuilding::MyBuilding(string currentbuildingName, string currentbuildingType, int currentbuildingLevel) {
+MyBuilding::MyBuilding(const string& currentbuildingName, const string& currentbuildingType, int currentbuildingLevel) {
     buildingName = currentbuildingName;
     buildingType = currentbuildingType;
     buildingLevel = currentbuildingLevel;
@@ -286,10 +285,10 @@ int MyBuilding::getBuildingLevel() const {
 }
 
 // Setters
-void MyBuilding::setBuildingName(string newbuildingName) {
+void MyBuilding::setBuildingName(const string& newbuildingName) {
     buildingName = newbuildingName;
 }
-void MyBuilding::setBuildingType(string newbuildingType) {
+void MyBuilding::setBuildingType(const string& newbuildingType) {
     buildingType = newbuildingType;
 }
 void MyBuilding::setBuildingLevel(int newbuildingLevel) {

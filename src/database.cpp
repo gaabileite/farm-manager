@@ -7,7 +7,7 @@ static string columnText(sqlite3_stmt* stmt, int col) {
     return text ? string(reinterpret_cast<const char*>(text)) : string();
 }
 
-Database::Database(string path) {
+Database::Database(const string& path) {
     int rc = sqlite3_open(path.c_str(), &db);
     if (rc) {
         cout << "Erro ao abrir banco: " << sqlite3_errmsg(db) << endl;
@@ -204,7 +204,7 @@ vector<Building> Database::getAllBuildings() {
 
 // ---------- MYFARM ----------
 // Create:
-int Database::createFarm(string farmName, string farmLayout) {
+int Database::createFarm(const string& farmName, const string& farmLayout) {
     string sql = "INSERT INTO my_farms (farm_name, farm_layout) VALUES (?, ?);";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -218,7 +218,7 @@ int Database::createFarm(string farmName, string farmLayout) {
     return sqlite3_last_insert_rowid(db);   // devolve o id criado, pra usar em seguida
 }
 
-int Database::getOrCreateFarm(string farmName, string farmLayout) {
+int Database::getOrCreateFarm(const string& farmName, const string& farmLayout) {
     string sql = "SELECT id FROM my_farms WHERE farm_name = ?;";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -236,7 +236,7 @@ int Database::getOrCreateFarm(string farmName, string farmLayout) {
     return id;
 }
 
-void Database::addAnimal(int farmId, string animalName, string animalType, int relationship) {
+void Database::addAnimal(int farmId, const string& animalName, const string& animalType, int relationship) {
     string sql = "INSERT INTO my_animals (farm_id, animal_name, animal_type, animal_relationship) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -280,7 +280,7 @@ sqlite3* Database::getHandle() const {
 }
 
 // ---------- MY BUILDINGS ----------
-void Database::addBuilding(int farmId, string buildingName, string buildingType, int level) {
+void Database::addBuilding(int farmId, const string& buildingName, const string& buildingType, int level) {
     string sql = "INSERT INTO my_buildings (farm_id, building_name, building_type, building_level) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -335,7 +335,7 @@ vector<tuple<int,string,string,int>> Database::getMyBuildings(int farmId) {
 }
 
 // ---------- MY RELATIONSHIPS ----------
-void Database::addRelationship(int farmId, string villagerName, int friendship) {
+void Database::addRelationship(int farmId, const string& villagerName, int friendship) {
     string sql = "INSERT INTO my_relationships (farm_id, villager_name, friendship) VALUES (?, ?, ?);";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -394,7 +394,7 @@ tuple<string,string> Database::getFarmInfo(int farmId) {
     return make_tuple(name, layout);
 }
 
-void Database::updateFarmName(int farmId, string newName) {
+void Database::updateFarmName(int farmId, const string& newName) {
     string sql = "UPDATE my_farms SET farm_name = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -406,7 +406,7 @@ void Database::updateFarmName(int farmId, string newName) {
     sqlite3_finalize(stmt);
 }
 
-void Database::updateFarmLayout(int farmId, string newLayout) {
+void Database::updateFarmLayout(int farmId, const string& newLayout) {
     string sql = "UPDATE my_farms SET farm_layout = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
@@ -418,7 +418,7 @@ void Database::updateFarmLayout(int farmId, string newLayout) {
     sqlite3_finalize(stmt);
 }
 
-vector<tuple<int,string,string,int>> Database::findMyAnimalsByName(int farmId, string name) {
+vector<tuple<int,string,string,int>> Database::findMyAnimalsByName(int farmId, const string& name) {
     vector<tuple<int,string,string,int>> result;
     string sql = "SELECT id, animal_name, animal_type, animal_relationship "
                  "FROM my_animals WHERE farm_id = ? AND LOWER(animal_name) = LOWER(?);";
@@ -438,7 +438,7 @@ vector<tuple<int,string,string,int>> Database::findMyAnimalsByName(int farmId, s
     return result;
 }
 
-vector<tuple<int,string,string,int>> Database::findMyBuildingsByName(int farmId, string name) {
+vector<tuple<int,string,string,int>> Database::findMyBuildingsByName(int farmId, const string& name) {
     vector<tuple<int,string,string,int>> result;
     string sql = "SELECT id, building_name, building_type, building_level "
                  "FROM my_buildings WHERE farm_id = ? AND LOWER(building_name) = LOWER(?);";
