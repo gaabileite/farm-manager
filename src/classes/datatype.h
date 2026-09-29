@@ -17,7 +17,8 @@ class DataType {
         string type;
     public:
         // Constructor
-        DataType(string currentname, string currenttype);
+        // string by cont reference: avoids copying the content twice (once when called and another for the attribute).
+        DataType(const string& currentname, const string& currenttype);
 
         // Destructor
         virtual ~DataType();
@@ -27,8 +28,9 @@ class DataType {
         string getType() const;
 
         // Setters
-        void setName(string newname);
-        void setType(string newtype);
+        // Mesmo motivo do construtor.
+        void setName(const string& newname);
+        void setType(const string& newtype);
 };
 
 #endif

@@ -19,8 +19,12 @@ class Villager : public DataType {
     string giftLove;
 
    public:
-    // Constructor
-    Villager(string currentname, string currenttype, bool currentsingle, string currentgiftLike, string currentgiftLove);
+   // Constructor
+    Villager(const string& currentname, 
+            const string& currenttype, 
+            bool currentsingle,
+            const string& currentgiftLike, 
+            const string& currentgiftLove);
 
     // Destructor
     virtual ~Villager();
@@ -31,9 +35,8 @@ class Villager : public DataType {
     string getGiftLove() const;
 
     // Setters
-    void setSingle(bool newsingle);
-    void setGiftLike(string newgiftLike);
-    void setGiftLove(string newgiftLove);
+    void setGiftLike(const string& newgiftLike);
+    void setGiftLove(const string& newgiftLove);
 };
 
 #endif

@@ -24,7 +24,7 @@ class Database {
         vector<string> getBuildingAnimalTypes(int buildingId);
 
     public:
-        Database(string path);
+        Database(const string& path);
         ~Database();
 
         sqlite3* getHandle() const;
@@ -33,28 +33,28 @@ class Database {
         vector<Animal> getAllAnimals();
         vector<Building> getAllBuildings();
 
-        int createFarm(string farmName, string farmLayout); 
-        int getOrCreateFarm(string farmName, string farmLayout);
-        void addAnimal(int farmId, string animalName, string animalType, int relationship);
+        int createFarm(const string& farmName, const string& farmLayout);
+        int getOrCreateFarm(const string& farmName, const string& farmLayout);
+        void addAnimal(int farmId, const string& animalName, const string& animalType, int relationship);
         void updateAnimalRelationship(int animalId, int newRelationship);
         void removeAnimal(int animalId);
 
-        void addBuilding(int farmId, string buildingName, string buildingType, int level);
+        void addBuilding(int farmId, const string& buildingName, const string& buildingType, int level);
         void upgradeBuilding(int buildingId);
         void removeBuilding(int buildingId);
 
-        void addRelationship(int farmId, string villagerName, int friendship);
+        void addRelationship(int farmId, const string& villagerName, int friendship);
         void updateFriendship(int relationshipId, int newFriendship);
         vector<tuple<int,string,int>> getMyRelationships(int farmId);
 
         tuple<string,string> getFarmInfo(int farmId);
-        void updateFarmName(int farmId, string newName);
-        void updateFarmLayout(int farmId, string newLayout);
+        void updateFarmName(int farmId, const string& newName);
+        void updateFarmLayout(int farmId, const string& newLayout);
 
         vector<tuple<int,string,string,int>> getMyBuildings(int farmId);
 
-        vector<tuple<int,string,string,int>> findMyAnimalsByName(int farmId, string name);
-        vector<tuple<int,string,string,int>> findMyBuildingsByName(int farmId, string name);
+        vector<tuple<int,string,string,int>> findMyAnimalsByName(int farmId, const string& name);
+        vector<tuple<int,string,string,int>> findMyBuildingsByName(int farmId, const string& name);
 };
 
 #endif

@@ -14,35 +14,39 @@ using namespace std;
 #ifndef ANIMAL
 #define ANIMAL
 
-class Animal : public DataType
-
-{
+class Animal : public DataType {
    private:
-   string produces;
-   int daysToAdult;
-   int buyPrice;
-   vector<tuple<string, string, int>> artisanItem;
+      string produces;
+      int daysToAdult;
+      int buyPrice;
+      vector<tuple<string, string, int>> artisanItem;
 
    public:
+      // Constructor
+      // strings, vectors and tuples by const reference
+      // Avoids copying full lists from artisanItems for each new Animal object.
+      Animal(const string& currentname, 
+            const string& currenttype, 
+            const string& currentproduces,
+            int currentdaysToAdult, 
+            int currentbuyPrice,
+            const vector<tuple<string,string,int>>& currentartisanItem);
 
-   // Constructor
-   Animal(string currentname, string currenttype, string currentproduces, int currentdaysToAdult, int currentbuyPrice, vector<tuple<string, string, int>> currentartisanItem);
+      // Destructor
+      virtual ~Animal(); 
 
-   // Destructor
-   virtual ~Animal(); 
-
-   // Getters
-   string getProduces() const;
-   int getDaysToAdult() const;
-   int getBuyPrice() const;
-   vector<tuple<string, string, int>> getArtisanItem() const;
+      // Getters
+      string getProduces() const;
+      int getDaysToAdult() const;
+      int getBuyPrice() const;
+      vector<tuple<string, string, int>> getArtisanItem() const;
 
 
-   // Setters
-   void setProduces(string newproduces);
-   void setDaysToAdult(int newdaysToAdult);
-   void setBuyPrice(int newbuyPrice);
-   void setArtisanItem(vector<tuple<string, string, int>> newartisanItem);
+      // Setters
+      void setProduces(const string& newproduces);
+      void setDaysToAdult(int newdaysToAdult);
+      void setBuyPrice(int newbuyPrice);
+      void setArtisanItem(const vector<tuple<string,string,int>>& newartisanItem);
 };
 
 #endif

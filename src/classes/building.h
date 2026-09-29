@@ -15,42 +15,52 @@ using namespace std;
 
 class Building: public DataType {
     private:
-    vector<tuple<string, int>> constructionMaterials;
-    tuple<int, int> size;
-    string whereToGet;
-    bool housesAnimals;
-    vector<string> animalTypes;
-    int animalAmount;
+        vector<tuple<string, int>> constructionMaterials;
+        tuple<int, int> size;
+        string whereToGet;
+        bool housesAnimals;
+        vector<string> animalTypes;
+        int animalAmount;
 
     public:
-    // Two overloaded constructors.
+        // Two overloaded constructors.
+        // strings, vectors and tuples by const reference
+        // Avoids copying full lists from constructionMaterials, size and animalTypes for each new Building object.
 
-    // Constructor for buildings that do NOT house animals.
-    // housesAnimals is set internally to false, animalTypes and animalAmount stay empty.
-    Building(string currentname, string currenttype, vector<tuple<string, int>> constructionMaterials, tuple<int, int> size, string whereToGet);
+        // Constructor for buildings that do NOT house animals.
+        Building(const string& currentname, 
+                const string& currenttype,
+                const vector<tuple<string,int>>& constructionMaterials,
+                tuple<int,int> size, 
+                const string& whereToGet);
 
-    // Constructor for buildings that DO house animals.
-    // housesAnimals is set internally to true, animalTypes and animalAmount are filled.
-    Building(string currentname, string currenttype, vector<tuple<string, int>> constructionMaterials, tuple<int, int> size, string whereToGet, vector<string> animalTypes, int animalAmount);
+        // Constructor for buildings that DO house animals.
+        Building(const string& currentname, 
+            const string& currenttype,
+                const vector<tuple<string,int>>& constructionMaterials,
+                tuple<int,int> size, 
+                const string& whereToGet,
+                const vector<string>& animalTypes, 
+                int animalAmount);
 
-    // Destructor
-    virtual ~Building();
+        // Destructor
+        virtual ~Building();
 
-    // Getters
-    vector<tuple<string, int>> getConstructionMaterials() const;
-    tuple<int, int> getSize() const;
-    string getWhereToGet() const;
-    bool getHousesAnimals() const;
-    vector<string> getAnimalTypes() const;
-    int getAnimalAmount() const;
+        // Getters
+        vector<tuple<string, int>> getConstructionMaterials() const;
+        tuple<int, int> getSize() const;
+        string getWhereToGet() const;
+        bool getHousesAnimals() const;
+        vector<string> getAnimalTypes() const;
+        int getAnimalAmount() const;
 
-    // Setters
-    void setConstructionMaterials(vector<tuple<string, int>> newconstructionMaterials);
-    void setSize(tuple<int, int> newsize);
-    void setWhereToGet(string newwhereToGet);
-    void setHousesAnimals(bool newhousesAnimals);
-    void setAnimalTypes(vector<string> newanimalTypes);
-    void setAnimalAmount(int newanimalAmount);
+        // Setters
+        void setConstructionMaterials(const vector<tuple<string,int>>& newconstructionMaterials);
+        void setSize(tuple<int, int> newsize);
+        void setWhereToGet(const string& newwhereToGet);
+        void setHousesAnimals(bool newhousesAnimals);
+        void setAnimalTypes(const vector<string>& newanimalTypes);
+        void setAnimalAmount(int newanimalAmount);
 };
 
 #endif

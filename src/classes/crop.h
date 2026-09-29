@@ -15,38 +15,48 @@ using namespace std;
 
 class Crop : public DataType {
    private:
-    string season;
-    int daysToHarvest;
-    int regrow;
-    int daysToRegrowth;
-    vector<tuple<string, int>> sellValue;
-    vector<tuple<string, int>> seedPrice;
-    vector<tuple<string, string, int>> artisanItems;
+        string season;
+        int daysToHarvest;
+        int regrow;
+        int daysToRegrowth;
+        vector<tuple<string, int>> sellValue;
+        vector<tuple<string, int>> seedPrice;
+        vector<tuple<string, string, int>> artisanItems;
 
    public:
-    // Constructor
-    Crop(string currentname, string currenttype, string currentseason, int currentdaysToHarvest, int currentregrow, int daysToRegrowth, vector<tuple<string,int>> currentsellValue, vector<tuple<string, int>> currentseedPrice, vector<tuple<string, string, int>> currentartisanItems);
+        // Constructor
+        // strings, vectors and tuples by const reference
+        // Avoids copying full lists from sellValue, seedPrice and artisanItems for each new Crop object.
+        Crop(const string& currentname, 
+            const string& currenttype, 
+            const string& currentseason,
+            int currentdaysToHarvest, 
+            int currentregrow, 
+            int daysToRegrowth,
+            const vector<tuple<string,int>>& currentsellValue,
+            const vector<tuple<string,int>>& currentseedPrice,
+            const vector<tuple<string,string,int>>& currentartisanItems);
 
-    // Destructor
-    virtual ~Crop();
+        // Destructor
+        virtual ~Crop();
 
-    // Getters
-    string getSeason() const;
-    int getDaysToHarvest() const;
-    int getRegrow() const;
-    int getDaysToRegrowth() const;
-    vector<tuple<string,int>> getSellValue() const;
-    vector<tuple<string,int>> getSeedPrice() const;
-    vector<tuple<string, string, int>> getArtisanItems() const;
+        // Getters
+        string getSeason() const;
+        int getDaysToHarvest() const;
+        int getRegrow() const;
+        int getDaysToRegrowth() const;
+        vector<tuple<string,int>> getSellValue() const;
+        vector<tuple<string,int>> getSeedPrice() const;
+        vector<tuple<string, string, int>> getArtisanItems() const;
 
-    // Setters
-    void setSeason(string newseason);
-    void setDaysToHarvest(int newdaysToHarvest);
-    void setRegrow(int newregrow);
-    void setDaysToRegrowth(int newdaysToRegrowth);
-    void setSellValue(vector<tuple<string,int>> newsellValue);
-    void setSeedPrice(vector<tuple<string,int>> newseedPrice);
-    void setArtisanItems(vector<tuple<string, string, int>> newartisanItems);
+        // Setters
+        void setSeason(const string& newseason);
+        void setDaysToHarvest(int newdaysToHarvest);
+        void setRegrow(int newregrow);
+        void setDaysToRegrowth(int newdaysToRegrowth);
+        void setSellValue(const vector<tuple<string,int>>& newsellValue);
+        void setSeedPrice(const vector<tuple<string,int>>& newseedPrice);
+        void setArtisanItems(const vector<tuple<string,string,int>>& newartisanItems);
 };
 
 #endif

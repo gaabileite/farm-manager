@@ -12,15 +12,22 @@ class MyAnimal {
         int animalRelationship;
 
     public:
-        MyAnimal(string currentanimalName, string currentanimalType, int currentanimalRelationship);
+        // Constructor
+        MyAnimal(const string& currentanimalName, 
+                const string& currentanimalType, 
+                int currentanimalRelationship);
+
+        // Destructor
         virtual ~MyAnimal();
 
+        // Getters
         string getAnimalName() const;
         string getAnimalType() const;
         int getAnimalRelaionship() const;
 
-        void setAnimalName(string newanimalName);
-        void setAnimalType(string newanimalType);
+        // Setters
+        void setAnimalName(const string& newanimalName);
+        void setAnimalType(const string& newanimalType);
         void setAnimalRelationship(int newanimalRelationship);
         void addHeart(int addedRelationship);
 };

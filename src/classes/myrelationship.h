@@ -7,25 +7,25 @@ using namespace std;
 
 class MyRelationship { 
     private: 
-    string villagerName; 
-    int friendship; 
+        string villagerName; 
+        int friendship; 
 
     public: 
-    //Constructor 
-    MyRelationship(string currentvillagerName, int currentfriendship); 
-    
-    //Destructor 
-    virtual ~MyRelationship(); 
-    
-    //Getters 
-    string getVillagerName() const; 
-    int getFriendship() const; 
-    
-    //Setters 
-    void setVillagerName(string newVillagerName); 
-    void setFriendship(int newFriendship);
-    void increaseFriendship(int addedFriendship); 
-    void decreaseFriendship(int reducedFriendship); 
+        //Constructor 
+        MyRelationship(const string& currentvillagerName, int currentfriendship);
+        
+        //Destructor 
+        virtual ~MyRelationship(); 
+        
+        //Getters 
+        string getVillagerName() const; 
+        int getFriendship() const; 
+        
+        //Setters 
+        void setVillagerName(const string& newVillagerName);
+        void setFriendship(int newFriendship);
+        void increaseFriendship(int addedFriendship); 
+        void decreaseFriendship(int reducedFriendship); 
 }; 
 
 #endif

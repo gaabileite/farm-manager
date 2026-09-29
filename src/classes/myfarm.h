@@ -24,7 +24,8 @@ class MyFarm {
 
     public:
         // Constructor
-        MyFarm(string currentfarmName, string currentfarmLayout);
+        MyFarm(const string& currentfarmName, 
+               const string& currentfarmLayout);
 
         // Destructor
         virtual ~MyFarm();
@@ -34,9 +35,8 @@ class MyFarm {
         string getFarmLayout() const;
 
         // Setters
-        void setFarmName(string newfarmName);
-        void setFarmLayout(string newfarmLayout);
-
+        void setFarmName(const string& newfarmName);
+        void setFarmLayout(const string& newfarmLayout);
 };
 
 #endif
