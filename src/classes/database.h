@@ -35,7 +35,7 @@ class Database {
         vector<string> getAllVillagerNames();
 
         int createFarm(const string& farmName, const string& farmLayout);
-        int getOrCreateFarm(const string& farmName, const string& farmLayout);
+        int getOrCreateFarm(const string& defaultName, const string& defaultLayout);
         void addAnimal(int farmId, const string& animalName, const string& animalType, int relationship);
         void updateAnimalRelationship(int animalId, int newRelationship);
         void removeAnimal(int animalId);

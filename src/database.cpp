@@ -232,11 +232,13 @@ int Database::createFarm(const string& farmName, const string& farmLayout) {
     return sqlite3_last_insert_rowid(db);   // devolve o id criado, pra usar em seguida
 }
 
-int Database::getOrCreateFarm(const string& farmName, const string& farmLayout) {
-    string sql = "SELECT id FROM my_farms WHERE farm_name = ?;";
+// Loads the saved farm whatever its current name (renaming it must not lose it),
+// and only creates one with the default name/layout when no farm exists yet.
+// Same "first farm" rule as gui/tools/export-data.js, so both show the same farm.
+int Database::getOrCreateFarm(const string& defaultName, const string& defaultLayout) {
+    string sql = "SELECT id FROM my_farms ORDER BY id LIMIT 1;";
     sqlite3_stmt* stmt;
     sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, nullptr);
-    sqlite3_bind_text(stmt, 1, farmName.c_str(), -1, SQLITE_TRANSIENT);
 
     int id = -1;
     if (sqlite3_step(stmt) == SQLITE_ROW) {
@@ -245,7 +247,7 @@ int Database::getOrCreateFarm(const string& farmName, const string& farmLayout) 
     sqlite3_finalize(stmt);
 
     if (id == -1) {
-        id = createFarm(farmName, farmLayout);
+        id = createFarm(defaultName, defaultLayout);
     }
     return id;
 }
