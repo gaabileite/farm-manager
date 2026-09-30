@@ -5,6 +5,24 @@
 #include <algorithm>
 #include <cctype>
 #include <limits>
+#include <cstdlib>
+
+// The GUI reads a snapshot of the databases (gui/js/data.js), not the .db files
+// themselves, so it's regenerated after every change to the player's save.
+// Needs Node 22+ on the PATH; without it the program keeps working and only
+// the GUI stays out of date.
+static void refreshGui() {
+#ifdef _WIN32
+    int result = system("node gui/tools/export-data.js > NUL 2>&1");
+#else
+    int result = system("node gui/tools/export-data.js > /dev/null 2>&1");
+#endif
+    static bool warned = false;
+    if (result != 0 && !warned) {
+        cout << "(GUI not updated: run \"node gui/tools/export-data.js\" manually, it needs Node 22+.)\n";
+        warned = true;
+    }
+}
 
 void showCropMenu(const vector<Crop>& crops) {
     while (true) {
@@ -120,12 +138,14 @@ void showFarmInfoMenu(Database& db, int farmId) {
             cout << "New name: ";
             getline(cin, newName);
             db.updateFarmName(farmId, newName);
+            refreshGui();
         } else if (choice == 2) {
             cin.ignore();
             string newLayout;
             cout << "New layout: ";
             getline(cin, newLayout);
             db.updateFarmLayout(farmId, newLayout);
+            refreshGui();
         }
     }
 }
@@ -151,6 +171,7 @@ void showMyAnimalsMenu(Database& db, int farmId) {
             cout << "Type (e.g. Cow, Chicken): ";
             getline(cin, type);
             db.addAnimal(farmId, name, type, 0);
+            refreshGui();
             cout << "Animal added!\n";
         }
         else if (choice == 2) {
@@ -160,12 +181,14 @@ void showMyAnimalsMenu(Database& db, int farmId) {
             cout << "New friendship level: ";
             cin >> newRel;
             db.updateAnimalRelationship(id, newRel);
+            refreshGui();
             cout << "Updated!\n";
         }
         else if (choice == 3) {
             int id = resolveAnimalId(db, farmId);
             if (id != -1) {
                 db.removeAnimal(id);
+                refreshGui();
                 cout << "Removed!\n";
             }
         }
@@ -235,9 +258,11 @@ void showMyRelationshipsMenu(Database& db, int farmId, const vector<string>& vil
             [&villager](const tuple<int,string,int>& r) { return toLower(get<1>(r)) == toLower(*villager); });
         if (existing != relationships.end()) {
             db.updateFriendship(get<0>(*existing), friendship);
+            refreshGui();
             cout << *villager << " updated!\n";
         } else {
             db.addRelationship(farmId, *villager, friendship);
+            refreshGui();
             cout << *villager << " added!\n";
         }
     }
@@ -265,6 +290,7 @@ void showMyBuildingsMenu(Database& db, int farmId, const vector<Building>& possi
             int id = resolveBuildingId(db, farmId);
             if (id != -1) {
                 db.removeBuilding(id);
+                refreshGui();
                 cout << "Removed!\n";
             }
         }

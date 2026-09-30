@@ -106,8 +106,10 @@ uses the built-in `node:sqlite` module (available from Node 22 on, no `npm`
 dependency at all) to read the `.db` files directly — nothing is made up or typed by
 hand.
 
-To regenerate the data (for example, after playing `farm_manager.exe` and saving
-progress to `myFarmData.db`):
+`farm_manager` regenerates it automatically after every change made in its "My Farm"
+menus, so reloading the page is enough to see them (this needs Node 22+ on the PATH;
+without it the program prints a warning once and keeps working). To regenerate it by
+hand, for example after editing a `.db` file directly:
 
 ```
 node gui/tools/export-data.js
@@ -140,10 +142,10 @@ runs.
 
 ## Known limitations / next steps
 
-- `tools/export-data.js` is an on-demand export, not a live server: if the player
-  saves new progress to `myFarmData.db`, the script needs to be re-run to refresh
-  `js/data.js`. A natural next step would be a local HTTP server (Node, no
-  dependencies) serving the same data live via `fetch()`.
+- `js/data.js` is a snapshot, not a live connection: `farm_manager` regenerates it
+  after each change, but an open page still has to be reloaded to show it. A natural
+  next step would be a local HTTP server (Node, no dependencies) serving the same
+  data live via `fetch()`.
 - Alternatively, this folder could become the *view* layer of a desktop app
   (Electron, Tauri, or a simple webview) that replaces the current console menu with
   this interface, querying the database directly on every open.
