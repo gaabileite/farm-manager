@@ -1,270 +1,379 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Farm Manager - Documentação do Projeto</title>
-    <style>
-        :root {
-            --primary: #2e7d32;
-            --primary-dark: #1b5e20;
-            --bg: #f4f9f4;
-            --card-bg: #ffffff;
-            --text: #2c3e50;
-            --code-bg: #1e1e1e;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Farmpedia — Enciclopédia e gerenciador de fazenda para Stardew Valley</title>
+<meta name="description" content="Projeto de POO em C++17 e SQLite3 da disciplina CIN0135 (CIn/UFPE).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@400;600;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6efd9; --paper:#fffaf0; --ink:#33210f; --muted:#6d5a43;
+  --wood:#4a2e1b; --wood2:#7a4b2a; --gold:#e9b634; --grass:#4f7d2c; --grass-d:#2f5219;
+  --line:#dccfa8; --code-bg:#22180f; --code-fg:#f4e3b2;
+  --pixel:'Press Start 2P',monospace; --body:'Nunito',system-ui,sans-serif; --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.05rem/1.7 var(--body)}
+a{color:var(--grass-d)}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.wrap{max-width:1040px;margin:0 auto;padding:0 20px}
 
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            line-height: 1.6;
-            background-color: var(--bg);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-        }
+/* Navegação */
+nav{position:sticky;top:0;z-index:10;background:var(--wood);border-bottom:4px solid var(--gold)}
+nav .wrap{display:flex;gap:4px;overflow-x:auto;align-items:center}
+nav strong{font:400 .7rem var(--pixel);color:var(--gold);padding:16px 14px 16px 0;white-space:nowrap}
+nav a{color:#f3e7c8;text-decoration:none;font-weight:600;font-size:.92rem;padding:14px 10px;white-space:nowrap}
+nav a:hover{color:var(--gold)}
 
-        header {
-            background-color: var(--primary);
-            color: white;
-            text-align: center;
-            padding: 2.5rem 1rem;
-        }
+/* Hero */
+.hero{background:var(--grass);color:#fff;border-bottom:8px solid var(--grass-d);
+  background-image:linear-gradient(90deg,rgba(0,0,0,.06) 50%,transparent 50%),linear-gradient(rgba(0,0,0,.06) 50%,transparent 50%);
+  background-size:48px 48px}
+.hero .wrap{padding-top:72px;padding-bottom:64px;display:grid;grid-template-columns:1.3fr 1fr;gap:40px;align-items:center}
+.hero h1{font:400 clamp(1.9rem,5vw,3.2rem)/1.2 var(--pixel);margin:0 0 20px;color:var(--gold);text-shadow:4px 4px 0 var(--wood)}
+.hero p{margin:0 0 24px;font-size:1.15rem;max-width:34em}
+.btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn{font:400 .7rem var(--pixel);text-decoration:none;padding:14px 18px;border:3px solid var(--wood);background:var(--gold);color:var(--wood);box-shadow:0 4px 0 var(--wood);border-radius:4px;display:inline-block}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 0 var(--wood)}
+.btn:active{transform:translateY(3px);box-shadow:0 1px 0 var(--wood)}
+.btn.alt{background:var(--paper)}
+.stats{background:var(--paper);color:var(--ink);border:5px solid var(--wood);outline:3px solid var(--gold);border-radius:6px;padding:20px;display:grid;grid-template-columns:1fr 1fr;gap:16px;box-shadow:6px 6px 0 rgba(0,0,0,.25)}
+.stats b{display:block;font:400 1.3rem var(--pixel);color:var(--grass-d)}
+.stats span{font-size:.85rem;color:var(--muted);line-height:1.3;display:block;margin-top:6px}
+@media(max-width:820px){.hero .wrap{grid-template-columns:1fr;padding-top:48px}}
 
-        header h1 {
-            margin: 0;
-            font-size: 2.5rem;
-        }
+/* Seções */
+section{padding:56px 0 8px}
+h2{font:400 1.05rem/1.5 var(--pixel);color:var(--wood);margin:0 0 8px}
+.lead{color:var(--muted);margin:0 0 28px;max-width:46em}
+.panel{background:var(--paper);border:3px solid var(--wood);border-radius:6px;padding:22px;box-shadow:5px 5px 0 rgba(74,46,27,.18)}
+.grid{display:grid;gap:18px}
+.g3{grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.g2{grid-template-columns:repeat(auto-fit,minmax(320px,1fr))}
+h3{margin:0 0 6px;font-size:1.1rem;font-weight:800;color:var(--grass-d)}
+.panel p{margin:0 0 10px}
+.panel ul{margin:0;padding-left:20px}
+.tag{display:inline-block;font:600 .75rem var(--mono);background:var(--wood);color:var(--gold);padding:2px 8px;border-radius:3px;margin-bottom:10px}
+.book-num{border-left:8px solid var(--gold)}
+.feature{border-left-color:var(--grass)}
 
-        header p {
-            margin-top: 0.5rem;
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
+/* Código */
+code{font-family:var(--mono);font-size:.88em;background:#eadfbd;padding:1px 6px;border-radius:3px}
+pre{background:var(--code-bg);color:var(--code-fg);border:3px solid var(--wood);border-radius:6px;padding:16px;overflow-x:auto;font:400 .88rem/1.6 var(--mono);margin:0 0 6px}
+pre code{background:none;padding:0}
+.cap{font:600 .8rem var(--mono);color:var(--muted);margin:16px 0 6px}
+.c{color:#9a8b6a}
 
-        .container {
-            max-width: 900px;
-            margin: 2rem auto;
-            padding: 0 1rem;
-        }
+/* Tabela */
+.tbl{overflow-x:auto}
+table{border-collapse:collapse;width:100%;min-width:560px;background:var(--paper)}
+th,td{text-align:left;padding:12px 14px;border-bottom:2px solid var(--line);vertical-align:top;font-size:.98rem}
+th{background:var(--wood);color:var(--gold);font-weight:800;font-size:.9rem}
 
-        section {
-            background: var(--card-bg);
-            border-radius: 8px;
-            padding: 1.8rem;
-            margin-bottom: 1.8rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-        }
+/* Diagrama */
+.diagram{background:#fff;border:3px solid var(--wood);border-radius:6px;padding:16px;overflow-x:auto;text-align:center}
+.mermaid{min-height:120px}
 
-        h2 {
-            color: var(--primary-dark);
-            border-bottom: 2px solid var(--bg);
-            padding-bottom: 0.5rem;
-            margin-top: 0;
-        }
+/* Vídeo */
+.video{position:relative;aspect-ratio:16/9;background:var(--code-bg);border:5px solid var(--wood);outline:3px solid var(--gold);border-radius:6px;overflow:hidden}
+.video iframe,.video .ph{position:absolute;inset:0;width:100%;height:100%;border:0}
+.ph{display:grid;place-items:center;text-align:center;color:var(--code-fg);padding:20px}
 
-        ul {
-            padding-left: 1.2rem;
-        }
+/* Equipe */
+.team .panel{text-align:center;padding:18px}
+.team strong{display:block;line-height:1.3}
+.team a{font-size:.88rem;word-break:break-all}
 
-        li {
-            margin-bottom: 0.5rem;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .team-member {
-            background: var(--bg);
-            padding: 1rem;
-            border-radius: 6px;
-            text-align: center;
-            font-weight: bold;
-        }
-
-        .team-member span {
-            display: block;
-            font-size: 0.85rem;
-            font-weight: normal;
-            color: #555;
-            margin-top: 0.3rem;
-        }
-
-        pre {
-            background: var(--code-bg);
-            color: #dcdcdc;
-            padding: 1rem;
-            border-radius: 6px;
-            overflow-x: auto;
-            font-size: 0.9rem;
-        }
-
-        code {
-            font-family: 'Consolas', 'Courier New', Courier, monospace;
-        }
-
-        .diagram-box {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            padding: 1.2rem;
-            font-family: monospace;
-            white-space: pre;
-            overflow-x: auto;
-            line-height: 1.4;
-        }
-
-        .video-placeholder, .report-placeholder {
-            background: #e8f5e9;
-            border: 2px dashed var(--primary);
-            border-radius: 8px;
-            padding: 2rem;
-            text-align: center;
-            color: var(--primary-dark);
-            margin-top: 1rem;
-        }
-
-        .btn-link {
-            display: inline-block;
-            background-color: var(--primary);
-            color: white;
-            padding: 0.6rem 1.2rem;
-            text-decoration: none;
-            border-radius: 4px;
-            font-weight: bold;
-            margin-right: 0.5rem;
-            margin-top: 0.5rem;
-            transition: background 0.2s;
-        }
-
-        .btn-link:hover {
-            background-color: var(--primary-dark);
-        }
-
-        .btn-disabled {
-            background-color: #ccc;
-            cursor: not-allowed;
-        }
-
-        footer {
-            text-align: center;
-            padding: 1.5rem;
-            font-size: 0.9rem;
-            color: #666;
-        }
-    </style>
+footer{margin-top:64px;background:var(--wood);color:#e8dab5;text-align:center;padding:28px 20px;border-top:4px solid var(--gold);font-size:.92rem}
+footer a{color:var(--gold)}
+</style>
 </head>
 <body>
 
-    <header>
-        <h1>Farm Manager</h1>
-        <p>Sistema de Informação em C++ e SQLite para Consulta e Gestão de Fazendas</p>
-    </header>
+<nav aria-label="Seções">
+  <div class="wrap">
+    <strong>FARMPEDIA</strong>
+    <a href="#sobre">Sobre</a>
+    <a href="#livros">Livros</a>
+    <a href="#poo">POO</a>
+    <a href="#diagrama">Diagrama</a>
+    <a href="#dados">Banco de dados</a>
+    <a href="#executar">Executar</a>
+    <a href="#relatorio">Relatório</a>
+    <a href="#video">Vídeo</a>
+    <a href="#equipe">Equipe</a>
+  </div>
+</nav>
 
-    <div class="container">
-
-        <!-- Integrantes -->
-        <section>
-            <h2>Equipe de Desenvolvimento</h2>
-            <div class="team-grid">
-                <div class="team-member">
-                    Gabriela Leite de Andrade Lima
-                    <span>glal2@cin.ufpe.br</span>
-                </div>
-                <div class="team-member">
-                    Sofia Sobreira de Mendonça
-                    <span>ssm@cin.ufpe.br</span>
-                </div>
-                <div class="team-member">
-                    Kamilla Regina Menezes de Sousa
-                    <span>krms@cin.ufpe.br</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Visão Geral -->
-        <section>
-            <h2>Sobre o Projeto</h2>
-            <p>O <strong>Farm Manager</strong> é uma aplicação desenvolvida em C++ com suporte a banco de dados SQLite para gerenciar dados do catálogo do jogo e acompanhar o progresso da fazenda do jogador. Na interface gráfica, cada uma das classes do sistema é acessada visualmente como um livro.</p>
-        </section>
-
-        <!-- Arquitetura POO e Diagrama -->
-        <section>
-            <h2>Arquitetura e Conceitos de POO</h2>
-            <p>O sistema foi modelado utilizando conceitos fundamentais de Orientação a Objetos:</p>
-            <ul>
-                <li><strong>Herança:</strong> A classe <code>DataType</code> atua como classe mãe, fornecendo a estrutura base para as subclasse de referência do jogo (<code>Crop</code>, <code>Villager</code>, <code>Animal</code> e <code>Building</code>).</li>
-                <li><strong>Composição:</strong> A fazenda do jogador é representada pela classe <code>MyFarm</code> de forma independente, agrupando as coleções próprias do jogador (<code>myAnimals</code>, <code>myBuildings</code> e <code>myRelationships</code>).</li>
-            </ul>
-
-            <h3>Modelagem das Classes</h3>
-            <div class="diagram-box">
-Catálogo de Referência (Herança):
-DataType
-  ├─ Crop
-  ├─ Villager
-  ├─ Animal
-  └─ Building
-
-Fazenda do Jogador (Composição):
-MyFarm
-  ├─ myAnimals (vector&lt;MyAnimal&gt;)
-  ├─ myBuildings (vector&lt;MyBuilding&gt;)
-  └─ myRelationships (vector&lt;MyRelationship&gt;)
-            </div>
-        </section>
-
-        <!-- Operações CRUD -->
-        <section>
-            <h2>Funcionalidades e Operações CRUD</h2>
-            <ul>
-                <li><strong>Consulta (Read):</strong> Leitura das informações estáticas do catálogo do jogo e visualização dos dados da fazenda ativa.</li>
-                <li><strong>Cadastro (Create):</strong> Registro de novos animais, construções e relacionamentos na fazenda.</li>
-                <li><strong>Atualização (Update):</strong> Alteração dos níveis de amizade, evolução de edifícios e atualização dos dados salvos no SQLite.</li>
-                <li><strong>Exclusão (Delete):</strong> Remoção de registros da fazenda do jogador.</li>
-            </ul>
-        </section>
-
-        <!-- Instruções de Compilação -->
-        <section>
-            <h2>Como Compilar e Executar</h2>
-            <p>Como o arquivo <code>sqlite3.c</code> é escrito em C, ele deve ser compilado separadamente usando <code>gcc</code> antes do código em C++[cite: 5]. <strong>Atenção:</strong> Execute os comandos sempre a partir da raiz do projeto, pois os caminhos do banco de dados são relativos.</p>
-            
-            <h3>Linux / macOS</h3>
-            <pre><code>gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp src/definitions.cpp sqlite3.o -o farm_manager
-./farm_manager</code></pre>
-
-            <h3>Windows (PowerShell)</h3>
-            <pre><code>gcc -c external/sqlite3.c -o sqlite3.o
-g++ -std=c++17 src/main.cpp src/database.cpp src/filters.cpp src/menu.cpp src/definitions.cpp sqlite3.o -o farm_manager.exe
-.\farm_manager.exe</code></pre>
-        </section>
-
-        <!-- Vídeo de Apresentação -->
-        <section>
-            <h2>Vídeo Demonstrativo</h2>
-            <div class="video-placeholder">
-                <p>🎥 <strong>Vídeo em breve!</strong></p>
-                <p>A apresentação demonstrando as funcionalidades do sistema e os conceitos de POO aplicados será disponibilizada aqui.</p>
-            </div>
-        </section>
-
-        <!-- Links e Recursos -->
-        <section>
-            <h2>Recursos do Projeto</h2>
-            <a href="https://github.com/gaabileite/farm-manager" class="btn-link" target="_blank">Acessar Repositório no GitHub</a>
-            <a href="#" class="btn-link btn-disabled" onclick="alert('O relatório será disponibilizado em breve!'); return false;">Relatório (PDF em breve)</a>
-        </section>
-
+<header class="hero">
+  <div class="wrap">
+    <div>
+      <h1>FARMPEDIA</h1>
+      <p>Uma enciclopédia de Stardew Valley e gerenciador de fazenda em C++, com consulta ao catálogo do jogo e CRUD completo da sua propriedade em SQLite3.</p>
+      <div class="btns">
+        <a class="btn" href="https://github.com/gaabileite/farm-manager" target="_blank" rel="noopener">Ver no GitHub</a>
+        <a class="btn alt" href="#video">Assistir ao vídeo</a>
+      </div>
     </div>
+    <div class="stats" aria-label="Resumo do projeto">
+      <div><b>5</b><span>livros (módulos) do sistema</span></div>
+      <div><b>2</b><span>bancos de dados SQLite</span></div>
+      <div><b>C++17</b><span>linguagem do projeto</span></div>
+      <div><b>CRUD</b><span>na fazenda do jogador</span></div>
+    </div>
+  </div>
+</header>
 
-    <footer>
-        <p>Projeto Prático para a disciplina de Estruturas de Dados Orientadas a Objetos (EDOO) — UFPE</p>
-    </footer>
+<main class="wrap">
 
+<!-- SOBRE -->
+<section id="sobre">
+  <h2>Sobre o projeto</h2>
+  <p class="lead">Trabalho prático da disciplina CIN0135 — Estruturas de Dados Orientadas a Objetos (CIn/UFPE, 2026.2).</p>
+  <div class="grid g2">
+    <div class="panel">
+      <h3>O problema</h3>
+      <p>Stardew Valley tem dezenas de moradores, dezenas de tipos de plantações, animais, construções e missões. Durante a partida, é difícil lembrar preços, estações de cultivo, presentes favoritos e o que já existe na fazenda.</p>
+    </div>
+    <div class="panel">
+      <h3>A solução</h3>
+      <p>O Farmpedia reúne o catálogo do jogo em um banco somente leitura e permite que o jogador registre, consulte, atualize e remova os dados da própria fazenda em um segundo banco.</p>
+    </div>
+  </div>
+</section>
+
+<!-- LIVROS -->
+<section id="livros">
+  <h2>Os 5 livros do Farmpedia</h2>
+  <p class="lead">O sistema é dividido em quatro livros de consulta (catálogo) e um livro de gerenciamento (a fazenda do jogador).</p>
+  <div class="grid g3">
+    <div class="panel book-num">
+      <span class="tag">Catálogo</span><h3>Livro 1 — Crops</h3>
+      <ul><li>Estação e dias até a colheita</li><li>Preço de venda por qualidade</li><li>Preço das sementes e itens artesanais</li></ul>
+    </div>
+    <div class="panel book-num">
+      <span class="tag">Catálogo</span><h3>Livro 2 — Villagers</h3>
+      <ul><li>Presentes amados, gostados, neutros e odiados</li><li>Níveis de amizade (corações)</li><li>Rotinas e relacionamento</li></ul>
+    </div>
+    <div class="panel book-num">
+      <span class="tag">Catálogo</span><h3>Livro 3 — Animals</h3>
+      <ul><li>Tipos de animais e seus produtos</li><li>Dias até a fase adulta</li><li>Preço de compra e derivados</li></ul>
+    </div>
+    <div class="panel book-num">
+      <span class="tag">Catálogo</span><h3>Livro 4 — Buildings</h3>
+      <ul><li>Materiais e custos</li><li>Capacidade para animais</li><li>Tamanho no grid</li></ul>
+    </div>
+    <div class="panel book-num feature" style="grid-column:1/-1">
+      <span class="tag">CRUD do jogador</span><h3>Livro 5 — My Farm</h3>
+      <div class="grid g2" style="gap:8px 24px">
+        <ul><li><strong>Create:</strong> adiciona animais, construções e relacionamentos</li><li><strong>Read:</strong> mostra o resumo completo da fazenda</li></ul>
+        <ul><li><strong>Update:</strong> atualiza afeição e amizade</li><li><strong>Delete:</strong> remove registros antigos</li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POO -->
+<section id="poo">
+  <h2>Conceitos de POO aplicados</h2>
+  <p class="lead">Onde cada conceito exigido na disciplina aparece no código e como foi usado.</p>
+  <div class="tbl">
+  <table>
+    <thead><tr><th>Conceito</th><th>Onde foi usado</th><th>Como</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Classes e objetos</strong></td><td><code>Crop</code>, <code>Villager</code>, <code>Animal</code>, <code>Building</code>, <code>MyFarm</code>, <code>MyAnimal</code>, <code>MyBuilding</code>, <code>MyRelationship</code></td><td>Cada tipo de dado possui sua classe dedicada; registros do banco de dados são instanciados como objetos em memória.</td></tr>
+      <tr><td><strong>Herança</strong></td><td><code>DataType</code> → <code>Crop</code>, <code>Villager</code>, <code>Animal</code>, <code>Building</code></td><td>A classe abstrata reúne o atributo <code>name</code> e métodos genéricos compartilhados pelas subclasses do catálogo.</td></tr>
+      <tr><td><strong>Composição</strong></td><td><code>MyFarm</code></td><td>A fazenda contém coleções (vetores) próprias de objetos <code>MyAnimal</code>, <code>MyBuilding</code> e <code>MyRelationship</code>.</td></tr>
+      <tr><td><strong>Polimorfismo</strong></td><td><code>virtual ~DataType()</code>, métodos virtuais nas classes do catálogo</td><td>Destrutor virtual garante a liberação correta de memória ao deletar instâncias através de ponteiros base <code>DataType*</code>.</td></tr>
+      <tr><td><strong>Modificadores de acesso</strong></td><td><code>private</code>, <code>protected</code> e <code>public</code> em todas as classes</td><td>Atributos mantidos protegidos/privados (encapsulamento) e acessados apenas via métodos públicos com validação.</td></tr>
+      <tr><td><strong>Ponteiros e referências</strong></td><td><code>sqlite3* db</code>, <code>const std::string&amp;</code></td><td>Uso de ponteiros C para manuseio da conexão SQLite3 e passagem por referência constante para evitar cópias custosas de strings e coleções.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p class="cap">Exemplo de código real do projeto</p>
+<pre><code><span class="c">// DataType.h — Classe base do catálogo do jogo</span>
+class DataType {
+protected:
+    std::string name; <span class="c">// protegido para ser herdado</span>
+public:
+    DataType(const std::string&amp; name); <span class="c">// referência constante</span>
+    virtual ~DataType() = default;     <span class="c">// destrutor virtual para polimorfismo</span>
+    std::string getName() const;      <span class="c">// encapsulamento (getter)</span>
+};
+
+<span class="c">// Crop.h — Herança de DataType</span>
+class Crop : public DataType {
+private:
+    std::string season;
+    int daysToHarvest;
+public:
+    Crop(const std::string&amp; name, const std::string&amp; season, int days)
+        : DataType(name), season(season), daysToHarvest(days) {}
+};
+
+<span class="c">// MyFarm.h — Composição e ponteiro para SQLite3</span>
+class MyFarm {
+private:
+    std::string farmName;
+    std::vector&lt;MyAnimal&gt; myAnimals; <span class="c">// composição</span>
+public:
+    void loadFarmData(sqlite3* db);   <span class="c">// uso de ponteiro do driver C</span>
+};</code></pre>
+</section>
+
+<!-- DIAGRAMA -->
+<section id="diagrama">
+  <h2>Diagrama de classes</h2>
+  <p class="lead">Estrutura de herança do catálogo e composição da fazenda do jogador.</p>
+  <div class="diagram">
+<pre class="mermaid" style="background:none;color:inherit;border:0">
+classDiagram
+  class DataType {
+    &lt;&lt;Abstract&gt;&gt;
+    #string name
+    +DataType(string name)
+    +getName() string
+  }
+  class Crop {
+    -string season
+    -int daysToHarvest
+    -vector~int~ sellValue
+    +Crop(string name, string season, int days)
+    +getSeason() string
+  }
+  class Villager {
+    -bool single
+    -vector~string~ giftsLove
+    +Villager(string name, bool single)
+  }
+  class Animal {
+    -string type
+    -string produces
+    -int buyPrice
+    +Animal(string name, string type)
+  }
+  class Building {
+    -int animalAmount
+    -bool housesAnimals
+    +Building(string name)
+  }
+  class MyFarm {
+    -string farmName
+    -string farmLayout
+    -vector~MyAnimal~ myAnimals
+    -vector~MyBuilding~ myBuildings
+    -vector~MyRelationship~ myRelationships
+    +MyFarm(string name)
+    +addAnimal(MyAnimal a)
+    +loadFarmData(sqlite3 db)
+  }
+  class MyAnimal {
+    -string name
+    -string type
+    -int hearts
+  }
+  class MyBuilding {
+    -string name
+    -int level
+  }
+  class MyRelationship {
+    -string villagerName
+    -int hearts
+  }
+
+  DataType &lt;|-- Crop
+  DataType &lt;|-- Villager
+  DataType &lt;|-- Animal
+  DataType &lt;|-- Building
+
+  MyFarm *-- MyAnimal
+  MyFarm *-- MyBuilding
+  MyFarm *-- MyRelationship
+</pre>
+  </div>
+</section>
+
+<!-- BANCO -->
+<section id="dados">
+  <h2>Banco de dados</h2>
+  <p class="lead">Arquitetura com dois bancos SQLite3, separando o que é do jogo do que é do jogador.</p>
+  <div class="grid g2">
+    <div class="panel"><span class="tag">somente leitura</span><h3><code>gameData.db</code></h3><p>Catálogo original: plantações, moradores, animais e construções.</p></div>
+    <div class="panel"><span class="tag">leitura e escrita</span><h3><code>myFarmData.db</code></h3><p>Progresso do jogador: animais, construções e relacionamentos da fazenda.</p></div>
+  </div>
+</section>
+
+<!-- EXECUTAR -->
+<section id="executar">
+  <h2>Como compilar e executar</h2>
+  <p class="lead">O <code>sqlite3.c</code> é C puro e precisa ser compilado com <code>gcc</code> antes do código C++17. Execute sempre da raiz do projeto, para que os caminhos dos bancos funcionem.</p>
+  <div class="grid g2">
+    <div>
+      <p class="cap">Linux / macOS</p>
+<pre><code>gcc -c external/sqlite3.c -o sqlite3.o
+g++ -std=c++17 src/main.cpp src/database.cpp \
+  src/filters.cpp src/menu.cpp src/definitions.cpp \
+  sqlite3.o -o farm_manager
+./farm_manager</code></pre>
+    </div>
+    <div>
+      <p class="cap">Windows (PowerShell)</p>
+<pre><code>gcc -c external/sqlite3.c -o sqlite3.o
+g++ -std=c++17 src/main.cpp src/database.cpp `
+  src/filters.cpp src/menu.cpp src/definitions.cpp `
+  sqlite3.o -o farm_manager.exe
+.\farm_manager.exe</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- RELATÓRIO -->
+<section id="relatorio">
+  <h2>Relatório</h2>
+  <p class="lead">Descrição do sistema, dados utilizados, classes e métodos, e análise dos recursos de POO.</p>
+  <div class="btns">
+    <a class="btn" href="relatorio.pdf" target="_blank" rel="noopener">Abrir relatório (PDF)</a>
+  </div>
+</section>
+
+<!-- VÍDEO -->
+<section id="video">
+  <h2>Vídeo demonstrativo</h2>
+  <p class="lead">Funcionalidades do projeto, conceitos de POO usados e como foram aplicados.</p>
+  <div class="video">
+    <!-- Substituir o bloco .ph pelo iframe abaixo:
+    <iframe src="link" title="Vídeo do Farmpedia" allowfullscreen></iframe> -->
+    <div class="ph"><div><strong style="font:400 .8rem var(--pixel)">Vídeo em breve</strong><p>O link da apresentação no YouTube será adicionado aqui.</p></div></div>
+  </div>
+</section>
+
+<!-- EQUIPE -->
+<section id="equipe" class="team">
+  <h2>Equipe</h2>
+  <p class="lead">Integrantes do grupo de desenvolvimento.</p>
+  <div class="grid g3">
+    <div class="panel"><strong>Gabriela Leite de Andrade Lima</strong><a href="mailto:glal2@cin.ufpe.br">glal2@cin.ufpe.br</a></div>
+    <div class="panel"><strong>Kamilla Regina Menezes de Souza</strong><a href="mailto:krms@cin.ufpe.br">krms@cin.ufpe.br</a></div>
+    <div class="panel"><strong>Sofia Sobreira de Mendonça</strong><a href="mailto:ssm@cin.ufpe.br">ssm@cin.ufpe.br</a></div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <p>CIN0135 — Estruturas de Dados Orientadas a Objetos · CIn / UFPE · Prof. Francisco Simões<br>
+  <a href="https://github.com/gaabileite/farm-manager" target="_blank" rel="noopener">github.com/gaabileite/farm-manager</a></p>
+</footer>
+
+<script type="module">
+  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+  mermaid.initialize({startOnLoad:true,theme:'neutral'});
+</script>
 </body>
 </html>
