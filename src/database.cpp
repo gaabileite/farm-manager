@@ -1,12 +1,21 @@
+/*
+ * database.cpp
+ * Implementação das operações de leitura e alteração dos dados no SQLite.
+ */
+
 #include "classes/database.h"
 #include <iostream>
 
-// sqlite3_column_text returns NULL for NULL cells; building a std::string from NULL crashes.
+// Trata campos NULL do SQLite antes de convertê-los para string.
 static string columnText(sqlite3_stmt* stmt, int col) {
     const unsigned char* text = sqlite3_column_text(stmt, col);
     return text ? string(reinterpret_cast<const char*>(text)) : string();
 }
 
+
+// ---------- DATABASE ----------
+
+// Abre a conexão com o banco usando o caminho informado.
 Database::Database(const string& path) {
     int rc = sqlite3_open(path.c_str(), &db);
     if (rc) {
@@ -14,12 +23,15 @@ Database::Database(const string& path) {
     }
 }
 
+// Fecha a conexão com o banco ao destruir o objeto.
 Database::~Database() {
     sqlite3_close(db);
 }
 
+
 // ---------- CROP ----------
 
+// Busca os valores de venda de uma plantação por qualidade.
 vector<tuple<string,int>> Database::getCropSellValues(int cropId) {
     vector<tuple<string,int>> result;
     string sql = "SELECT quality, value FROM crop_sell_values WHERE crop_id = ?;";
@@ -35,6 +47,7 @@ vector<tuple<string,int>> Database::getCropSellValues(int cropId) {
     return result;
 }
 
+// Busca as fontes de sementes da plantação e seus preços.
 vector<tuple<string,int>> Database::getCropSeedSources(int cropId) {
     vector<tuple<string,int>> result;
     string sql = "SELECT shop_name, price FROM crop_seed_sources WHERE crop_id = ?;";
@@ -50,6 +63,7 @@ vector<tuple<string,int>> Database::getCropSeedSources(int cropId) {
     return result;
 }
 
+// Busca os itens artesanais derivados de uma plantação.
 vector<tuple<string,string,int>> Database::getCropArtisanItems(int cropId) {
     vector<tuple<string,string,int>> result;
     string sql = "SELECT item_name, machine, value FROM crop_artisan_items WHERE crop_id = ?;";
@@ -66,6 +80,7 @@ vector<tuple<string,string,int>> Database::getCropArtisanItems(int cropId) {
     return result;
 }
 
+// Busca todas as plantações do catálogo e seus dados relacionados.
 vector<Crop> Database::getAllCrops() {
     vector<Crop> crops;
     string sql =
@@ -91,12 +106,15 @@ vector<Crop> Database::getAllCrops() {
         crops.push_back(Crop(name, type, season, daysToHarvest, regrow, regrowDays,
                               sellValues, seedSources, artisanItems));
     }
+
     sqlite3_finalize(stmt);
     return crops;
 }
 
+
 // ---------- ANIMAL ----------
 
+// Busca os itens artesanais produzidos por um animal.
 vector<tuple<string,string,int>> Database::getAnimalArtisanItems(int animalId) {
     vector<tuple<string,string,int>> result;
     string sql = "SELECT item_name, machine, value FROM animal_artisan_items WHERE animal_id = ?;";
@@ -113,6 +131,7 @@ vector<tuple<string,string,int>> Database::getAnimalArtisanItems(int animalId) {
     return result;
 }
 
+// Busca todos os animais do catálogo e seus itens artesanais.
 vector<Animal> Database::getAllAnimals() {
     vector<Animal> animals;
     string sql =
@@ -134,12 +153,15 @@ vector<Animal> Database::getAllAnimals() {
 
         animals.push_back(Animal(name, type, produces, daysToAdult, buyPrice, artisanItems));
     }
+
     sqlite3_finalize(stmt);
     return animals;
 }
 
+
 // ---------- BUILDING ----------
 
+// Busca os materiais necessários para construir uma construção.
 vector<tuple<string,int>> Database::getBuildingConstructionMaterials(int buildingId) {
     vector<tuple<string,int>> result;
     string sql = "SELECT material_name, material_amount FROM building_construction_materials WHERE building_id = ?;";
@@ -155,6 +177,7 @@ vector<tuple<string,int>> Database::getBuildingConstructionMaterials(int buildin
     return result;
 }
 
+// Busca os tipos de animais que podem ser mantidos em uma construção.
 vector<string> Database::getBuildingAnimalTypes(int buildingId) {
     vector<string> result;
     string sql = "SELECT animal_type FROM building_animal_types WHERE building_id = ?;";
@@ -168,6 +191,7 @@ vector<string> Database::getBuildingAnimalTypes(int buildingId) {
     return result;
 }
 
+// Busca todas as construções do catálogo e seus dados relacionados.
 vector<Building> Database::getAllBuildings() {
     vector<Building> buildings;
     string sql =
@@ -198,11 +222,12 @@ vector<Building> Database::getAllBuildings() {
             buildings.push_back(Building(name, type, materials, size, whereToGet));
         }
     }
+
     sqlite3_finalize(stmt);
     return buildings;
 }
 
-// Only the names: used to validate the villager typed in the relationships menu.
+// Busca apenas os nomes dos aldeões para validar o nome informado no menu de relacionamentos.
 vector<string> Database::getAllVillagerNames() {
     vector<string> names;
     string sql = "SELECT d.name FROM datatype d JOIN villager v ON v.id = d.id ORDER BY d.id;";
@@ -216,8 +241,10 @@ vector<string> Database::getAllVillagerNames() {
     return names;
 }
 
+
 // ---------- MYFARM ----------
-// Create:
+
+// Cria uma nova fazenda e retorna seu id para identificar os dados relacionados.
 int Database::createFarm(const string& farmName, const string& farmLayout) {
     string sql = "INSERT INTO my_farms (farm_name, farm_layout) VALUES (?, ?);";
     sqlite3_stmt* stmt;
@@ -232,9 +259,8 @@ int Database::createFarm(const string& farmName, const string& farmLayout) {
     return sqlite3_last_insert_rowid(db);   // devolve o id criado, pra usar em seguida
 }
 
-// Loads the saved farm whatever its current name (renaming it must not lose it),
-// and only creates one with the default name/layout when no farm exists yet.
-// Same "first farm" rule as gui/tools/export-data.js, so both show the same farm.
+// Busca a fazenda já salva; se nenhuma existir, cria uma com os dados padrão.
+// Usa a primeira fazenda cadastrada para manter a mesma fazenda entre as partes do projeto.
 int Database::getOrCreateFarm(const string& defaultName, const string& defaultLayout) {
     string sql = "SELECT id FROM my_farms ORDER BY id LIMIT 1;";
     sqlite3_stmt* stmt;
@@ -244,14 +270,17 @@ int Database::getOrCreateFarm(const string& defaultName, const string& defaultLa
     if (sqlite3_step(stmt) == SQLITE_ROW) {
         id = sqlite3_column_int(stmt, 0);
     }
+
     sqlite3_finalize(stmt);
 
     if (id == -1) {
         id = createFarm(defaultName, defaultLayout);
     }
+
     return id;
 }
 
+// Adiciona um animal à fazenda com o relacionamento informado.
 void Database::addAnimal(int farmId, const string& animalName, const string& animalType, int relationship) {
     string sql = "INSERT INTO my_animals (farm_id, animal_name, animal_type, animal_relationship) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
@@ -266,7 +295,7 @@ void Database::addAnimal(int farmId, const string& animalName, const string& ani
     sqlite3_finalize(stmt);
 }
 
-// Update:
+// Atualiza o nível de relacionamento de um animal existente.
 void Database::updateAnimalRelationship(int animalId, int newRelationship) {
     string sql = "UPDATE my_animals SET animal_relationship = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -279,7 +308,7 @@ void Database::updateAnimalRelationship(int animalId, int newRelationship) {
     sqlite3_finalize(stmt);
 }
 
-// Delete:
+// Remove um animal da fazenda pelo id.
 void Database::removeAnimal(int animalId) {
     string sql = "DELETE FROM my_animals WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -291,11 +320,15 @@ void Database::removeAnimal(int animalId) {
     sqlite3_finalize(stmt);
 }
 
+// Retorna a conexão SQLite utilizada pelo banco.
 sqlite3* Database::getHandle() const {
     return db;
 }
 
+
 // ---------- MY BUILDINGS ----------
+
+// Adiciona uma construção à fazenda com o nível informado.
 void Database::addBuilding(int farmId, const string& buildingName, const string& buildingType, int level) {
     string sql = "INSERT INTO my_buildings (farm_id, building_name, building_type, building_level) VALUES (?, ?, ?, ?);";
     sqlite3_stmt* stmt;
@@ -310,6 +343,7 @@ void Database::addBuilding(int farmId, const string& buildingName, const string&
     sqlite3_finalize(stmt);
 }
 
+// Aumenta em um o nível da construção indicada.
 void Database::upgradeBuilding(int buildingId) {
     string sql = "UPDATE my_buildings SET building_level = building_level + 1 WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -321,6 +355,7 @@ void Database::upgradeBuilding(int buildingId) {
     sqlite3_finalize(stmt);
 }
 
+// Remove uma construção da fazenda pelo id.
 void Database::removeBuilding(int buildingId) {
     string sql = "DELETE FROM my_buildings WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -332,6 +367,7 @@ void Database::removeBuilding(int buildingId) {
     sqlite3_finalize(stmt);
 }
 
+// Busca as construções cadastradas para a fazenda.
 vector<tuple<int,string,string,int>> Database::getMyBuildings(int farmId) {
     vector<tuple<int,string,string,int>> result;
     string sql = "SELECT id, building_name, building_type, building_level FROM my_buildings WHERE farm_id = ?;";
@@ -346,11 +382,15 @@ vector<tuple<int,string,string,int>> Database::getMyBuildings(int farmId) {
         int level = sqlite3_column_int(stmt, 3);
         result.push_back(make_tuple(id, name, type, level));
     }
+
     sqlite3_finalize(stmt);
     return result;
 }
 
+
 // ---------- MY RELATIONSHIPS ----------
+
+// Adiciona um relacionamento com um aldeão à fazenda.
 void Database::addRelationship(int farmId, const string& villagerName, int friendship) {
     string sql = "INSERT INTO my_relationships (farm_id, villager_name, friendship) VALUES (?, ?, ?);";
     sqlite3_stmt* stmt;
@@ -364,6 +404,7 @@ void Database::addRelationship(int farmId, const string& villagerName, int frien
     sqlite3_finalize(stmt);
 }
 
+// Atualiza o nível de amizade de um relacionamento existente.
 void Database::updateFriendship(int relationshipId, int newFriendship) {
     string sql = "UPDATE my_relationships SET friendship = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -376,6 +417,7 @@ void Database::updateFriendship(int relationshipId, int newFriendship) {
     sqlite3_finalize(stmt);
 }
 
+// Busca os relacionamentos cadastrados para a fazenda.
 vector<tuple<int,string,int>> Database::getMyRelationships(int farmId) {
     vector<tuple<int,string,int>> result;
     string sql = "SELECT id, villager_name, friendship FROM my_relationships WHERE farm_id = ?;";
@@ -389,11 +431,15 @@ vector<tuple<int,string,int>> Database::getMyRelationships(int farmId) {
         int friendship = sqlite3_column_int(stmt, 2);
         result.push_back(make_tuple(id, name, friendship));
     }
+
     sqlite3_finalize(stmt);
     return result;
 }
 
+
 // ---------- MYFARM INFO ----------
+
+// Busca o nome e o layout associados à fazenda.
 tuple<string,string> Database::getFarmInfo(int farmId) {
     string sql = "SELECT farm_name, farm_layout FROM my_farms WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -406,10 +452,12 @@ tuple<string,string> Database::getFarmInfo(int farmId) {
         const unsigned char* layoutText = sqlite3_column_text(stmt, 1);
         layout = layoutText ? reinterpret_cast<const char*>(layoutText) : "";
     }
+
     sqlite3_finalize(stmt);
     return make_tuple(name, layout);
 }
 
+// Atualiza o nome da fazenda.
 void Database::updateFarmName(int farmId, const string& newName) {
     string sql = "UPDATE my_farms SET farm_name = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -422,6 +470,7 @@ void Database::updateFarmName(int farmId, const string& newName) {
     sqlite3_finalize(stmt);
 }
 
+// Atualiza o layout da fazenda.
 void Database::updateFarmLayout(int farmId, const string& newLayout) {
     string sql = "UPDATE my_farms SET farm_layout = ? WHERE id = ?;";
     sqlite3_stmt* stmt;
@@ -434,6 +483,7 @@ void Database::updateFarmLayout(int farmId, const string& newLayout) {
     sqlite3_finalize(stmt);
 }
 
+// Busca animais da fazenda pelo nome, ignorando diferenças entre maiúsculas e minúsculas.
 vector<tuple<int,string,string,int>> Database::findMyAnimalsByName(int farmId, const string& name) {
     vector<tuple<int,string,string,int>> result;
     string sql = "SELECT id, animal_name, animal_type, animal_relationship "
@@ -450,10 +500,12 @@ vector<tuple<int,string,string,int>> Database::findMyAnimalsByName(int farmId, c
         int rel = sqlite3_column_int(stmt, 3);
         result.push_back(make_tuple(id, n, type, rel));
     }
+
     sqlite3_finalize(stmt);
     return result;
 }
 
+// Busca construções da fazenda pelo nome, ignorando diferenças entre maiúsculas e minúsculas.
 vector<tuple<int,string,string,int>> Database::findMyBuildingsByName(int farmId, const string& name) {
     vector<tuple<int,string,string,int>> result;
     string sql = "SELECT id, building_name, building_type, building_level "
@@ -470,6 +522,7 @@ vector<tuple<int,string,string,int>> Database::findMyBuildingsByName(int farmId,
         int level = sqlite3_column_int(stmt, 3);
         result.push_back(make_tuple(id, n, type, level));
     }
+
     sqlite3_finalize(stmt);
     return result;
 }
