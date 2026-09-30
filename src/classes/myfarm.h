@@ -1,19 +1,26 @@
+/*
+ * myfarm.h
+ * Estrutura e representação da fazenda do jogador, reunindo
+ * as informações básicas e suas listas de elementos associados.
+ */
+
+#ifndef MYFARM
+#define MYFARM
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include "myanimal.h"
 #include "mybuilding.h"
 #include "myrelationship.h"
+
 using namespace std;
 
-#ifndef MYFARM
-#define MYFARM
-
 /*
-The class MyFarm is the start to the CRUD system of the program.
-It serves as a model to the other classes that'll hold the information to the player's farm.
-*/
-
+ * MyFarm: representa a fazenda do jogador.
+ * Guarda os dados gerais da fazenda (nome e layout) e agrupa as
+ * coleções de animais, construções e relacionamentos do jogador.
+ */
 class MyFarm {
     private:
         string farmName;
@@ -24,6 +31,7 @@ class MyFarm {
 
     public:
         // Constructor
+        // Passagem por referência constante evita copiar a string duas vezes.
         MyFarm(const string& currentfarmName, 
                const string& currentfarmLayout);
 
@@ -35,6 +43,7 @@ class MyFarm {
         string getFarmLayout() const;
 
         // Setters
+        // Mesmo motivo do construtor, evita cópia desnecessária de memória.
         void setFarmName(const string& newfarmName);
         void setFarmLayout(const string& newfarmLayout);
 };

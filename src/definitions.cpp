@@ -168,7 +168,9 @@ void Villager::setGiftLove(const string& newgiftLove) { giftLove = newgiftLove; 
 ----------------------------------------------- CRUD MENU - MYFARM ------------------------------------------------
 */
 
+// ---------- MY FARM ----------
 // Declaration of MyFarm's methods.
+
 // Constructor
 MyFarm::MyFarm(const string& currentfarmName, const string& currentfarmLayout) {
     farmName = currentfarmName;
@@ -194,7 +196,9 @@ void MyFarm::setFarmLayout(const string& newfarmLayout) {
     farmLayout = newfarmLayout;
 }
 
+// ---------- MY ANIMAL ----------
 // Declaring MyAnimal's methods
+
 // Constructor
 MyAnimal::MyAnimal(const string& currentanimalName, const string& currentanimalType, int currentanimalRelationship) {
     animalName = currentanimalName;
@@ -226,11 +230,15 @@ void MyAnimal::setAnimalType(const string& newanimalType) {
 void MyAnimal::setAnimalRelationship(int newanimalRelationship) {
     animalRelationship = newanimalRelationship;
 }
+
+// Incrementa a pontuação de afeição do animal com o jogador.
 void MyAnimal::addHeart(int addedRelationship) {
     animalRelationship += addedRelationship;
 }
 
+// ---------- MY RELATIONSHIP ----------
 // Declaring MyRelationship's methods
+
 // Constructor
 MyRelationship::MyRelationship(const string& currentvillagerName, int currentfriendship) {
     villagerName = currentvillagerName;
@@ -255,14 +263,20 @@ void MyRelationship::setVillagerName(const string& newVillagerName) {
 void MyRelationship::setFriendship(int newFriendship) {
     friendship = newFriendship;
 }
+
+// Incrementa a pontuação de amizade com o morador.
 void MyRelationship::increaseFriendship(int addedFriendship) {
     friendship += addedFriendship;
 }
+
+// Reduz a pontuação de amizade com o morador.
 void MyRelationship::decreaseFriendship(int reducedFriendship) {
     friendship -= reducedFriendship;
 }
 
+// ---------- MY BUILDING ----------
 // Declaration of MyBuilding's methods.
+
 // Constructor
 MyBuilding::MyBuilding(const string& currentbuildingName, const string& currentbuildingType, int currentbuildingLevel) {
     buildingName = currentbuildingName;
@@ -295,7 +309,7 @@ void MyBuilding::setBuildingLevel(int newbuildingLevel) {
     buildingLevel = newbuildingLevel;
 }
 
-// Auxiliar
+// Eleva o nível de melhoria da construção em uma unidade.
 void MyBuilding::upgradeBuilding() {
     buildingLevel++;
 }
