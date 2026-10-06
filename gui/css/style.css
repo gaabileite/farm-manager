@@ -210,7 +210,7 @@ button, input { font-family: 'VT323', monospace; font-size: 18px; }
   color: var(--paper);
 }
 .card-meta { font-size: 15px; color: var(--panel-darker); }
-.card-hearts { display: flex; gap: 2px; }
+.card-hearts { display: flex; gap: 2px; flex-shrink: 0; }
 
 /* category accent bars */
 .card.tag-crop { border-top: 6px solid var(--accent-crop); }
@@ -238,7 +238,7 @@ button, input { font-family: 'VT323', monospace; font-size: 18px; }
 .farm-block h4 { font-family: 'Press Start 2P', monospace; font-size: 11px; margin: 0 0 10px; color: var(--ink); }
 .farm-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; border-bottom: 1px dashed var(--paper-dark); font-size: 15px; }
 .farm-row:last-child { border-bottom: none; }
-.farm-row .grow { flex: 1; }
+.farm-row .grow { flex: 1; min-width: 0; }
 .farm-empty { margin: 0; font-size: 14px; color: var(--panel-darker); font-style: italic; }
 
 /* ---------- modal ---------- */

@@ -160,15 +160,17 @@ const DEFS = {
     palette: { w: '#e8d9b5', r: '#8a3b2a', d: '#5b3a21', y: '#f3d16b' },
     rows: ['....rrrr....', '...rrrrrr...', '..rrrrrrrr..', '.rrrrrrrrrr.', 'wwwwwwwwwwww', 'wwyy.ww.yyww', 'wwwwwwwwwwww', 'wwwwddwwwwww', 'wwwwddwwwwww', 'wwwwwwwwwwww'],
   },
+  // Full and empty hearts share the same symmetric silhouette and outline,
+  // so a row of mixed hearts lines up; the empty one is only outline + a pale fill.
   heartFull: {
-    w: 8, h: 8,
-    palette: { r: '#d9435c', R: '#ef7a8e' },
-    rows: ['.RR.RR..', 'rrrrrrr.', 'rrrrrrr.', '.rrrrr..', '..rrr...', '...r....', '........', '........'],
+    w: 7, h: 7,
+    palette: { o: '#8a2236', r: '#d9435c', R: '#ef7a8e' },
+    rows: ['.oo.oo.', 'oRrorro', 'oRrrrro', 'orrrrro', '.orrro.', '..oro..', '...o...'],
   },
   heartEmpty: {
-    w: 8, h: 8,
-    palette: { o: '#8a6a5a' },
-    rows: ['.oo.oo..', 'o..o..o.', 'o......o', '.o....o.', '..o..o..', '...oo...', '........', '........'],
+    w: 7, h: 7,
+    palette: { o: '#8a6a5a', e: '#e3cfa8' },
+    rows: ['.oo.oo.', 'oeeoeeo', 'oeeeeeo', 'oeeeeeo', '.oeeeo.', '..oeo..', '...o...'],
   },
 };
 

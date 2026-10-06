@@ -58,7 +58,11 @@
     return SECTIONS.find((s) => s.key === key);
   }
 
-  function heartsRow(value, max = 10, scale = 3) {
+  // Stardew caps friendship at 5 hearts for farm animals and 10 for villagers.
+  const MAX_ANIMAL_HEARTS = 5;
+  const MAX_VILLAGER_HEARTS = 10;
+
+  function heartsRow(value, max, scale = 2) {
     const wrap = document.createElement('div');
     wrap.className = 'card-hearts';
     for (let i = 0; i < max; i++) {
@@ -268,7 +272,7 @@
       grow.className = 'grow';
       grow.textContent = `${a.animalName} — ${a.animalType}`;
       row.appendChild(grow);
-      row.appendChild(heartsRow(a.animalRelationship));
+      row.appendChild(heartsRow(a.animalRelationship, MAX_ANIMAL_HEARTS));
       return row;
     }), 'No animal saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 
@@ -294,7 +298,7 @@
       grow.className = 'grow';
       grow.textContent = r.villagerName;
       row.appendChild(grow);
-      row.appendChild(heartsRow(r.friendship));
+      row.appendChild(heartsRow(r.friendship, MAX_VILLAGER_HEARTS));
       return row;
     }), 'No friendship saved yet. Use the "My Farm" menu in farm_manager.exe to add one.'));
 

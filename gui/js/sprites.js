@@ -27,7 +27,7 @@ const Sprites = (() => {
     const BOX_UNITS = 10;
     const SIZES = {
         bookCrop: [12, 14], bookVillager: [12, 14], bookAnimal: [12, 14], bookBuilding: [12, 14], bookFarm: [12, 14],
-        heartFull: [8, 8], heartEmpty: [8, 8],
+        heartFull: [7, 7], heartEmpty: [7, 7],
     };
 
     const BOOK_BY_SECTION = {

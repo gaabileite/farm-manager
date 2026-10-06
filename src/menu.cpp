@@ -175,11 +175,18 @@ void showMyAnimalsMenu(Database& db, int farmId) {
             cout << "Animal added!\n";
         }
         else if (choice == 2) {
-            int id, newRel;
-            cout << "Animal ID: ";
-            cin >> id;
-            cout << "New friendship level: ";
-            cin >> newRel;
+            int id = resolveAnimalId(db, farmId);
+            if (id == -1) continue;
+
+            // Farm animals go up to 5 hearts (villagers go up to 10).
+            int newRel;
+            cout << "New friendship level (0-5 hearts): ";
+            if (!(cin >> newRel) || newRel < 0 || newRel > 5) {
+                cin.clear();
+                cin.ignore(numeric_limits<streamsize>::max(), '\n');
+                cout << "Friendship must be a number from 0 to 5.\n";
+                continue;
+            }
             db.updateAnimalRelationship(id, newRel);
             refreshGui();
             cout << "Updated!\n";
